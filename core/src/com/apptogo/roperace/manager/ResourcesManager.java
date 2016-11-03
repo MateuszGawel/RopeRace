@@ -48,7 +48,11 @@ public class ResourcesManager {
 		//e.g	manager.load("sound.ogg", Sound.class);
 
 		//textures
-		//e.g	manager.load("texture.png", Texture.class);
+		manager.load("roperace-logo.png", Texture.class);
+		manager.load("play-button.png", Texture.class);
+		manager.load("choose-level-button.png", Texture.class);
+		manager.load("level-button.png", Texture.class);
+		manager.load("back-button.png", Texture.class);
 	}
 
 	private void preloadResources(){
@@ -83,6 +87,16 @@ public class ResourcesManager {
 		return region;
 	}
 
+	/**
+	 * Search for texture png
+	 * 
+	 * @param textureName
+	 * @return texture by name
+	 */
+	public Texture getTexture(String textureName) {
+		return manager.get(textureName + ".png");
+	}
+	
 	/**
 	 * @param soundName
 	 * @return sound by name

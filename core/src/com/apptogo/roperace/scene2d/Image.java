@@ -13,6 +13,10 @@ public class Image extends com.badlogic.gdx.scenes.scene2d.ui.Image {
 	public static Image get(String regionName) {
 		return new Image(ResourcesManager.getInstance().getAtlasRegion(regionName));
 	}
+	
+	public static Image getFromTexture(String textureName) {
+		return new Image(ResourcesManager.getInstance().getTexture(textureName));
+	}
 
 	public static Image get(Texture texture) {
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);

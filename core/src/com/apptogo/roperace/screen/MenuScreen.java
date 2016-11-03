@@ -1,45 +1,29 @@
 package com.apptogo.roperace.screen;
 
-import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.manager.CustomActionManager;
-import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.physics.ContactListener;
-import com.apptogo.roperace.plugin.CameraFollowingPlugin;
-import com.apptogo.roperace.plugin.GravityPlugin;
-import com.apptogo.roperace.plugin.KeyboardSteeringPlugin;
-import com.apptogo.roperace.plugin.TouchSteeringPlugin;
+import com.apptogo.roperace.scene2d.Image;
+import com.apptogo.roperace.scene2d.Listener;
 import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
-public class GameScreen extends BasicScreen {
+public class MenuScreen extends BasicScreen {
 
 	protected Box2DDebugRenderer debugRenderer;
 	protected FPSLogger logger = new FPSLogger();
 
 	protected World world;
 	protected ContactListener contactListener = new ContactListener();
-
-	protected GameActor player;
-	protected GameActor ground, ceiling;
 	
-	protected int level;
-	
-	public GameScreen(Main game, int level) {
+	public MenuScreen(Main game) {
 		super(game);
-		this.level = level;
-	}
-	
-	public GameScreen(Main game) {
-		super(game);
-		this.level = 1; //get last level from save
 	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -56,8 +40,6 @@ public class GameScreen extends BasicScreen {
 
 		prepareBackStage();
 		prepareFrontStage();
-		createPlayer();
-		createLevel();
 	}
 
 	protected void prepareBackStage() {
@@ -67,43 +49,27 @@ public class GameScreen extends BasicScreen {
 
 	protected void prepareFrontStage() {
 		frontStage.setViewport(new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT)));
-		//((OrthographicCamera) gameworldStage.getCamera()).zoom = 1f;
+		
+		float padding = UnitConverter.toBox2dUnits(20);
+		
+		Image background = Image.getFromTexture("roperace-logo");
+		background.size(UnitConverter.toBox2dUnits(background.getRegion().getRegionWidth()), 
+				UnitConverter.toBox2dUnits(background.getRegion().getRegionHeight())).position(0, 2).centerX();
+		frontStage.addActor(background);
+		
+		Image chooseLevel = Image.getFromTexture("choose-level-button");
+		chooseLevel.size(UnitConverter.toBox2dUnits(chooseLevel.getRegion().getRegionWidth()), UnitConverter.toBox2dUnits(chooseLevel.getRegion().getRegionHeight()));
+		chooseLevel.position(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH/2)-chooseLevel.getWidth()-padding, -UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT/2)+padding);
+		chooseLevel.addListener(Listener.click(game, new LevelSelectionScreen(game)));
+		frontStage.addActor(chooseLevel);
+		
+		Image playButton = Image.getFromTexture("play-button");
+		playButton.size(UnitConverter.toBox2dUnits(playButton.getRegion().getRegionWidth()), 
+				UnitConverter.toBox2dUnits(playButton.getRegion().getRegionHeight())).position(0, -5).centerX();
+		playButton.addListener(Listener.click(game, new GameScreen(game)));
+		frontStage.addActor(playButton);
 	}
 	
-	protected void createPlayer(){
-		player = new GameActor("player");
-		player.setBody(BodyBuilder.get()
-				.type(BodyType.DynamicBody)
-				.position(0, 0)
-				.addFixture("player").circle(0.2f).density(2f)
-				.create());
-
-		player.modifyCustomOffsets(0f, 0f);
-		frontStage.addActor(player);
-		
-		player.addPlugin(new CameraFollowingPlugin());
-		player.addPlugin(new KeyboardSteeringPlugin());
-		player.addPlugin(new TouchSteeringPlugin(this));
-		player.addPlugin(new GravityPlugin());
-	}
-	
-	protected void createLevel(){
-		final float levelWidth = 50;
-		
-		ground = new GameActor("ground");
-		ground.setBody(BodyBuilder.get()
-				.type(BodyType.StaticBody)
-				.position(levelWidth/2, -UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT/2) + 1)
-				.addFixture("level", "ground").box(levelWidth, 0.2f)
-				.create());
-		
-		ceiling = new GameActor("ceiling");
-		ceiling.setBody(BodyBuilder.get()
-				.type(BodyType.StaticBody)
-				.position(levelWidth/2, UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT/2) - 1)
-				.addFixture("level", "ceiling").box(levelWidth, 0.2f)
-				.create());
-	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** -------------------------------------------------- STEP -------------------------------------------------- **/
@@ -164,13 +130,5 @@ public class GameScreen extends BasicScreen {
 	
 	public World getWorld() {
 		return world;
-	}
-
-	public GameActor getGround() {
-		return ground;
-	}
-
-	public GameActor getCeiling() {
-		return ceiling;
 	}
 }

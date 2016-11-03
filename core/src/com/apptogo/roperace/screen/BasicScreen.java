@@ -1,6 +1,7 @@
 package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.main.Main;
+import com.apptogo.roperace.manager.CustomActionManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -38,6 +39,9 @@ public abstract class BasicScreen implements Screen {
 		Gdx.input.setInputProcessor(frontStage);
 
 		prepare();
+		
+		//prepare CustomActionManager
+		frontStage.addActor(CustomActionManager.getInstance());
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public abstract class BasicScreen implements Screen {
 
 	protected void handleInput() {
 		if (Gdx.input.isKeyJustPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-
+			game.setScreen(new MenuScreen(game));
 		}
 	}
 	

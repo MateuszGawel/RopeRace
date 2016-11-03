@@ -12,7 +12,6 @@ public class GravityPlugin extends AbstractPlugin {
 	@Override
 	public void run() {
 		actor.getBody().applyForceToCenter(gravity, false);
-//		actor.getBody().setLinearDamping(1f);
 	}
 
 	@Override
