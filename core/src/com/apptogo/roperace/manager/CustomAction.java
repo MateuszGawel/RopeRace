@@ -110,4 +110,13 @@ public abstract class CustomAction extends Actor {
 	public int getLoopCount() {
 		return loopCount;
 	}
+	
+	/**
+	 * Unregisters and removes action
+	 */
+	public void unregister(){
+		onFinish();
+		remove();
+		resetAction();
+	}
 }

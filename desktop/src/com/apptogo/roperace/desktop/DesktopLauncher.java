@@ -8,7 +8,9 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 public class DesktopLauncher {
 	public static void main(String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-
+		config.width = (int) Main.SCREEN_WIDTH;
+		config.height = (int) Main.SCREEN_HEIGHT;
+		
 		GameCallback gameCallback = new GameCallbackImpl();
 
 		new LwjglApplication(new Main(gameCallback), config);

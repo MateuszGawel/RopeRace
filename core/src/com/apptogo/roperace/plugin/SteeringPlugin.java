@@ -8,7 +8,7 @@ public abstract class SteeringPlugin extends AbstractPlugin {
 
 	private final Logger logger = new Logger(getClass().getName(), Logger.DEBUG);
 
-	private SoundPlugin soundHandler;
+
 
 	@Override
 	public void run() {
@@ -19,6 +19,6 @@ public abstract class SteeringPlugin extends AbstractPlugin {
 
 	@Override
 	public void setUpDependencies() {
-		soundHandler = actor.getPlugin(SoundPlugin.class);
+
 	}
 }

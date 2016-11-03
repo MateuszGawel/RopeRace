@@ -6,6 +6,7 @@ import com.apptogo.roperace.exception.ResourcesManagerException;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -32,6 +33,7 @@ public class ResourcesManager {
 
 	private ResourcesManager() {
 		manager = new AssetManager();
+		preloadResources();
 		manager.finishLoading();
 	}
 
@@ -49,6 +51,10 @@ public class ResourcesManager {
 		//e.g	manager.load("texture.png", Texture.class);
 	}
 
+	private void preloadResources(){
+		manager.load("logo.png", Texture.class);
+	}
+	
 	/**
 	 * Loads skin from file
 	 */
