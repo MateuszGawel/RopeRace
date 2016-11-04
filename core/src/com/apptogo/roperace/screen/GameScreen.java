@@ -2,7 +2,7 @@ package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.main.Main;
-import com.apptogo.roperace.manager.CustomActionManager;
+import com.apptogo.roperace.manager.LevelGenerator;
 import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.physics.ContactListener;
 import com.apptogo.roperace.plugin.CameraFollowingPlugin;
@@ -13,6 +13,7 @@ import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -31,6 +32,7 @@ public class GameScreen extends BasicScreen {
 	protected GameActor ground, ceiling;
 	
 	protected int level;
+	protected LevelGenerator levelGenerator;
 	
 	public GameScreen(Main game, int level) {
 		super(game);
@@ -39,7 +41,7 @@ public class GameScreen extends BasicScreen {
 	
 	public GameScreen(Main game) {
 		super(game);
-		this.level = 1; //get last level from save
+		this.level = 1; //TODO get last level from save
 	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -56,8 +58,9 @@ public class GameScreen extends BasicScreen {
 
 		prepareBackStage();
 		prepareFrontStage();
-		createPlayer();
 		createLevel();
+		createPlayer();
+
 	}
 
 	protected void prepareBackStage() {
@@ -67,16 +70,16 @@ public class GameScreen extends BasicScreen {
 
 	protected void prepareFrontStage() {
 		frontStage.setViewport(new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT)));
-		//((OrthographicCamera) gameworldStage.getCamera()).zoom = 1f;
 	}
 	
 	protected void createPlayer(){
 		player = new GameActor("player");
 		player.setBody(BodyBuilder.get()
 				.type(BodyType.DynamicBody)
-				.position(0, 0)
-				.addFixture("player").circle(0.2f).density(2f)
+				.position(levelGenerator.getStartingPoint())
+				.addFixture("player").circle(0.25f).density(5f).friction(1f).restitution(0.5f)
 				.create());
+		player.getBody().setLinearDamping(-0.02f);
 
 		player.modifyCustomOffsets(0f, 0f);
 		frontStage.addActor(player);
@@ -87,22 +90,9 @@ public class GameScreen extends BasicScreen {
 		player.addPlugin(new GravityPlugin());
 	}
 	
-	protected void createLevel(){
-		final float levelWidth = 50;
-		
-		ground = new GameActor("ground");
-		ground.setBody(BodyBuilder.get()
-				.type(BodyType.StaticBody)
-				.position(levelWidth/2, -UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT/2) + 1)
-				.addFixture("level", "ground").box(levelWidth, 0.2f)
-				.create());
-		
-		ceiling = new GameActor("ceiling");
-		ceiling.setBody(BodyBuilder.get()
-				.type(BodyType.StaticBody)
-				.position(levelWidth/2, UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT/2) - 1)
-				.addFixture("level", "ceiling").box(levelWidth, 0.2f)
-				.create());
+	protected void createLevel(){	
+		levelGenerator = new LevelGenerator(this);
+		levelGenerator.loadLevel(level);
 	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -119,7 +109,7 @@ public class GameScreen extends BasicScreen {
 
 		//debug renderer
 		debugRenderer.render(world, frontStage.getCamera().combined);
-
+		
 		// --- frontstage render last --- //
 	}
 	
@@ -134,6 +124,7 @@ public class GameScreen extends BasicScreen {
 
 		step(delta);
 
+//		((OrthographicCamera) frontStage.getCamera()).zoom = 10f;
 		this.frontViewport.apply();
 		this.frontStage.act(delta);
 		this.frontStage.draw();

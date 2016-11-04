@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="500" height="100" tilewidth="32" tileheight="32">
+ <layer name="Tile Layer 1" width="500" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20Gf6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgNcADW0AAQ==
+  </data>
+ </layer>
+ <objectgroup name="terrain">
+  <object name="start" x="469" y="624.25" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object x="373" y="656.25" width="128" height="32"/>
+  <object x="512" y="640" width="32" height="320"/>
+  <object x="512" y="320" width="32" height="320"/>
+  <object x="512" y="320" height="32"/>
+  <object x="480" y="320" width="32" height="32"/>
+  <object x="480" y="928" width="32" height="32"/>
+  <object x="373" y="624.25" width="96" height="32"/>
+  <object x="696" y="309.333"/>
+  <object x="576" y="320" width="32" height="640"/>
+  <object x="512" y="288" width="32" height="32"/>
+  <object x="448" y="288" width="64" height="32"/>
+  <object x="448" y="960" width="96" height="32"/>
+  <object x="512" y="256" width="32" height="32"/>
+  <object x="512" y="992" width="32" height="32"/>
+ </objectgroup>
+</map>

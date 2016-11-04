@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 public class TouchSteeringPlugin extends SteeringPlugin {
 	private static final float ROPE_SHORTENING_SPEED = 0.03f;
 	private static final float ROPE_SHOOT_SPEED = 40f;
+	private static final float CUT_ROPE_AFTER = 0.18f;
 	
 	protected enum TouchState{
 		NOT_TOUCHED, JUST_TOUCHED, KEEP_TOUCHED, JUST_UNTOUCHED
@@ -26,6 +27,7 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 	private Body ropeBullet;
 	private RopeJoint joint;
 	private TouchState touchState = TouchState.NOT_TOUCHED;;
+	private boolean ropeAttached;
 	
 	public TouchSteeringPlugin(GameScreen screen) {
 		super();
@@ -42,13 +44,13 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 	@Override
 	public void run() {
 		super.run();
-
 		handleBulletCollision();
 		handleTouchState();
 	}
 
 	private void handleBulletCollision(){
-		if(joint!=null && ContactListener.SNAPSHOT.collide(UserData.get(ropeBullet), "level")){
+		if(joint != null && ContactListener.SNAPSHOT.collide(UserData.get(ropeBullet), "level")){
+			ropeAttached = true;
 			ropeBullet.setLinearVelocity(new Vector2(0, 0));
 			joint.setMaxLength(actor.getBody().getPosition().dst(ropeBullet.getPosition()));
 			triggerAutoRopeShortening(joint);
@@ -62,7 +64,10 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 					touchState = TouchState.KEEP_TOUCHED;
 					float posX = Gdx.input.getX();
 					float posY = Gdx.input.getY();
+					destroyCurrentJoint();
 					shootRopeBullet(posX, posY);
+					shootRope();
+					triggerAutoRopeCut();
 					break;
 				case KEEP_TOUCHED:
 					if(!Gdx.input.isTouched()){
@@ -72,7 +77,6 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 				case JUST_UNTOUCHED:
 					touchState = TouchState.NOT_TOUCHED;
 					destroyCurrentJoint();
-					applyJumpForce();
 					break;
 				case NOT_TOUCHED:
 					if (Gdx.input.justTouched()) {
@@ -99,8 +103,6 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 		
 		ropeBullet.setActive(true);
 		ropeBullet.setLinearVelocity(new Vector2(ROPE_SHOOT_SPEED, 0).setAngle((float)theta));
-		destroyCurrentJoint();
-		shootRope();
 	}
 
 	private void shootRope() {
@@ -113,21 +115,30 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 		jointDef.localAnchorB.set(0,0);
 		joint = (RopeJoint)screen.getWorld().createJoint(jointDef);
 
-		joint.setMaxLength(100);
-		
+		joint.setMaxLength(10000);
 	}
 	
 	private void destroyCurrentJoint(){
 		if(joint != null){
 			screen.getWorld().destroyJoint(joint);
 			joint = null;
+			ropeAttached = false;
+			ropeBullet.setTransform(new Vector2(-100, -100), 0);
 		}
 	}
 	
-	private void applyJumpForce() {
-//		actor.getBody().applyLinearImpulse(actor.getBody().getLinearVelocity().scl(0.05f), new Vector2(0, 0), true);
-//		actor.getBody().setLinearVelocity(actor.getBody().getLinearVelocity().scl(2f));
+	private void triggerAutoRopeCut() {
+		CustomActionManager.getInstance().registerAction(new CustomAction(CUT_ROPE_AFTER, 1) {
+			
+			@Override
+			public void perform() {
+				if(joint != null && !ropeAttached){
+					destroyCurrentJoint();
+				}
+			}
+		});
 	}
+	
 	private void triggerAutoRopeShortening(final RopeJoint joint){
 		CustomActionManager.getInstance().registerAction(new CustomAction(0.01f, -1) {
 			

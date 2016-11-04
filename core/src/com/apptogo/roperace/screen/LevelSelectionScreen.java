@@ -63,7 +63,7 @@ public class LevelSelectionScreen extends BasicScreen {
     	for(int i=0; i<=NUMBER_OF_LEVELS; i++){
 	    	Image image = Image.getFromTexture("level-button");
 	    	image.size(image.getRegion().getRegionWidth(), image.getRegion().getRegionHeight());
-	    	image.addListener(Listener.click(game, new GameScreen(game)));
+	    	image.addListener(Listener.click(game, new GameScreen(game, i+1)));
 	    	
 	    	Cell<Image> cell = table.add(image);
 	    	if(i==0){

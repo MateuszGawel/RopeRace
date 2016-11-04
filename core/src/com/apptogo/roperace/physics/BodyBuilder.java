@@ -52,6 +52,12 @@ public class BodyBuilder {
 		return this;
 	}
 	
+	public BodyBuilder position(Vector2 position)
+	{
+		bodyDef.position.set(position);
+		return this;
+	}
+	
 	public BodyBuilder fixedRotation(boolean fixedRotation) {
 		bodyDef.fixedRotation = fixedRotation;
 		return this;
@@ -89,6 +95,11 @@ public class BodyBuilder {
 	public BodyBuilder box(float width, float height)
 	{
 		return box(width, height, 0, 0);
+	}
+	
+	public BodyBuilder box(Vector2 size)
+	{
+		return box(size.x, size.y, 0, 0);
 	}
 	
 	public BodyBuilder box(float width, float height, float offsetX, float offsetY)

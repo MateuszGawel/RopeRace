@@ -10,15 +10,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public abstract class BasicScreen implements Screen {
 	//main instance of game
 	protected Main game;
 
 	protected Stage backStage;
-	protected FillViewport backViewport;
+	protected Viewport backViewport;
 
-	protected FitViewport frontViewport;
+	protected Viewport frontViewport;
 	protected Stage frontStage;
 
 	public BasicScreen(Main game) {

@@ -5,10 +5,13 @@ import java.util.Comparator;
 import com.apptogo.roperace.exception.ResourcesManagerException;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
@@ -34,9 +37,16 @@ public class ResourcesManager {
 	private ResourcesManager() {
 		manager = new AssetManager();
 		preloadResources();
+		
+		//prepare loader for tiled maps
+		manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+	}
+	
+	private void preloadResources(){
+		manager.load("logo.png", Texture.class);
 		manager.finishLoading();
 	}
-
+	
 	/**
 	 * Loads all resources
 	 */
@@ -53,18 +63,16 @@ public class ResourcesManager {
 		manager.load("choose-level-button.png", Texture.class);
 		manager.load("level-button.png", Texture.class);
 		manager.load("back-button.png", Texture.class);
+		
+		manager.finishLoading();
 	}
 
-	private void preloadResources(){
-		manager.load("logo.png", Texture.class);
-	}
-	
 	/**
 	 * Loads skin from file
 	 */
 	public void loadSkin() {
-		manager.finishLoading();
 		skin = new Skin(Gdx.files.internal("skin.json"), manager.get("menu_atlas.pack", TextureAtlas.class));
+		manager.finishLoading();
 	}
 
 	/**
@@ -103,6 +111,19 @@ public class ResourcesManager {
 	 */
 	public Sound getSound(String soundName) {
 		return manager.get(soundName + ".ogg");
+	}
+	
+	/**
+	 * Loads given level. e.g for 1 it loads levels/level1.tmx
+	 * then returns it 
+	 * 
+	 * @param levelNumber
+	 * @return TiledMap of level
+	 */
+	public TiledMap loadAndGetTiledMap(int levelNumber) {
+		manager.load("levels/level" + levelNumber + ".tmx", TiledMap.class);
+		manager.finishLoading();
+		return manager.get("levels/level" + levelNumber + ".tmx");
 	}
 
 	/**
