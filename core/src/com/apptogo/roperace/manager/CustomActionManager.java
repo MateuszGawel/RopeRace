@@ -43,4 +43,12 @@ public class CustomActionManager extends Group {
 	public int getRegisteredActionCount(){
 		return this.getChildren().size;
 	}
+	
+	public void clearAllActions(){
+		for(Actor actor : this.getChildren()){
+			if(actor instanceof CustomAction){
+				unregisterAction((CustomAction)actor);
+			}
+		}
+	}
 }

@@ -147,4 +147,10 @@ public class SoundPlugin extends AbstractPlugin {
 		Sound sound = ResourcesManager.getInstance().getSound(soundName);
 		sound.setVolume(soundId, volume);
 	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
 }

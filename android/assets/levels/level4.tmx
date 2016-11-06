@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="120" height="48" tilewidth="32" tileheight="32">
+ <layer name="Tile Layer 1" width="120" height="48">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20JT6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeBpaAAAB
+  </data>
+ </layer>
+ <objectgroup name="terrain">
+  <object x="160" y="576" width="2912" height="32"/>
+  <object x="160" y="608" width="32" height="352"/>
+  <object x="3296" y="576" width="64" height="64">
+   <ellipse/>
+  </object>
+  <object x="2528" y="608" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object name="start" x="192" y="608" width="32" height="32">
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>

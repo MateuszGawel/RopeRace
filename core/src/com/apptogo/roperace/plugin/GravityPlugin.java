@@ -18,4 +18,10 @@ public class GravityPlugin extends AbstractPlugin {
 	public void setUpDependencies() {
 
 	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
 }

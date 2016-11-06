@@ -134,4 +134,19 @@ public class GameActor extends AbstractActor implements Poolable, Serializable {
 		body.setActive(true);
 		Main.getInstance().getCurrentScreen().getFrontStage().addActor(this);
 	}
+
+	@Override
+	public boolean remove() {
+		// TODO Auto-generated method stub
+		return super.remove();
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		super.clear();
+	}
+	
+	
+	
 }

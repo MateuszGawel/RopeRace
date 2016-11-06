@@ -121,7 +121,6 @@ public class MenuScreen extends BasicScreen {
 		super.dispose();
 		debugRenderer.dispose();
 		world.dispose();
-		frontStage.dispose();
 	}
 
 	/** ---------------------------------------------------------------------------------------------------------- **/

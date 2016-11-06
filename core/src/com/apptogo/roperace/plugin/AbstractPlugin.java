@@ -24,4 +24,6 @@ public abstract class AbstractPlugin {
 		setUpDependencies();
 		postSetActor();
 	}
+	
+	public abstract void dispose();
 }

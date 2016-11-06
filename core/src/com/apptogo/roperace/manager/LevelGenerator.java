@@ -6,6 +6,7 @@ import com.apptogo.roperace.screen.GameScreen;
 import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
@@ -81,5 +82,23 @@ public class LevelGenerator{
 		if(startingPoint == null){
 			throw new LevelException("Starting point must be set on map: level" + levelNumber);
 		}
+	}
+	
+	/**
+	 * @return Vector2 with width and height of level in graphics units
+	 */
+	public Vector2 getMapSize()
+	{
+		MapProperties mapProperties = map.getProperties();
+		
+		int mapWidth = mapProperties.get("width", Integer.class);
+		int mapHeight = mapProperties.get("height", Integer.class);
+		int tilePixelWidth = mapProperties.get("tilewidth", Integer.class);
+		int tilePixelHeight = mapProperties.get("tileheight", Integer.class);
+		
+		int mapPixelWidth = mapWidth * tilePixelWidth;
+		int mapPixelHeight = mapHeight * tilePixelHeight;
+
+		return new Vector2(mapPixelWidth, mapPixelHeight);
 	}
 }

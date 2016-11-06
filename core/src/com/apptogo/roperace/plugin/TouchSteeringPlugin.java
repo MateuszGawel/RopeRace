@@ -153,4 +153,10 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 			}
 		});
 	}
+
+	@Override
+	public void dispose() {
+		destroyCurrentJoint();
+	}
+	
 }

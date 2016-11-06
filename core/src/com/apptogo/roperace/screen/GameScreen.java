@@ -1,7 +1,11 @@
 package com.apptogo.roperace.screen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.main.Main;
+import com.apptogo.roperace.manager.CustomActionManager;
 import com.apptogo.roperace.manager.LevelGenerator;
 import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.physics.ContactListener;
@@ -17,7 +21,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
 public class GameScreen extends BasicScreen {
@@ -84,7 +90,7 @@ public class GameScreen extends BasicScreen {
 		player.modifyCustomOffsets(0f, 0f);
 		frontStage.addActor(player);
 		
-		player.addPlugin(new CameraFollowingPlugin());
+		player.addPlugin(new CameraFollowingPlugin(levelGenerator.getMapSize()));
 		player.addPlugin(new KeyboardSteeringPlugin());
 		player.addPlugin(new TouchSteeringPlugin(this));
 		player.addPlugin(new GravityPlugin());
@@ -146,7 +152,6 @@ public class GameScreen extends BasicScreen {
 		super.dispose();
 		debugRenderer.dispose();
 		world.dispose();
-		frontStage.dispose();
 	}
 
 	/** ---------------------------------------------------------------------------------------------------------- **/

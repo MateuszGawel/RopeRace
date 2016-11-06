@@ -40,7 +40,7 @@ public abstract class BasicScreen implements Screen {
 		Gdx.input.setInputProcessor(frontStage);
 
 		prepare();
-		
+
 		//prepare CustomActionManager
 		frontStage.addActor(CustomActionManager.getInstance());
 	}
@@ -68,7 +68,7 @@ public abstract class BasicScreen implements Screen {
 			game.setScreen(new MenuScreen(game));
 		}
 	}
-	
+
 	@Override
 	public void resize(int width, int height) {
 		this.backStage.getViewport().update(width, height);
@@ -78,7 +78,7 @@ public abstract class BasicScreen implements Screen {
 	abstract protected void prepare();
 
 	abstract protected void step(float delta);
-	
+
 	@Override
 	public void pause() {
 	}
@@ -93,6 +93,9 @@ public abstract class BasicScreen implements Screen {
 
 	@Override
 	public void dispose() {
+		backStage.dispose();
+		frontStage.dispose();
+		CustomActionManager.getInstance().clearAllActions();
 	}
 
 	public Stage getFrontStage() {
