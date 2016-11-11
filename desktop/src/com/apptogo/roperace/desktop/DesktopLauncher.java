@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = (int) Main.SCREEN_WIDTH;
 		config.height = (int) Main.SCREEN_HEIGHT;
+		config.samples = 3;
 		
 		GameCallback gameCallback = new GameCallbackImpl();
 

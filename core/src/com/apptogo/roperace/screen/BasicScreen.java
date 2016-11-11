@@ -4,6 +4,7 @@ import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.manager.CustomActionManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,6 +23,8 @@ public abstract class BasicScreen implements Screen {
 	protected Viewport frontViewport;
 	protected Stage frontStage;
 
+	protected InputMultiplexer inputMultiplexer;
+	
 	public BasicScreen(Main game) {
 		this.game = game;
 	}
@@ -37,7 +40,9 @@ public abstract class BasicScreen implements Screen {
 		this.frontStage = new Stage(this.frontViewport);
 		((OrthographicCamera) frontStage.getCamera()).position.set(0f, 0f, 0f);
 
-		Gdx.input.setInputProcessor(frontStage);
+		inputMultiplexer = new InputMultiplexer(); 
+		inputMultiplexer.addProcessor(frontStage);
+		Gdx.input.setInputProcessor(inputMultiplexer);
 
 		prepare();
 
@@ -104,5 +109,9 @@ public abstract class BasicScreen implements Screen {
 
 	public Stage getBackStage() {
 		return backStage;
+	}
+
+	public InputMultiplexer getInputMultiplexer() {
+		return inputMultiplexer;
 	}
 }

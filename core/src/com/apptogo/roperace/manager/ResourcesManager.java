@@ -63,6 +63,8 @@ public class ResourcesManager {
 		manager.load("choose-level-button.png", Texture.class);
 		manager.load("level-button.png", Texture.class);
 		manager.load("back-button.png", Texture.class);
+		manager.load("touchpad-background.png", Texture.class);
+		manager.load("touchpad-knob.png", Texture.class);
 		
 		manager.finishLoading();
 	}

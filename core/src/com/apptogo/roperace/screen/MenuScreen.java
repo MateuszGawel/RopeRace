@@ -1,7 +1,6 @@
 package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.main.Main;
-import com.apptogo.roperace.manager.CustomActionManager;
 import com.apptogo.roperace.physics.ContactListener;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Listener;

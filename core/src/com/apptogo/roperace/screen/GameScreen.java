@@ -1,17 +1,14 @@
 package com.apptogo.roperace.screen;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.main.Main;
-import com.apptogo.roperace.manager.CustomActionManager;
 import com.apptogo.roperace.manager.LevelGenerator;
 import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.physics.ContactListener;
 import com.apptogo.roperace.plugin.CameraFollowingPlugin;
 import com.apptogo.roperace.plugin.GravityPlugin;
 import com.apptogo.roperace.plugin.KeyboardSteeringPlugin;
+import com.apptogo.roperace.plugin.SteeringPlugin;
 import com.apptogo.roperace.plugin.TouchSteeringPlugin;
 import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.Gdx;
@@ -21,10 +18,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameScreen extends BasicScreen {
 
@@ -39,6 +36,10 @@ public class GameScreen extends BasicScreen {
 	
 	protected int level;
 	protected LevelGenerator levelGenerator;
+	
+	protected Stage hudStage;
+	protected Viewport hudViewport;
+	protected SteeringPlugin steeringPlugin;
 	
 	public GameScreen(Main game, int level) {
 		super(game);
@@ -64,8 +65,10 @@ public class GameScreen extends BasicScreen {
 
 		prepareBackStage();
 		prepareFrontStage();
+		prepareHudStage();
 		createLevel();
 		createPlayer();
+
 
 	}
 
@@ -76,6 +79,14 @@ public class GameScreen extends BasicScreen {
 
 	protected void prepareFrontStage() {
 		frontStage.setViewport(new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT)));
+	}
+
+	protected void prepareHudStage() {
+		this.hudViewport = new FillViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		this.hudStage = new Stage(this.hudViewport);
+		((OrthographicCamera) hudStage.getCamera()).position.set(0f, 0f, 0f);
+		
+		inputMultiplexer.addProcessor(hudStage);
 	}
 	
 	protected void createPlayer(){
@@ -90,9 +101,10 @@ public class GameScreen extends BasicScreen {
 		player.modifyCustomOffsets(0f, 0f);
 		frontStage.addActor(player);
 		
+		
 		player.addPlugin(new CameraFollowingPlugin(levelGenerator.getMapSize()));
-		player.addPlugin(new KeyboardSteeringPlugin());
-		player.addPlugin(new TouchSteeringPlugin(this));
+		steeringPlugin = new TouchSteeringPlugin(this);
+		player.addPlugin(steeringPlugin);
 		player.addPlugin(new GravityPlugin());
 	}
 	
@@ -112,7 +124,11 @@ public class GameScreen extends BasicScreen {
 		//simulate physics and handle body contacts
 		ContactListener.SNAPSHOT.clear();
 		world.step(delta, 3, 3);
-
+		
+		//must be done as soon as possible so it's extracted out of the standard flow
+		steeringPlugin.handleViewfinder();
+		steeringPlugin.handleBulletCollision();
+		
 		//debug renderer
 		debugRenderer.render(world, frontStage.getCamera().combined);
 		
@@ -129,13 +145,19 @@ public class GameScreen extends BasicScreen {
 		this.backStage.draw();
 
 		step(delta);
-
-//		((OrthographicCamera) frontStage.getCamera()).zoom = 10f;
+		levelGenerator.render();
+		
+//		((OrthographicCamera) frontStage.getCamera()).zoom = 1f;
 		this.frontViewport.apply();
 		this.frontStage.act(delta);
 		this.frontStage.draw();
 
+		
+		this.frontViewport.apply();
+		this.hudStage.act(delta);
+		this.hudStage.draw();
 		handleInput();
+		
 	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -168,5 +190,9 @@ public class GameScreen extends BasicScreen {
 
 	public GameActor getCeiling() {
 		return ceiling;
+	}
+
+	public Stage getHudStage() {
+		return hudStage;
 	}
 }

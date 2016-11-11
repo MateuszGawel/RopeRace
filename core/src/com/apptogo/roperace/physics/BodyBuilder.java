@@ -92,6 +92,19 @@ public class BodyBuilder {
 		return this;
 	}
 	
+	public BodyBuilder polygon(float[] vertices)
+	{
+		PolygonShape polygonShape = new PolygonShape();
+		polygonShape.set(vertices);
+		
+		fixtureDefs.peek().shape = polygonShape;
+		
+		fixtureDatas.peek().width = polygonShape.getRadius();
+		fixtureDatas.peek().height =polygonShape.getRadius();
+		
+		return this;
+	}
+	
 	public BodyBuilder box(float width, float height)
 	{
 		return box(width, height, 0, 0);
