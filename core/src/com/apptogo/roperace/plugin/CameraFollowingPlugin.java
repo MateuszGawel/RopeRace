@@ -1,4 +1,4 @@
-package com.apptogo.roperace.plugin;
+ package com.apptogo.roperace.plugin;
 
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.tools.UnitConverter;
@@ -15,8 +15,6 @@ public class CameraFollowingPlugin extends AbstractPlugin {
 	private float minCameraY;
 	private float maxCameraY;
 
-	
-	
 	public CameraFollowingPlugin(Vector2 mapSize) {
 		super();
 		this.mapSize = mapSize;
@@ -30,8 +28,8 @@ public class CameraFollowingPlugin extends AbstractPlugin {
 		
 		minCameraX = camera.zoom * (camera.viewportWidth / 2);
 		minCameraY = camera.zoom * (camera.viewportHeight / 2);
-		maxCameraX = UnitConverter.toBox2dUnits(mapSize.x) - camera.viewportWidth / 2;
-		maxCameraY = UnitConverter.toBox2dUnits(mapSize.y) - camera.viewportHeight / 2;
+		maxCameraX = UnitConverter.toBox2dUnits(mapSize.x) - (camera.zoom * (camera.viewportWidth / 2));
+		maxCameraY = UnitConverter.toBox2dUnits(mapSize.y) - (camera.zoom * (camera.viewportHeight / 2));
 	}
 
 	@Override

@@ -79,6 +79,7 @@ public class GameScreen extends BasicScreen {
 
 	protected void prepareFrontStage() {
 		frontStage.setViewport(new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT)));
+		((OrthographicCamera) frontStage.getCamera()).zoom = 0.7f;
 	}
 
 	protected void prepareHudStage() {
@@ -147,7 +148,6 @@ public class GameScreen extends BasicScreen {
 		step(delta);
 		levelGenerator.render();
 		
-//		((OrthographicCamera) frontStage.getCamera()).zoom = 1f;
 		this.frontViewport.apply();
 		this.frontStage.act(delta);
 		this.frontStage.draw();

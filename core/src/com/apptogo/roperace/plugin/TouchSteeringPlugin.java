@@ -21,7 +21,6 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 		
 		Actor shootListener = new Actor();
 		shootListener.setSize(Main.SCREEN_WIDTH/2, Main.SCREEN_HEIGHT);
-		shootListener.debug();
 		shootListener.setPosition(-Main.SCREEN_WIDTH/2, -Main.SCREEN_HEIGHT/2);
 		shootListener.addListener(new ClickListener(){
 			@Override
@@ -46,7 +45,7 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 	public void run() {
 		super.run();
 		handleTouchState();
-		handleKeyboard();
+//		handleKeyboard();
 	}
 
 	/**
@@ -88,7 +87,7 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 			case JUST_TOUCHED:
 				touchState = TouchState.KEEP_TOUCHED;
 				destroyCurrentJoint();
-				shootRopeBullet(getTouchpadAngle());
+				shootRopeBullet(viewfinderOffset.angle());
 				shootRope();
 				triggerAutoRopeCut();
 				break;

@@ -32,7 +32,8 @@ public abstract class SteeringPlugin extends AbstractPlugin {
 	
 	private MyTouchpad touchpad;
 	private Body viewfinder;
-
+	protected Vector2 viewfinderOffset = new Vector2(VIEWFINDER_RADIUS, 0);
+	
 	public SteeringPlugin(GameScreen screen) {
 		this.screen = screen;
 		
@@ -61,16 +62,17 @@ public abstract class SteeringPlugin extends AbstractPlugin {
 
 	@Override
 	public void run() {
-//		handleBulletCollision();
 	}
 
 	/**
 	 * Sets proper position for viewfinder. Must be called just after world.step() to avoid offset.
 	 */
 	public void handleViewfinder() {
-		Vector2 viewfinderPosition = new Vector2(VIEWFINDER_RADIUS, 0);
-		viewfinderPosition.setAngle(getTouchpadAngle());
-		viewfinder.setTransform(actor.getBody().getPosition().add(viewfinderPosition), 0);
+		if(touchpad.getKnobX() != touchpad.getWidth()/2 && touchpad.getKnobY() != touchpad.getHeight()/2){
+			viewfinderOffset.setAngle(getTouchpadAngle());
+		}
+		
+		viewfinder.setTransform(actor.getBody().getPosition().add(viewfinderOffset), 0);
 	}
 
 	protected float getTouchpadAngle() {
@@ -92,7 +94,7 @@ public abstract class SteeringPlugin extends AbstractPlugin {
 		float margin = 20;
 		
 		touchpad = new MyTouchpad(2, new TouchpadStyle(background, knob));
-		touchpad.setBounds(100, 10, background.getMinWidth(), background.getMinHeight());
+		touchpad.setBounds(0, 0, background.getMinWidth(), background.getMinHeight());
 		touchpad.setPosition(Main.SCREEN_WIDTH/2 - touchpad.getWidth() - margin, -Main.SCREEN_HEIGHT/2 + margin);
 		touchpad.debug();
 		touchpad.setForcedRadius(1.5f);
