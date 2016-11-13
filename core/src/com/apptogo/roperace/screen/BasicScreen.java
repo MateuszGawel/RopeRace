@@ -2,6 +2,7 @@ package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.manager.CustomActionManager;
+import com.apptogo.roperace.scene2d.ColorSet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
@@ -24,6 +25,8 @@ public abstract class BasicScreen implements Screen {
 	protected Stage frontStage;
 
 	protected InputMultiplexer inputMultiplexer;
+	
+	protected ColorSet currentColorSet = ColorSet.GREEN;
 	
 	public BasicScreen(Main game) {
 		this.game = game;

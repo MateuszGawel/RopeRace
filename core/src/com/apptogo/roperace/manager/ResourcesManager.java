@@ -60,11 +60,37 @@ public class ResourcesManager {
 		//textures
 		manager.load("roperace-logo.png", Texture.class);
 		manager.load("play-button.png", Texture.class);
-		manager.load("choose-level-button.png", Texture.class);
-		manager.load("level-button.png", Texture.class);
-		manager.load("back-button.png", Texture.class);
+		manager.load("play-button_shadow.png", Texture.class);
 		manager.load("touchpad-background.png", Texture.class);
 		manager.load("touchpad-knob.png", Texture.class);
+		manager.load("circle.png", Texture.class);
+		manager.load("world1.png", Texture.class);
+		manager.load("world2.png", Texture.class);
+		
+		manager.load("circle-small.png", Texture.class);
+		manager.load("back-button.png", Texture.class);
+		manager.load("back-button_shadow.png", Texture.class);
+		manager.load("worlds-button.png", Texture.class);
+		manager.load("worlds-button_shadow.png", Texture.class);
+		
+		manager.load("1.png", Texture.class);
+		manager.load("2.png", Texture.class);
+		manager.load("3.png", Texture.class);
+		manager.load("4.png", Texture.class);
+		manager.load("5.png", Texture.class);
+		manager.load("6.png", Texture.class);
+		manager.load("7.png", Texture.class);
+		manager.load("8.png", Texture.class);
+		manager.load("9.png", Texture.class);
+		manager.load("1_shadow.png", Texture.class);
+		manager.load("2_shadow.png", Texture.class);
+		manager.load("3_shadow.png", Texture.class);
+		manager.load("4_shadow.png", Texture.class);
+		manager.load("5_shadow.png", Texture.class);
+		manager.load("6_shadow.png", Texture.class);
+		manager.load("7_shadow.png", Texture.class);
+		manager.load("8_shadow.png", Texture.class);
+		manager.load("9_shadow.png", Texture.class);
 		
 		manager.finishLoading();
 	}

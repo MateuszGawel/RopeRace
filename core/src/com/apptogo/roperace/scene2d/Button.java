@@ -26,7 +26,12 @@ public class Button extends com.badlogic.gdx.scenes.scene2d.ui.Button {
         addClickSound();
     }
 
-    public Button position(float x, float y)
+    public Button() {
+        super();
+        addClickSound();
+	}
+
+	public Button position(float x, float y)
     {
         this.setPosition(x, y);
         return this;
@@ -73,7 +78,7 @@ public class Button extends com.badlogic.gdx.scenes.scene2d.ui.Button {
     	addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				SoundPlugin.playSingleSound("click");
+//				SoundPlugin.playSingleSound("click");
 			}
 		});
     }

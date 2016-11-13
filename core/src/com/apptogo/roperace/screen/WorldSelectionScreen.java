@@ -2,13 +2,13 @@ package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.physics.ContactListener;
-import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Listener;
 import com.apptogo.roperace.scene2d.ShadowedButton;
 import com.apptogo.roperace.scene2d.ShadowedButton.ButtonSize;
 import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
@@ -16,9 +16,9 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
-public class MenuScreen extends BasicScreen {
-	
-	public MenuScreen(Main game) {
+public class WorldSelectionScreen extends BasicScreen {
+
+	public WorldSelectionScreen(Main game) {
 		super(game);
 	}
 	
@@ -28,7 +28,6 @@ public class MenuScreen extends BasicScreen {
 	
 	@Override
 	protected void prepare() {
-
 		prepareBackStage();
 		prepareFrontStage();
 	}
@@ -38,26 +37,27 @@ public class MenuScreen extends BasicScreen {
 		//		backStage.addActor(background);
 	}
 
-	protected void prepareFrontStage() {
-		//frontStage.setViewport(new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT)));
+	protected void prepareFrontStage() {		
+		float small_padding = 20;
+		float big_padding = 100;
 		
-		float padding = 20;
-		
-		Image logo = Image.getFromTexture("roperace-logo");
-		logo.size(logo.getRegion().getRegionWidth(), logo.getRegion().getRegionHeight());
-		logo.position(0, Main.SCREEN_HEIGHT/2 - logo.getHeight() - padding).centerX();
-		logo.setColor(currentColorSet.getMainColor());
-		frontStage.addActor(logo);
-		
-		ShadowedButton worldsButton = new ShadowedButton("worlds-button", currentColorSet, ButtonSize.SMALL);
-		worldsButton.addListener(Listener.click(game, new WorldSelectionScreen(game)));
-		worldsButton.setPosition(Main.SCREEN_WIDTH/2-worldsButton.getWidth()-padding, -Main.SCREEN_HEIGHT/2+padding);
-		frontStage.addActor(worldsButton);
+		ShadowedButton backButton = new ShadowedButton("back-button", currentColorSet, ButtonSize.SMALL);
+		backButton.addListener(Listener.click(game, new MenuScreen(game)));
+		backButton.setPosition(Main.SCREEN_WIDTH / 2 - backButton.getWidth() - small_padding, -Main.SCREEN_HEIGHT/2 + small_padding);
+		frontStage.addActor(backButton);
 
-		ShadowedButton playButton = new ShadowedButton("play-button", currentColorSet, ButtonSize.BIG);
-		playButton.addListener(Listener.click(game, new GameScreen(game, 1)));
-		playButton.setPosition(-playButton.getWidth()/2, -playButton.getHeight()/2);
-		frontStage.addActor(playButton);	
+		Image world1 = Image.getFromTexture("world1");
+		world1.size(world1.getRegion().getRegionWidth(), world1.getRegion().getRegionHeight());
+		world1.position(-Main.SCREEN_WIDTH/2 + big_padding, Main.SCREEN_HEIGHT/2 - world1.getHeight() - big_padding);
+		world1.addListener(Listener.click(game, new LevelSelectionScreen(game)));
+		frontStage.addActor(world1);
+		
+		Image world2 = Image.getFromTexture("world2");
+		world2.size(world2.getRegion().getRegionWidth(), world2.getRegion().getRegionHeight());
+		world2.position(-Main.SCREEN_WIDTH/2 + world2.getWidth() + 2*big_padding , Main.SCREEN_HEIGHT/2 - world2.getHeight() - big_padding);
+		world2.addListener(Listener.click(game, new LevelSelectionScreen(game)));
+		frontStage.addActor(world2);
+	
 	}
 	
 	
@@ -70,7 +70,6 @@ public class MenuScreen extends BasicScreen {
 		// --- backstage render first --- //
 
 		//simulate physics and handle body contacts
-
 
 		// --- frontstage render last --- //
 	}
@@ -93,6 +92,7 @@ public class MenuScreen extends BasicScreen {
 		handleInput();
 	}
 	
+	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------ DISPOSE ------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -107,8 +107,14 @@ public class MenuScreen extends BasicScreen {
 		super.dispose();
 	}
 
+	@Override
+	protected void handleInput() {
+		if (Gdx.input.isKeyJustPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			game.setScreen(new MenuScreen(game));
+		}
+	}
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** -------------------------------------------- GETTERS / SETTERS --------------------------------------------**/
 	/** ---------------------------------------------------------------------------------------------------------- **/
-	
+
 }
