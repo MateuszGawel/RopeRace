@@ -26,7 +26,7 @@ public abstract class BasicScreen implements Screen {
 
 	protected InputMultiplexer inputMultiplexer;
 	
-	protected ColorSet currentColorSet = ColorSet.GREEN;
+	protected ColorSet currentColorSet = ColorSet.BLUE;
 	
 	public BasicScreen(Main game) {
 		this.game = game;

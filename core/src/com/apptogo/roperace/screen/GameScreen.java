@@ -79,7 +79,7 @@ public class GameScreen extends BasicScreen {
 
 	protected void prepareFrontStage() {
 		frontStage.setViewport(new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT)));
-		((OrthographicCamera) frontStage.getCamera()).zoom = 0.7f;
+//		((OrthographicCamera) frontStage.getCamera()).zoom = 0.75f;
 	}
 
 	protected void prepareHudStage() {
@@ -98,6 +98,7 @@ public class GameScreen extends BasicScreen {
 				.addFixture("player").circle(0.25f).density(5f).friction(1f).restitution(0.5f)
 				.create());
 		player.getBody().setLinearDamping(-0.02f);
+		player.setStaticImage("ball");
 
 		player.modifyCustomOffsets(0f, 0f);
 		frontStage.addActor(player);

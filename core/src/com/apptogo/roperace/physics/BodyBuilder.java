@@ -86,8 +86,8 @@ public class BodyBuilder {
 		
 		fixtureDefs.peek().shape = circle;
 		
-		fixtureDatas.peek().width = radius;
-		fixtureDatas.peek().height = radius;
+		fixtureDatas.peek().width = 2*radius;
+		fixtureDatas.peek().height = 2*radius;
 		
 		return this;
 	}

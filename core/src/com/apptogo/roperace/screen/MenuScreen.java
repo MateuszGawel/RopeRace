@@ -56,7 +56,7 @@ public class MenuScreen extends BasicScreen {
 
 		ShadowedButton playButton = new ShadowedButton("play-button", currentColorSet, ButtonSize.BIG);
 		playButton.addListener(Listener.click(game, new GameScreen(game, 1)));
-		playButton.setPosition(-playButton.getWidth()/2, -playButton.getHeight()/2);
+		playButton.setPosition(-playButton.getWidth()/2, -playButton.getHeight()/2 - 100);
 		frontStage.addActor(playButton);	
 	}
 	

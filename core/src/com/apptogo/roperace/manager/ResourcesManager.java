@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -66,6 +67,8 @@ public class ResourcesManager {
 		manager.load("circle.png", Texture.class);
 		manager.load("world1.png", Texture.class);
 		manager.load("world2.png", Texture.class);
+		manager.load("ball.png", Texture.class);
+		manager.load("viewfinder.png", Texture.class);
 		
 		manager.load("circle-small.png", Texture.class);
 		manager.load("back-button.png", Texture.class);
@@ -179,6 +182,12 @@ public class ResourcesManager {
 					regions.add(region);
 		}
 
+		if(regions.size == 0){
+			Texture texture = getTexture(pattern);
+			AtlasRegion region = new AtlasRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
+			regions.add(region);
+		}
+		
 		Comparator<AtlasRegion> comparator = new Comparator<AtlasRegion>() {
 			@Override
 			public int compare(AtlasRegion arg0, AtlasRegion arg1) {

@@ -21,7 +21,8 @@ public class GameActor extends AbstractActor implements Poolable, Serializable {
 
 	private Body body;
 	private float customOffsetX, customOffsetY;
-
+	private boolean fixedRotation;
+	
 	public GameActor(String name) {
 		super(name);
 	}
@@ -42,8 +43,15 @@ public class GameActor extends AbstractActor implements Poolable, Serializable {
 
 			setPosition(body.getPosition().x + customOffsetX + currentAnimation.getDeltaOffset().x, body.getPosition().y + customOffsetY + currentAnimation.getDeltaOffset().y);
 			setSize(currentAnimation.getWidth(), currentAnimation.getHeight());
-
+			if(!fixedRotation){
+				setRotation((float)Math.toDegrees(body.getAngle()));
+			}
+			setOrigin(UserData.get(body).width/2, UserData.get(body).height/2);
+			
 			currentAnimation.position(getX() - currentAnimation.getDeltaOffset().x, getY() - currentAnimation.getDeltaOffset().y);
+			currentAnimation.setSize(UserData.get(body).width, UserData.get(body).height);
+			currentAnimation.setRotation(getRotation());
+			currentAnimation.setOrigin(getOriginX(), getOriginY());
 			currentAnimation.act(delta);
 		} catch (AnimationException e) {
 			LOGGER.debug("Actor doesn't have animation so it won't be handled", e);
@@ -145,6 +153,14 @@ public class GameActor extends AbstractActor implements Poolable, Serializable {
 	public void clear() {
 		// TODO Auto-generated method stub
 		super.clear();
+	}
+
+	public boolean isFixedRotation() {
+		return fixedRotation;
+	}
+
+	public void setFixedRotation(boolean fixedRotation) {
+		this.fixedRotation = fixedRotation;
 	}
 	
 	

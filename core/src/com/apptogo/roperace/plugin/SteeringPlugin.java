@@ -2,6 +2,7 @@ package com.apptogo.roperace.plugin;
 
 import com.apptogo.roperace.custom.MyTouchpad;
 import com.apptogo.roperace.custom.MyTouchpad.TouchpadStyle;
+import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.manager.CustomAction;
 import com.apptogo.roperace.manager.CustomActionManager;
@@ -31,7 +32,7 @@ public abstract class SteeringPlugin extends AbstractPlugin {
 	private CustomAction shorteningAction;
 	
 	private MyTouchpad touchpad;
-	private Body viewfinder;
+	private GameActor viewfinder;
 	protected Vector2 viewfinderOffset = new Vector2(VIEWFINDER_RADIUS, 0);
 	
 	public SteeringPlugin(GameScreen screen) {
@@ -52,12 +53,16 @@ public abstract class SteeringPlugin extends AbstractPlugin {
 	
 	@Override
 	public void postSetActor() {
-		viewfinder = BodyBuilder.get()
+		viewfinder = new GameActor("viewfinder");
+		viewfinder.setBody(BodyBuilder.get()
 				.type(BodyType.KinematicBody)
 				.position(actor.getBody().getPosition().x, actor.getBody().getPosition().y)
 				.addFixture("viewfinder").circle(0.1f)
 				.sensor(true)
-				.create();
+				.create());
+		viewfinder.setStaticImage("viewfinder");
+		viewfinder.setFixedRotation(true);
+		screen.getFrontStage().addActor(viewfinder);
 	}
 
 	@Override
@@ -72,7 +77,8 @@ public abstract class SteeringPlugin extends AbstractPlugin {
 			viewfinderOffset.setAngle(getTouchpadAngle());
 		}
 		
-		viewfinder.setTransform(actor.getBody().getPosition().add(viewfinderOffset), 0);
+		viewfinder.getBody().setTransform(actor.getBody().getPosition().add(viewfinderOffset), 0);
+		viewfinder.setRotation(getTouchpadAngle());
 	}
 
 	protected float getTouchpadAngle() {
@@ -96,7 +102,6 @@ public abstract class SteeringPlugin extends AbstractPlugin {
 		touchpad = new MyTouchpad(2, new TouchpadStyle(background, knob));
 		touchpad.setBounds(0, 0, background.getMinWidth(), background.getMinHeight());
 		touchpad.setPosition(Main.SCREEN_WIDTH/2 - touchpad.getWidth() - margin, -Main.SCREEN_HEIGHT/2 + margin);
-		touchpad.debug();
 		touchpad.setForcedRadius(1.5f);
 		screen.getHudStage().addActor(touchpad);
 	}
