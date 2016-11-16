@@ -7,7 +7,6 @@ import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.physics.ContactListener;
 import com.apptogo.roperace.plugin.CameraFollowingPlugin;
 import com.apptogo.roperace.plugin.GravityPlugin;
-import com.apptogo.roperace.plugin.KeyboardSteeringPlugin;
 import com.apptogo.roperace.plugin.SteeringPlugin;
 import com.apptogo.roperace.plugin.TouchSteeringPlugin;
 import com.apptogo.roperace.tools.UnitConverter;
@@ -126,10 +125,6 @@ public class GameScreen extends BasicScreen {
 		//simulate physics and handle body contacts
 		ContactListener.SNAPSHOT.clear();
 		world.step(delta, 3, 3);
-		
-		//must be done as soon as possible so it's extracted out of the standard flow
-		steeringPlugin.handleViewfinder();
-		steeringPlugin.handleBulletCollision();
 		
 		//debug renderer
 		debugRenderer.render(world, frontStage.getCamera().combined);

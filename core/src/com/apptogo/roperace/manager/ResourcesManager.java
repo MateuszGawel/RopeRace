@@ -69,6 +69,8 @@ public class ResourcesManager {
 		manager.load("world2.png", Texture.class);
 		manager.load("ball.png", Texture.class);
 		manager.load("viewfinder.png", Texture.class);
+		manager.load("chain.png", Texture.class);
+		manager.load("chain-end.png", Texture.class);
 		
 		manager.load("circle-small.png", Texture.class);
 		manager.load("back-button.png", Texture.class);

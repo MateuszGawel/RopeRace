@@ -36,6 +36,12 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 	{	
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
+		
+		//workaround due to box2d bug causing bounce even 0 restitution
+		if(checkFixturesTypes(fa, fb, "level", "ropeBullet")){
+			Fixture fixture = getFixtureByType(fa, fb, "ropeBullet");
+			fixture.getBody().setLinearVelocity(0,0);
+		}
 	}
 
 	@Override

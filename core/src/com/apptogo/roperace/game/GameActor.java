@@ -1,6 +1,5 @@
 package com.apptogo.roperace.game;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
-public class GameActor extends AbstractActor implements Poolable, Serializable {
-	private static final long serialVersionUID = -2249455026755833379L;
+public class GameActor extends AbstractActor implements Poolable {
 	private static final Logger LOGGER = new Logger(GameActor.class.getName());
 
 	private Body body;

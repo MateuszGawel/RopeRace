@@ -48,20 +48,21 @@ public class MyTouchpad extends Widget {
 	private final Vector2 knobPosition = new Vector2();
 	private final Vector2 knobPercent = new Vector2();
 	private float forcedRadius = -1;
-	
+
 	/** @param deadzoneRadius The distance in pixels from the center of the touchpad required for the knob to be moved. */
-	public MyTouchpad (float deadzoneRadius, Skin skin) {
+	public MyTouchpad(float deadzoneRadius, Skin skin) {
 		this(deadzoneRadius, skin.get(TouchpadStyle.class));
 	}
 
 	/** @param deadzoneRadius The distance in pixels from the center of the touchpad required for the knob to be moved. */
-	public MyTouchpad (float deadzoneRadius, Skin skin, String styleName) {
+	public MyTouchpad(float deadzoneRadius, Skin skin, String styleName) {
 		this(deadzoneRadius, skin.get(styleName, TouchpadStyle.class));
 	}
 
 	/** @param deadzoneRadius The distance in pixels from the center of the touchpad required for the knob to be moved. */
-	public MyTouchpad (float deadzoneRadius, TouchpadStyle style) {
-		if (deadzoneRadius < 0) throw new IllegalArgumentException("deadzoneRadius must be > 0");
+	public MyTouchpad(float deadzoneRadius, TouchpadStyle style) {
+		if (deadzoneRadius < 0)
+			throw new IllegalArgumentException("deadzoneRadius must be > 0");
 		this.deadzoneRadius = deadzoneRadius;
 
 		knobPosition.set(getWidth() / 2f, getHeight() / 2f);
@@ -71,27 +72,28 @@ public class MyTouchpad extends Widget {
 
 		addListener(new InputListener() {
 			@Override
-			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				if (touched) return false;
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				if (touched)
+					return false;
 				touched = true;
 				calculatePositionAndValue(x, y, false);
 				return true;
 			}
 
 			@Override
-			public void touchDragged (InputEvent event, float x, float y, int pointer) {
+			public void touchDragged(InputEvent event, float x, float y, int pointer) {
 				calculatePositionAndValue(x, y, false);
 			}
 
 			@Override
-			public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				touched = false;
 				calculatePositionAndValue(x, y, resetOnTouchUp);
 			}
 		});
 	}
 
-	void calculatePositionAndValue (float x, float y, boolean isTouchUp) {
+	void calculatePositionAndValue(float x, float y, boolean isTouchUp) {
 		float oldPositionX = knobPosition.x;
 		float oldPositionY = knobPosition.y;
 		float oldPercentX = knobPercent.x;
@@ -104,7 +106,8 @@ public class MyTouchpad extends Widget {
 			if (!deadzoneBounds.contains(x, y)) {
 				knobPercent.set((x - centerX) / knobBounds.radius, (y - centerY) / knobBounds.radius);
 				float length = knobPercent.len();
-				if (length > 1) knobPercent.scl(1 / length);
+				if (length > 1)
+					knobPercent.scl(1 / length);
 				if (forcedRadius < 0 && knobBounds.contains(x, y)) {
 					knobPosition.set(x, y);
 				} else {
@@ -122,31 +125,33 @@ public class MyTouchpad extends Widget {
 		}
 	}
 
-	public void setStyle (TouchpadStyle style) {
-		if (style == null) throw new IllegalArgumentException("style cannot be null");
+	public void setStyle(TouchpadStyle style) {
+		if (style == null)
+			throw new IllegalArgumentException("style cannot be null");
 		this.style = style;
 		invalidateHierarchy();
 	}
 
 	/** Returns the touchpad's style. Modifying the returned style may not have an effect until {@link #setStyle(TouchpadStyle)} is
 	 * called. */
-	public TouchpadStyle getStyle () {
+	public TouchpadStyle getStyle() {
 		return style;
 	}
 
 	@Override
-	public Actor hit (float x, float y, boolean touchable) {
+	public Actor hit(float x, float y, boolean touchable) {
 		return touchBounds.contains(x, y) ? this : null;
 	}
 
 	@Override
-	public void layout () {
+	public void layout() {
 		// Recalc pad and deadzone bounds
 		float halfWidth = getWidth() / 2;
 		float halfHeight = getHeight() / 2;
 		float radius = Math.min(halfWidth, halfHeight);
 		touchBounds.set(halfWidth, halfHeight, radius);
-		if (style.knob != null) radius -= Math.max(style.knob.getMinWidth(), style.knob.getMinHeight()) / 2;
+		if (style.knob != null)
+			radius -= Math.max(style.knob.getMinWidth(), style.knob.getMinHeight()) / 2;
 		knobBounds.set(halfWidth, halfHeight, radius);
 		deadzoneBounds.set(halfWidth, halfHeight, deadzoneRadius);
 		// Recalc pad values and knob position
@@ -155,7 +160,7 @@ public class MyTouchpad extends Widget {
 	}
 
 	@Override
-	public void draw (Batch batch, float parentAlpha) {
+	public void draw(Batch batch, float parentAlpha) {
 		validate();
 
 		Color c = getColor();
@@ -167,7 +172,8 @@ public class MyTouchpad extends Widget {
 		float h = getHeight();
 
 		final Drawable bg = style.background;
-		if (bg != null) bg.draw(batch, x, y, w, h);
+		if (bg != null)
+			bg.draw(batch, x, y, w, h);
 
 		final Drawable knob = style.knob;
 		if (knob != null) {
@@ -178,54 +184,55 @@ public class MyTouchpad extends Widget {
 	}
 
 	@Override
-	public float getPrefWidth () {
+	public float getPrefWidth() {
 		return style.background != null ? style.background.getMinWidth() : 0;
 	}
 
 	@Override
-	public float getPrefHeight () {
+	public float getPrefHeight() {
 		return style.background != null ? style.background.getMinHeight() : 0;
 	}
 
-	public boolean isTouched () {
+	public boolean isTouched() {
 		return touched;
 	}
 
-	public boolean getResetOnTouchUp () {
+	public boolean getResetOnTouchUp() {
 		return resetOnTouchUp;
 	}
 
 	/** @param reset Whether to reset the knob to the center on touch up. */
-	public void setResetOnTouchUp (boolean reset) {
+	public void setResetOnTouchUp(boolean reset) {
 		this.resetOnTouchUp = reset;
 	}
 
 	/** @param deadzoneRadius The distance in pixels from the center of the touchpad required for the knob to be moved. */
-	public void setDeadzone (float deadzoneRadius) {
-		if (deadzoneRadius < 0) throw new IllegalArgumentException("deadzoneRadius must be > 0");
+	public void setDeadzone(float deadzoneRadius) {
+		if (deadzoneRadius < 0)
+			throw new IllegalArgumentException("deadzoneRadius must be > 0");
 		this.deadzoneRadius = deadzoneRadius;
 		invalidate();
 	}
 
 	/** Returns the x-position of the knob relative to the center of the widget. The positive direction is right. */
-	public float getKnobX () {
+	public float getKnobX() {
 		return knobPosition.x;
 	}
 
 	/** Returns the y-position of the knob relative to the center of the widget. The positive direction is up. */
-	public float getKnobY () {
+	public float getKnobY() {
 		return knobPosition.y;
 	}
 
 	/** Returns the x-position of the knob as a percentage from the center of the touchpad to the edge of the circular movement
 	 * area. The positive direction is right. */
-	public float getKnobPercentX () {
+	public float getKnobPercentX() {
 		return knobPercent.x;
 	}
 
 	/** Returns the y-position of the knob as a percentage from the center of the touchpad to the edge of the circular movement
 	 * area. The positive direction is up. */
-	public float getKnobPercentY () {
+	public float getKnobPercentY() {
 		return knobPercent.y;
 	}
 
@@ -238,15 +245,15 @@ public class MyTouchpad extends Widget {
 		/** Optional. */
 		public Drawable knob;
 
-		public TouchpadStyle () {
+		public TouchpadStyle() {
 		}
 
-		public TouchpadStyle (Drawable background, Drawable knob) {
+		public TouchpadStyle(Drawable background, Drawable knob) {
 			this.background = background;
 			this.knob = knob;
 		}
 
-		public TouchpadStyle (TouchpadStyle style) {
+		public TouchpadStyle(TouchpadStyle style) {
 			this.background = style.background;
 			this.knob = style.knob;
 		}
@@ -258,5 +265,9 @@ public class MyTouchpad extends Widget {
 
 	public void setForcedRadius(float forcedRadius) {
 		this.forcedRadius = forcedRadius;
+	}
+
+	public float getAngle() {
+		return new Vector2(getKnobX() - getWidth() / 2, getKnobY() - getHeight() / 2).angle();
 	}
 }

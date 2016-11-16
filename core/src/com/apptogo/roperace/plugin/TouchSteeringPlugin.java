@@ -43,7 +43,6 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 
 	@Override
 	public void run() {
-		super.run();
 		handleTouchState();
 //		handleKeyboard();
 	}
@@ -56,10 +55,7 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 			switch (touchState) {
 			case JUST_TOUCHED:
 				touchState = TouchState.KEEP_TOUCHED;
-				destroyCurrentJoint();
-				shootRopeBullet(getTouchpadAngle());
-				shootRope();
-				triggerAutoRopeCut();
+				rope.shoot(touchpad.getAngle());
 				break;
 			case KEEP_TOUCHED:
 				if (!Gdx.input.isKeyPressed(Keys.SPACE)) {
@@ -68,7 +64,7 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 				break;
 			case JUST_UNTOUCHED:
 				touchState = TouchState.NOT_TOUCHED;
-				destroyCurrentJoint();
+				rope.destroyCurrentJoint();
 				break;
 			case NOT_TOUCHED:
 				if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
@@ -86,14 +82,11 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 			switch (touchState) {
 			case JUST_TOUCHED:
 				touchState = TouchState.KEEP_TOUCHED;
-				destroyCurrentJoint();
-				shootRopeBullet(viewfinderOffset.angle());
-				shootRope();
-				triggerAutoRopeCut();
+				rope.shoot(viewfinder.getViewfinderOffset().angle());
 				break;
 			case JUST_UNTOUCHED:
 				touchState = TouchState.NOT_TOUCHED;
-				destroyCurrentJoint();
+				rope.destroyCurrentJoint();
 				break;
 			case KEEP_TOUCHED:
 				break;
