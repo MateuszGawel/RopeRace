@@ -133,9 +133,14 @@ public class LevelGenerator{
 	 */
 	public void render(){
 		shapeRenderer.setProjectionMatrix(camera.combined);
-		shapeRenderer.setColor(0, 0.7f, 1, 1);
+		
 		shapeRenderer.begin(ShapeType.Filled);
 		
+		//render background
+		shapeRenderer.setColor(1, 1, 1, 1);
+		shapeRenderer.rect(0, 0, getMapSize().x, getMapSize().y);
+			
+		shapeRenderer.setColor(0, 0.7f, 1, 1);
 		for(Body levelBody : levelBodies){
 			UserData ud = UserData.get(levelBody);
 			if(ud.segmentType == SegmentType.CATCHABLE && ud.position != null){

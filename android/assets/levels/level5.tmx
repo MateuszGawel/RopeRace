@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="24" tilewidth="32" tileheight="32">
+ <layer name="Tile Layer 1" width="100" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20Hb6AAAAAAAAAAAAB4DCWAAAE=
+  </data>
+ </layer>
+ <objectgroup name="terrain">
+  <object name="start" x="128" y="64" width="64" height="64">
+   <ellipse/>
+  </object>
+  <object x="0" y="0" width="32" height="768"/>
+  <object x="32" y="736" width="3168" height="32"/>
+  <object x="32" y="0" width="3168" height="32"/>
+  <object x="480" y="736">
+   <polygon points="0,0 64,-256 128,0"/>
+  </object>
+  <object x="480" y="32">
+   <polygon points="0,0 64,352 128,0"/>
+  </object>
+ </objectgroup>
+</map>

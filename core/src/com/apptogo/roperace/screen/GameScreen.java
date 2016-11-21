@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -39,6 +40,7 @@ public class GameScreen extends BasicScreen {
 	protected Stage hudStage;
 	protected Viewport hudViewport;
 	protected SteeringPlugin steeringPlugin;
+	protected CameraFollowingPlugin cameraFollowingPlugin;
 	
 	public GameScreen(Main game, int level) {
 		super(game);
@@ -77,12 +79,13 @@ public class GameScreen extends BasicScreen {
 	}
 
 	protected void prepareFrontStage() {
-		frontStage.setViewport(new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT)));
-//		((OrthographicCamera) frontStage.getCamera()).zoom = 0.75f;
+		this.frontViewport = new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT));
+		frontStage.setViewport(frontViewport);
+//		((OrthographicCamera) frontStage.getCamera()).zoom = 0.7f; //0.7 is ok
 	}
 
 	protected void prepareHudStage() {
-		this.hudViewport = new FillViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		this.hudViewport = new ExtendViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		this.hudStage = new Stage(this.hudViewport);
 		((OrthographicCamera) hudStage.getCamera()).position.set(0f, 0f, 0f);
 		
@@ -94,7 +97,7 @@ public class GameScreen extends BasicScreen {
 		player.setBody(BodyBuilder.get()
 				.type(BodyType.DynamicBody)
 				.position(levelGenerator.getStartingPoint())
-				.addFixture("player").circle(0.25f).density(5f).friction(1f).restitution(0.5f)
+				.addFixture("player").circle(0.5f).density(2.5f).friction(0.5f).restitution(0.5f)
 				.create());
 		player.getBody().setLinearDamping(-0.02f);
 		player.setStaticImage("ball");
@@ -102,9 +105,9 @@ public class GameScreen extends BasicScreen {
 		player.modifyCustomOffsets(0f, 0f);
 		frontStage.addActor(player);
 		
-		
-		player.addPlugin(new CameraFollowingPlugin(levelGenerator.getMapSize()));
+		cameraFollowingPlugin = new CameraFollowingPlugin(levelGenerator.getMapSize());
 		steeringPlugin = new TouchSteeringPlugin(this);
+		player.addPlugin(cameraFollowingPlugin);
 		player.addPlugin(steeringPlugin);
 		player.addPlugin(new GravityPlugin());
 	}
@@ -121,39 +124,36 @@ public class GameScreen extends BasicScreen {
 	@Override
 	protected void step(float delta) {
 		// --- backstage render first --- //
-
+		//debug renderer
+//		debugRenderer.render(world, frontStage.getCamera().combined);
 		//simulate physics and handle body contacts
 		ContactListener.SNAPSHOT.clear();
 		world.step(delta, 3, 3);
-		
-		//debug renderer
-		debugRenderer.render(world, frontStage.getCamera().combined);
 		
 		// --- frontstage render last --- //
 	}
 	
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClearColor(currentColorSet.getMainColor().r, currentColorSet.getMainColor().g, currentColorSet.getMainColor().b, currentColorSet.getMainColor().a);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 		this.backViewport.apply();
+		this.frontViewport.apply();
+		
 		this.backStage.act(delta);
-		this.backStage.draw();
-
-		step(delta);
-		levelGenerator.render();
-		
-		this.frontViewport.apply();
 		this.frontStage.act(delta);
-		this.frontStage.draw();
-
-		
-		this.frontViewport.apply();
 		this.hudStage.act(delta);
+		
+		this.backStage.draw();
+		this.levelGenerator.render();
+		this.frontStage.draw();
 		this.hudStage.draw();
+		
+		step(delta);
 		handleInput();
 		
+		this.cameraFollowingPlugin.updateCamera();
+
 	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -163,6 +163,7 @@ public class GameScreen extends BasicScreen {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
+		cameraFollowingPlugin.postSetActor();
 	}
 
 	@Override

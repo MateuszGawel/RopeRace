@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class GravityPlugin extends AbstractPlugin {
 
-	private final Vector2 gravity = new Vector2(0, -5);
+	private final Vector2 gravity = new Vector2(0, -15);
 
 	@Override
 	public void run() {

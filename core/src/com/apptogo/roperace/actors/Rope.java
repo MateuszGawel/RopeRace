@@ -19,9 +19,9 @@ import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 
 public class Rope extends GameActor{
 
-	private static final float ROPE_SHORTENING_SPEED = 0.03f;
+	private static final float ROPE_SHORTENING_SPEED = 0.04f;
 	private static final float ROPE_SHOOT_SPEED = 40f;
-	private static final float ROPE_LENGTH = 0.25f;
+	private static final float ROPE_LENGTH = 0.3f;
 	
 	private GameScreen screen;
 	private GameActor player;
@@ -33,6 +33,7 @@ public class Rope extends GameActor{
 	private float ropeLength, startU2Length;
 	private TextureRegion ropeTextureRegion;
 	private Vector2 shootVector = new Vector2(ROPE_SHOOT_SPEED, 0);
+	private float penetration = 0.02f;
 	
 	public Rope(GameScreen screen, GameActor actor) {
 		super("rope");
@@ -46,7 +47,7 @@ public class Rope extends GameActor{
 		ropeBullet = BodyBuilder.get()
 				.type(BodyType.DynamicBody)
 				.position(-100, -100)
-				.addFixture("ropeBullet").circle(0.01f).density(10000000f).friction(1).restitution(0)
+				.addFixture("ropeBullet").circle(0.01f).density(1000000000f).friction(1).restitution(0)
 				.create();
 		
 		screen.getFrontStage().addActor(this);
@@ -87,7 +88,7 @@ public class Rope extends GameActor{
 	
 	private void handleBulletCollision(){
 		if(joint != null && ContactListener.SNAPSHOT.collide(UserData.get(ropeBullet), "level")){
-			ropeAttached = true;
+       			ropeAttached = true;
 			
 			joint.setMaxLength(player.getBody().getPosition().dst(ropeBullet.getPosition()));
 			triggerAutoRopeShortening(joint);
@@ -150,22 +151,24 @@ public class Rope extends GameActor{
 	public void act(float delta) {
 		super.act(delta);
 		handleBulletCollision();
+		
+		setPosition(player.getBody().getPosition().x, player.getBody().getPosition().y);
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		if(joint != null){
-			ropeLength = player.getBody().getPosition().dst(ropeBullet.getPosition());
+			ropeLength = new Vector2(getX(), getY()).dst(ropeBullet.getPosition()) + penetration;
 			float u2Backup = ropeTextureRegion.getU2();
 			ropeTextureRegion.setU2(ropeTextureRegion.getU() + startU2Length * ((UnitConverter.PPM * ropeLength) / ropeTextureRegion.getRegionWidth()));
 			
 			batch.draw(ropeTextureRegion, 
-					ropeBullet.getPosition().x, 
-					ropeBullet.getPosition().y - UnitConverter.toBox2dUnits(ropeTextureRegion.getRegionHeight())/2, 
-					getOriginX(), getOriginY() + UnitConverter.toBox2dUnits(ropeTextureRegion.getRegionHeight())/2, 
+					getX(), 
+					getY() - UnitConverter.toBox2dUnits(ropeTextureRegion.getRegionHeight())/2, 
+					getOriginX(), UnitConverter.toBox2dUnits(ropeTextureRegion.getRegionHeight())/2, 
 					ropeLength, UnitConverter.toBox2dUnits(ropeTextureRegion.getRegionHeight()), 
 					getScaleX(), getScaleY(),
-					player.getBody().getPosition().cpy().sub(ropeBullet.getPosition()).angle());
+					ropeBullet.getPosition().cpy().sub(new Vector2(getX(), getY())).angle());
 			
 			ropeTextureRegion.setU2(u2Backup);
 		}

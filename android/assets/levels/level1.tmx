@@ -1,49 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="24" tilewidth="32" tileheight="32">
- <layer name="Tile Layer 1" width="100" height="24">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="36" tilewidth="32" tileheight="32">
+ <layer name="Tile Layer 1" width="150" height="36">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20Hb6AAAAAAAAAAAAB4DCWAAAE=
+   eJztwQENAAAAwqD3T20ON6AAAAAAAAAAAAAAAAAAAAAAAAAAAIBXA1RgAAE=
   </data>
  </layer>
  <objectgroup name="terrain">
-  <object name="start" x="64" y="64" width="32" height="32">
+  <object x="0" y="0" width="32" height="1120"/>
+  <object x="0" y="1120" width="4800" height="32"/>
+  <object x="32" y="0" width="4768" height="32"/>
+  <object x="4768" y="32" width="32" height="1088"/>
+  <object name="start" x="64" y="64" width="64" height="64">
    <ellipse/>
   </object>
-  <object x="256" y="288" width="64" height="64">
+  <object x="288" y="32" width="64" height="608"/>
+  <object x="288" y="1120">
+   <polygon points="0,0 32,-256 64,0"/>
+  </object>
+  <object x="1152" y="256" width="128" height="128" rotation="90">
    <ellipse/>
   </object>
-  <object x="416" y="224" width="192" height="32"/>
-  <object x="800" y="224" width="128" height="32"/>
-  <object x="576" y="0" width="32" height="224"/>
-  <object x="672" y="608" width="32" height="160"/>
-  <object x="672" y="736" height="32"/>
-  <object x="0" y="736" width="672" height="32"/>
-  <object x="0" y="0" width="576" height="32"/>
-  <object x="0" y="32" width="32" height="704"/>
-  <object x="416" y="640" width="256" height="96"/>
-  <object x="608" y="0" width="2368" height="32"/>
-  <object x="1504" y="352" width="32" height="416"/>
-  <object x="704" y="736" width="800" height="32"/>
-  <object x="1088" y="32" width="64" height="320"/>
-  <object x="1696" y="128" width="160" height="32"/>
-  <object x="2048" y="32" width="160" height="32"/>
-  <object x="2368" y="128" width="160" height="32"/>
-  <object x="2688" y="224" width="160" height="32"/>
-  <object x="2976" y="0" width="224" height="160"/>
-  <object x="3136" y="160" width="64" height="480"/>
-  <object x="2976" y="640" width="224" height="128"/>
-  <object x="2976" y="480" width="64" height="160"/>
-  <object x="2976" y="160" width="64" height="160"/>
-  <object x="1280" y="224" width="128" height="128">
+  <object x="1376" y="224">
+   <polygon points="448,448 736,736 736,896 448,896"/>
+  </object>
+  <object x="2112" y="960">
+   <polygon points="0,0 128,64 128,160 0,160"/>
+  </object>
+  <object x="2240" y="1024">
+   <polygon points="0,0 128,32 128,96 0,96"/>
+  </object>
+  <object x="2368" y="1056" width="32" height="64"/>
+  <object x="2400" y="1056">
+   <polygon points="0,0 96,-32 96,64 0,64"/>
+  </object>
+  <object x="2496" y="1024">
+   <polygon points="0,0 32,-32 32,96 0,96"/>
+  </object>
+  <object x="2528" y="992">
+   <polygon points="0,0 32,-64 32,128 0,128"/>
+  </object>
+  <object x="2592" y="704" width="64" height="416"/>
+  <object x="2592" y="32" width="64" height="416"/>
+  <object x="2848" y="224" width="128" height="128">
    <ellipse/>
   </object>
-  <object x="2112" y="64" width="32" height="480"/>
-  <object x="2240" y="512" width="256" height="64"/>
-  <object x="2464" y="576" width="32" height="192"/>
-  <object x="2208" y="352" width="96" height="32"/>
-  <object x="864" y="544" width="256" height="32"/>
-  <object x="384" y="224" width="32" height="192"/>
-  <object x="1536" y="736" width="928" height="32"/>
-  <object x="2496" y="736" width="480" height="32"/>
+  <object x="4416" y="416" width="96" height="96">
+   <ellipse/>
+  </object>
+  <object x="4032" y="416" width="436.667" height="30.6667"/>
+  <object x="4032" y="32" width="32" height="384"/>
+  <object x="4064" y="32" width="704" height="224"/>
+  <object x="2592" y="448">
+   <polygon points="0,0 -64,-32 0,-64"/>
+  </object>
+  <object x="2592" y="352">
+   <polygon points="0,0 -64,-32 0,-64"/>
+  </object>
+  <object x="2592" y="256">
+   <polygon points="0,0 -64,-32 0,-64"/>
+  </object>
+  <object x="2592" y="160">
+   <polygon points="0,0 -64,-32 0,-64"/>
+  </object>
+  <object x="3410.06" y="227.273" width="128" height="128">
+   <ellipse/>
+  </object>
+  <object x="1568" y="224">
+   <polygon points="0,0 160,320 160,896 0,896"/>
+  </object>
+  <object x="1568" y="224" height="416"/>
+  <object x="1504" y="224" width="64" height="896"/>
+  <object x="1728" y="544">
+   <polygon points="0,0 96,128 96,576 0,576"/>
+  </object>
  </objectgroup>
 </map>

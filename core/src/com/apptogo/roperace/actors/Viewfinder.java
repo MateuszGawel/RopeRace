@@ -4,12 +4,13 @@ import com.apptogo.roperace.custom.MyTouchpad;
 import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.screen.GameScreen;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Viewfinder extends GameActor{
 
-	private static final float VIEWFINDER_RADIUS = 1;
+	private static final float VIEWFINDER_RADIUS = 2;
 	
 	private GameActor player;
 	private MyTouchpad touchpad;
@@ -37,14 +38,22 @@ public class Viewfinder extends GameActor{
 
 	@Override
 	public void act(float delta) {
-		super.act(delta);
+		
 		
 		if (touchpad.getKnobX() != touchpad.getWidth() / 2 && touchpad.getKnobY() != touchpad.getHeight() / 2) {
 			viewfinderOffset.setAngle(touchpad.getAngle());
 		}
-
 		getBody().setTransform(player.getBody().getPosition().add(viewfinderOffset), 0);
 		setRotation(touchpad.getAngle());
+		super.act(delta);
 	}
+
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		// TODO Auto-generated method stub
+		super.draw(batch, parentAlpha);
+	}
+	
+	
 
 }
