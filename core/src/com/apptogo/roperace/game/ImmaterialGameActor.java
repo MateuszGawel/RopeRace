@@ -22,8 +22,9 @@ public class ImmaterialGameActor extends AbstractActor {
 			setSize(currentAnimation.getWidth(), currentAnimation.getHeight());
 
 		currentAnimation.position(getX() - currentAnimation.getDeltaOffset().x, getY() - currentAnimation.getDeltaOffset().y);
+		currentAnimation.setOrigin(getOriginX(), getOriginY());
+		currentAnimation.setRotation(getRotation());
 		currentAnimation.act(delta);
-
 	}
 
 	@Override

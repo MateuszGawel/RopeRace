@@ -15,20 +15,20 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 	}
 
 	private TouchState touchState = TouchState.NOT_TOUCHED;
-	
+
 	public TouchSteeringPlugin(GameScreen screen) {
 		super(screen);
-		
+
 		Actor shootListener = new Actor();
-		shootListener.setSize(Main.SCREEN_WIDTH/2, Main.SCREEN_HEIGHT);
-		shootListener.setPosition(-Main.SCREEN_WIDTH/2, -Main.SCREEN_HEIGHT/2);
-		shootListener.addListener(new ClickListener(){
+		shootListener.setSize(Main.SCREEN_WIDTH / 2, Main.SCREEN_HEIGHT);
+		shootListener.setPosition(-Main.SCREEN_WIDTH / 2, -Main.SCREEN_HEIGHT / 2);
+		shootListener.addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-		       	if(touchState == TouchState.NOT_TOUCHED){
-            		touchState = TouchState.JUST_TOUCHED;
-            	}
-		       	return true;
+				if (touchState == TouchState.NOT_TOUCHED) {
+					touchState = TouchState.JUST_TOUCHED;
+				}
+				return true;
 			}
 
 			@Override
@@ -36,15 +36,15 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 				touchState = TouchState.JUST_UNTOUCHED;
 			}
 		});
-		
+
 		screen.getHudStage().addActor(shootListener);
-		
+
 	}
 
 	@Override
 	public void run() {
 		handleTouchState();
-		handleKeyboard();
+//		handleKeyboard();
 	}
 
 	/**

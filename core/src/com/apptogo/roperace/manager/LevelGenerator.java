@@ -3,6 +3,7 @@ package com.apptogo.roperace.manager;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.custom.MyShapeRenderer;
 import com.apptogo.roperace.custom.MyShapeRenderer.ShapeType;
 import com.apptogo.roperace.exception.LevelException;
@@ -32,6 +33,7 @@ public class LevelGenerator{
 	private OrthographicCamera  camera;
 	private Vector2 startingPoint;
 	private int levelNumber;
+	private GameScreen screen;
 	
 	private MyShapeRenderer shapeRenderer;
 	private List<Body> levelBodies = new ArrayList<Body>();
@@ -39,6 +41,7 @@ public class LevelGenerator{
 	public LevelGenerator(GameScreen screen) {
 		this.camera = (OrthographicCamera)screen.getFrontStage().getCamera();
 		shapeRenderer = new MyShapeRenderer();
+		this.screen = screen;
 	}
 
 	public void loadLevel(int levelNumber){
@@ -50,7 +53,7 @@ public class LevelGenerator{
 	public Vector2 getStartingPoint(){
 		return startingPoint;
 	}
-
+	
 	private void createObjects(){
 		for(MapObject mapObject : map.getLayers().get("terrain").getObjects()){
 			if(mapObject instanceof RectangleMapObject){
@@ -58,6 +61,13 @@ public class LevelGenerator{
 				
 				Vector2 size = new Vector2(UnitConverter.toBox2dUnits(rectangle.width), UnitConverter.toBox2dUnits(rectangle.height));
 				Vector2 position = new Vector2(UnitConverter.toBox2dUnits(rectangle.x + rectangle.width/2), UnitConverter.toBox2dUnits(rectangle.y + rectangle.height/2));
+				
+				
+				if("end".equals(mapObject.getName())){
+					Float rotation = Float.valueOf((String)((RectangleMapObject) mapObject).getProperties().get("rotation"));
+					Hoop hoop = new Hoop(screen, position, rotation);
+					continue;
+				}
 				
 				Body body = BodyBuilder.get()
 					.type(BodyType.StaticBody)
@@ -69,28 +79,24 @@ public class LevelGenerator{
 				UserData.get(body).segmentType = SegmentType.CATCHABLE;
 				UserData.get(body).position = position;
 				UserData.get(body).size = size;
-			}
-			else if(mapObject instanceof EllipseMapObject){
-				Ellipse ellipse = ((EllipseMapObject)mapObject).getEllipse();
-				Vector2 position = new Vector2(UnitConverter.toBox2dUnits(ellipse.x + ellipse.width/2), UnitConverter.toBox2dUnits(ellipse.y + ellipse.height/2));
-				
-				if("start".equals(mapObject.getName())){
+			} else if (mapObject instanceof EllipseMapObject) {
+				Ellipse ellipse = ((EllipseMapObject) mapObject).getEllipse();
+				Vector2 position = new Vector2(UnitConverter.toBox2dUnits(ellipse.x + ellipse.width / 2), UnitConverter.toBox2dUnits(ellipse.y + ellipse.height / 2));
+
+				if ("start".equals(mapObject.getName())) {
 					startingPoint = position;
+					continue;
 				}
-				else{
-					float radius = UnitConverter.toBox2dUnits(Math.max(ellipse.height/2, ellipse.width/2));
-					
-					Body body = BodyBuilder.get()
-						.type(BodyType.StaticBody)
-						.position(position)
-						.addFixture("level", "nonkilling").circle(radius)
-						.create();
-					
-					levelBodies.add(body);
-					UserData.get(body).segmentType = SegmentType.CATCHABLE;
-					UserData.get(body).position = position;
-					UserData.get(body).radius = radius;
-				}
+
+				float radius = UnitConverter.toBox2dUnits(Math.max(ellipse.height / 2, ellipse.width / 2));
+
+				Body body = BodyBuilder.get().type(BodyType.StaticBody).position(position).addFixture("level", "nonkilling").circle(radius).create();
+
+				levelBodies.add(body);
+				UserData.get(body).segmentType = SegmentType.CATCHABLE;
+				UserData.get(body).position = position;
+				UserData.get(body).radius = radius;
+
 			}
 			else if(mapObject instanceof PolygonMapObject){
 				Polygon polygon = ((PolygonMapObject)mapObject).getPolygon();
