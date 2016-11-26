@@ -1,7 +1,10 @@
 package com.apptogo.roperace.manager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.custom.MyShapeRenderer;
@@ -22,9 +25,13 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class LevelGenerator{
@@ -37,6 +44,9 @@ public class LevelGenerator{
 	
 	private MyShapeRenderer shapeRenderer;
 	private List<Body> levelBodies = new ArrayList<Body>();
+	private Map<Integer, MapObject> polylinesTop = new HashMap<Integer, MapObject>();
+	private Map<Integer, MapObject> polylinesBottom = new HashMap<Integer, MapObject>();
+	private Map<Float[], Float[]> polylineVertices = new HashMap<Float[], Float[]>();
 	
 	public LevelGenerator(GameScreen screen) {
 		this.camera = (OrthographicCamera)screen.getFrontStage().getCamera();
@@ -125,13 +135,121 @@ public class LevelGenerator{
 
 			}
 			else if(mapObject instanceof PolylineMapObject){
-				throw new LevelException("Polylines are not supported" + levelNumber);
+				if (mapObject.getProperties().get("type") != null) {
+					String type = mapObject.getProperties().get("type").toString();
+					//first add all polylines to hashmaps with lineId
+					if ("top".equals(type)) {
+						polylinesTop.put(Integer.valueOf(mapObject.getProperties().get("lineId").toString()), mapObject);
+					} else {
+						polylinesBottom.put(Integer.valueOf(mapObject.getProperties().get("lineId").toString()), mapObject);
+					}
+				}
+				else{
+					createPolyline(mapObject);
+				}
 			}
 		}
+		
+		createPolylines();
 		
 		if(startingPoint == null){
 			throw new LevelException("Starting point must be set on map: level" + levelNumber);
 		}
+	}
+
+	private void createPolylines() {
+		
+		//iterate through all top polylines
+		for (MapObject mapObject : polylinesTop.values()) {
+			Float[] verticesTop = createPolyline(mapObject);
+			//find proper bottom polyline
+			MapObject mapObjectBottom = polylinesBottom.get(Integer.valueOf(mapObject.getProperties().get("lineId").toString()));
+			Float[] verticesBottomBeforeRaycast = createPolyline(mapObjectBottom);
+			UserData.get(levelBodies.get(levelBodies.size()-1)).polyLineBottom = true;
+			
+			//create new array of vertices to make polyline with same amount of veritces as top one (raycasting)
+			Float[] verticesBottom = new Float[verticesTop.length];
+			for(int i=0; i<verticesTop.length-1; i+=2){
+				calculateVertex(new Vector2(verticesTop[i], verticesTop[i+1]), verticesBottomBeforeRaycast);
+				
+				//read temp vertex
+				verticesBottom[i] = tempIntersectionVertex.x;
+				verticesBottom[i+1] = tempIntersectionVertex.y;
+			}
+			
+			//we have two lines with the same amount of vertices
+			polylineVertices.put(verticesTop, verticesBottom);
+		}
+	}
+	
+	private Float[] sortVertices(Float[] vertices){
+		Float[] sortedVertices = new Float[vertices.length];
+		if(vertices[0] < vertices[2]){
+			return vertices;
+		}
+			
+		for(int i=vertices.length-1, n=0; i>=0; i-=2, n+=2){
+			sortedVertices[n] = vertices[i-1];
+			sortedVertices[n+1] = vertices[i];
+		}
+		return sortedVertices;
+	}
+	
+	private Float[] createPolyline(MapObject mapObject){
+		if(mapObject == null){
+			return null;
+		}
+		Polyline polyline = ((PolylineMapObject) mapObject).getPolyline();
+		Vector2 position = new Vector2(UnitConverter.toBox2dUnits(polyline.getX()), UnitConverter.toBox2dUnits(polyline.getY()));
+		
+		float[] vertices = polyline.getVertices();
+		float[] transformedVertices = polyline.getTransformedVertices();
+		float[] worldVertices = new float[vertices.length];
+		Float[] worldTransformedVertices = new Float[transformedVertices.length];
+
+		for (int i = 0; i < vertices.length; ++i) {
+			worldVertices[i] = UnitConverter.toBox2dUnits(vertices[i]);
+			worldTransformedVertices[i] = UnitConverter.toBox2dUnits(transformedVertices[i]);
+		}
+
+		Body body = BodyBuilder.get().type(BodyType.StaticBody).position(position).addFixture("level", "nonkilling").polyline(worldVertices).create();
+
+		levelBodies.add(body);
+		UserData.get(body).segmentType = SegmentType.CATCHABLE;
+		UserData.get(body).position = position;
+		return sortVertices(worldTransformedVertices);
+	}
+	
+	private Vector2 tempIntersectionVertex;
+	private void calculateVertex(Vector2 startPoint, final Float[] verticesBottom){
+		Vector2 endPoint = new Vector2(startPoint.x, startPoint.y - getMapSize().y);
+		
+		//raycast from top vertex to bottom line and return intersection point to temp field
+		screen.getWorld().rayCast(new RayCastCallback() {	
+			@Override
+			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+				if(verticesBottom == null){
+					tempIntersectionVertex = new Vector2(point.x, 0.5f);
+				}
+				else if(point.x < verticesBottom[0]){
+					tempIntersectionVertex = new Vector2(verticesBottom[0], verticesBottom[1]);
+				}
+				else if(point.x > verticesBottom[verticesBottom.length-2]){
+					tempIntersectionVertex = new Vector2(verticesBottom[verticesBottom.length-2], verticesBottom[verticesBottom.length-1]);
+				} 
+				else if (!UserData.get(fixture.getBody()).polyLineBottom) {
+					//it went on the bottom
+					if (point.y <= 0.5) {
+						tempIntersectionVertex = new Vector2(verticesBottom[0], verticesBottom[1]);
+					}
+					return -1;
+				} 
+				else {
+					tempIntersectionVertex = point;
+				}
+				return 0;
+			}
+		}, startPoint, endPoint);
 	}
 	
 	/**
@@ -145,7 +263,6 @@ public class LevelGenerator{
 		//render background
 		shapeRenderer.setColor(1, 1, 1, 1);
 		shapeRenderer.rect(0, 0, getMapSize().x, getMapSize().y);
-			
 		shapeRenderer.setColor(0, 0.7f, 1, 1);
 		for(Body levelBody : levelBodies){
 			UserData ud = UserData.get(levelBody);
@@ -161,6 +278,14 @@ public class LevelGenerator{
 				}
 			}
 		}
+		
+		//render polylines
+	    Iterator<Map.Entry<Float[],Float[]>> it = polylineVertices.entrySet().iterator();
+	    while (it.hasNext()) {
+	    	Map.Entry<Float[],Float[]> pair = (Map.Entry<Float[],Float[]>)it.next();
+	        shapeRenderer.polyline(pair.getKey(),  pair.getValue());
+	    }
+		
 		shapeRenderer.end();
 	}
 	

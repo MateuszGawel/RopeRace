@@ -24,6 +24,7 @@ public class UserData {
 	public Vector2 size;
 	public float[] vertices;
 	public Float radius;
+	public boolean polyLineBottom;
 	
 	public UserData() {
 		type = "default";

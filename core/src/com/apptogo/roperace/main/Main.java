@@ -33,6 +33,10 @@ public class Main extends Game {
 		return (BasicScreen) getScreen();
 	}
 
+	public static boolean isAndroid(){
+		return gameCallback.isAndroid();
+	}
+	
 	@Override
 	public void setScreen(Screen screen) {
 		//        if (this.screen != null && this.screen instanceof BasicScreen) {

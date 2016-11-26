@@ -43,8 +43,12 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 
 	@Override
 	public void run() {
-		handleTouchState();
-//		handleKeyboard();
+		if(Main.isAndroid()){
+			handleTouchState();
+		}
+		else{
+			handleKeyboard();
+		}
 	}
 
 	/**

@@ -13,31 +13,9 @@
   <object name="start" x="64" y="64" width="64" height="64">
    <ellipse/>
   </object>
-  <object x="288" y="32" width="64" height="608"/>
+  <object x="224" y="32" width="64" height="544"/>
   <object x="288" y="1120">
    <polygon points="0,0 32,-256 64,0"/>
-  </object>
-  <object x="1152" y="256" width="128" height="128" rotation="90">
-   <ellipse/>
-  </object>
-  <object x="1376" y="224">
-   <polygon points="448,448 736,736 736,896 448,896"/>
-  </object>
-  <object x="2112" y="960">
-   <polygon points="0,0 128,64 128,160 0,160"/>
-  </object>
-  <object x="2240" y="1024">
-   <polygon points="0,0 128,32 128,96 0,96"/>
-  </object>
-  <object x="2368" y="1056" width="32" height="64"/>
-  <object x="2400" y="1056">
-   <polygon points="0,0 96,-32 96,64 0,64"/>
-  </object>
-  <object x="2496" y="1024">
-   <polygon points="0,0 32,-32 32,96 0,96"/>
-  </object>
-  <object x="2528" y="992">
-   <polygon points="0,0 32,-64 32,128 0,128"/>
   </object>
   <object x="2592" y="704" width="64" height="416"/>
   <object x="2592" y="32" width="64" height="416"/>
@@ -65,18 +43,26 @@
   <object x="3410.06" y="227.273" width="128" height="128">
    <ellipse/>
   </object>
-  <object x="1568" y="224">
-   <polygon points="0,0 160,320 160,896 0,896"/>
-  </object>
-  <object x="1568" y="224" height="416"/>
-  <object x="1504" y="224" width="64" height="896"/>
-  <object x="1728" y="544">
-   <polygon points="0,0 96,128 96,576 0,576"/>
-  </object>
   <object name="end" x="4320" y="320" width="32" height="32" rotation="90">
    <properties>
     <property name="rotation" value="-90"/>
    </properties>
+  </object>
+  <object x="992" y="256" width="128" height="128" rotation="90">
+   <ellipse/>
+  </object>
+  <object x="1373.62" y="216.75">
+   <polyline points="213.333,112 213.417,902.458"/>
+  </object>
+  <object x="2344" y="854.667">
+   <polyline points="0,0 1.33333,265.333"/>
+  </object>
+  <object x="2343.67" y="854.667">
+   <properties>
+    <property name="lineId" value="1"/>
+    <property name="type" value="top"/>
+   </properties>
+   <polyline points="0,0 -13.8788,17.8485 -25,28.3333 -40.6667,42 -58.6667,54 -79.3333,64.6667 -114.667,76.3333 -156.667,85.3333 -202.667,89.3333 -242.758,89.4242 -285.939,85.2424 -328.667,77.3333 -356.121,70.2727 -377.97,61.6364 -394.583,54.4167 -409.106,44.2273 -426.227,29.4697 -448.212,7.16667 -470.227,-26.2273 -499.667,-72.6667 -543.667,-152.667 -586.667,-244.667 -616.667,-324.667 -641.667,-405.667 -665.667,-499.667 -676.667,-529.167 -683.297,-541.993 -689.667,-549.667 -697.754,-555.449 -706.667,-559.667 -715.493,-561.319 -726.667,-561.667 -735.819,-560.667 -741.71,-558.775 -746.667,-555.667 -750.667,-551.667 -753.667,-546.167 -755.667,-540.167 -756.667,-533.667 -756.667,-526.167"/>
   </object>
  </objectgroup>
 </map>

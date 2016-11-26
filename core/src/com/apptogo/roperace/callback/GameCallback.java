@@ -11,4 +11,5 @@ public interface GameCallback {
 	public void incrementAchievement(String achievementId);
 	public void incrementAchievement(String achievementId, int step);
 	public void unlockAchievement(String achievementId);
+	public boolean isAndroid();
 }

@@ -100,7 +100,20 @@ public class BodyBuilder {
 		fixtureDefs.peek().shape = polygonShape;
 		
 		fixtureDatas.peek().width = polygonShape.getRadius();
-		fixtureDatas.peek().height =polygonShape.getRadius();
+		fixtureDatas.peek().height = polygonShape.getRadius();
+		
+		return this;
+	}
+	
+	public BodyBuilder polyline(float[] vertices)
+	{
+		ChainShape chainShape = new ChainShape(); 
+		chainShape.createChain(vertices);
+		
+		fixtureDefs.peek().shape = chainShape;
+		
+//		fixtureDatas.peek().width = chainShape.
+//		fixtureDatas.peek().height =polygonShape.getRadius();
 		
 		return this;
 	}

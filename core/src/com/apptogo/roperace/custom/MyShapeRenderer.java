@@ -1158,12 +1158,63 @@ public class MyShapeRenderer implements Disposable {
 			renderer.vertex(x1, y1, 0);
 			renderer.color(colorBits);
 			renderer.vertex(x2, y2, 0);
+
 		}
 	}
 
 	/** @see #polyline(float[], int, int) */
 	public void polyline(float[] vertices) {
 		polyline(vertices, 0, vertices.length);
+	}
+
+	/** @see #polyline(float[], int, int) */
+	public void polyline(Float[] verticesTop, Float[] verticesBottom) {
+		int countTop = verticesTop.length;
+		int countBottom = verticesBottom.length;
+
+		if (countTop < 4 || countBottom < 4)
+			throw new IllegalArgumentException("Polylines must contain at least 2 points.");
+		if (countTop % 2 != 0 || countBottom % 2 != 0)
+			throw new IllegalArgumentException("Polylines must have an even number of vertices.");
+
+		check(ShapeType.Filled, null, countTop);
+		float colorBits = color.toFloatBits();
+
+
+		for (int i=0; i < countTop-2; i+=2){
+			//top line
+			float top_x1 = verticesTop[i];
+			float top_y1 = verticesTop[i + 1];
+			float top_x2 = verticesTop[i + 2];
+			float top_y2 = verticesTop[i + 3];
+			//bottom line
+			float bot_x1 = verticesBottom[i];
+			float bot_y1 = verticesBottom[i + 1];
+			float bot_x2 = verticesBottom[i + 2];
+			float bot_y2 = verticesBottom[i + 3];
+
+			renderer.color(colorBits);
+			renderer.vertex(top_x1, top_y1, 0);
+			renderer.color(colorBits);
+			renderer.vertex(top_x2, top_y2, 0);
+			renderer.color(colorBits);
+			renderer.vertex(bot_x2, bot_y2, 0);
+
+			renderer.color(colorBits);
+			renderer.vertex(bot_x2, bot_y2, 0);
+			renderer.color(colorBits);
+			renderer.vertex(bot_x1, bot_y1, 0);
+			renderer.color(colorBits);
+			renderer.vertex(top_x1, top_y1, 0);
+		}
+		
+		//render last
+//		renderer.color(colorBits);
+//		renderer.vertex(verticesTop[verticesTop.length-4], verticesTop[verticesTop.length-3], 0);
+//		renderer.color(colorBits);
+//		renderer.vertex(verticesTop[verticesTop.length-2], verticesTop[verticesTop.length-1], 0);
+//		renderer.color(colorBits);
+//		renderer.vertex(verticesBottom[verticesBottom.length-2], verticesTop[verticesBottom.length-1], 0);
 	}
 
 	/** @param other May be null. */

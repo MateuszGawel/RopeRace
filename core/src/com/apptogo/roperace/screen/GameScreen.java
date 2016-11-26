@@ -125,7 +125,9 @@ public class GameScreen extends BasicScreen {
 	protected void step(float delta) {
 		// --- backstage render first --- //
 		//debug renderer
-//		debugRenderer.render(world, frontStage.getCamera().combined);
+		if(!Main.isAndroid()){
+			debugRenderer.render(world, frontStage.getCamera().combined);
+		}
 		//simulate physics and handle body contacts
 		ContactListener.SNAPSHOT.clear();
 		world.step(delta, 3, 3);

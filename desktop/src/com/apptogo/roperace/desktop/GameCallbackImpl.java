@@ -64,4 +64,9 @@ public class GameCallbackImpl implements GameCallback{
 		
 	}
 
+	@Override
+	public boolean isAndroid() {
+		return false;
+	}
+
 }
