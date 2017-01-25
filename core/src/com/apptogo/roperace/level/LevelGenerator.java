@@ -1,4 +1,4 @@
-package com.apptogo.roperace.manager;
+package com.apptogo.roperace.level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,8 @@ import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.custom.MyShapeRenderer;
 import com.apptogo.roperace.custom.MyShapeRenderer.ShapeType;
 import com.apptogo.roperace.exception.LevelException;
+import com.apptogo.roperace.level.LevelData.LevelType;
+import com.apptogo.roperace.manager.ResourcesManager;
 import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.physics.UserData;
 import com.apptogo.roperace.physics.UserData.SegmentType;
@@ -57,9 +59,20 @@ public class LevelGenerator{
 	public void loadLevel(int levelNumber){
 		this.levelNumber = levelNumber;
 		map = ResourcesManager.getInstance().loadAndGetTiledMap(levelNumber);
+		fillLevelData();
 		createObjects();
 	}
 	
+	private void fillLevelData() {
+		String type = map.getProperties().get("type").toString();
+		Float bronzeReq = Float.valueOf(map.getProperties().get("bronzeReq").toString());
+		Float silverReq = Float.valueOf(map.getProperties().get("silverReq").toString());
+		Float goldReq = Float.valueOf(map.getProperties().get("goldReq").toString());
+		
+		LevelData levelData = new LevelData(LevelType.valueOf(type.toUpperCase()), goldReq, silverReq, bronzeReq);
+		screen.setLevelData(levelData);
+	}
+
 	public Vector2 getStartingPoint(){
 		return startingPoint;
 	}

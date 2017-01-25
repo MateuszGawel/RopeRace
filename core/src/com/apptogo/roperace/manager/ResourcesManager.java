@@ -53,7 +53,7 @@ public class ResourcesManager {
 	 */
 	public void loadResources() {
 		//textures
-		//e.g	manager.load("atlas.pack", TextureAtlas.class);
+		manager.load("menu_atlas.pack", TextureAtlas.class);
 
 		//sounds
 		//e.g	manager.load("sound.ogg", Sound.class);
@@ -99,8 +99,13 @@ public class ResourcesManager {
 		manager.load("8_shadow.png", Texture.class);
 		manager.load("9_shadow.png", Texture.class);
 		
+		manager.load("medal.png", Texture.class);
+		manager.load("medal_shadow.png", Texture.class);
+		
 		manager.finishLoading();
-	}
+		
+		loadSkin();
+	}		
 
 	/**
 	 * Loads skin from file

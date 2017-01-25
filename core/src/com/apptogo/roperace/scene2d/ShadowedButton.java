@@ -12,30 +12,47 @@ public class ShadowedButton extends Group {
 		BIG, SMALL
 	}
 	
+	public ShadowedButton(String content, ColorSet colorSet){
+		this.content = Image.getFromTexture(content);
+		this.shadow = Image.getFromTexture(content + "_shadow");
+
+		this.content.size(this.content.getRegion().getRegionWidth(), this.content.getRegion().getRegionHeight());
+		shadow.size(shadow.getRegion().getRegionWidth(), shadow.getRegion().getRegionHeight());
+
+		shadow.setColor(colorSet.getShadowColor());
+
+		this.addActor(shadow);
+		this.addActor(this.content);
+		setSize(this.content.getWidth(), this.content.getHeight());
+	}
+	
 	public ShadowedButton(String content, ColorSet colorSet, ButtonSize buttonSize) {
-		super();
+		this(content, colorSet);
+		addCircleBackground(colorSet, buttonSize);
+	}
+	
+	public void applyColorToContent(ColorSet colorSet){
+		content.setColor(colorSet.getMainColor());
+		shadow.setColor(colorSet.getShadowColor());
+		shadow.toFront();
+	}
+	
+	private void addCircleBackground(ColorSet colorSet, ButtonSize buttonSize){
 		if(buttonSize == ButtonSize.BIG){
 			this.circle = Image.getFromTexture("circle");
 		}
 		else{
 			this.circle = Image.getFromTexture("circle-small");
 		}
-		this.content = Image.getFromTexture(content);
-		this.shadow = Image.getFromTexture(content + "_shadow");
-
+		
 		circle.size(circle.getRegion().getRegionWidth(), circle.getRegion().getRegionHeight());
-		this.content.size(this.content.getRegion().getRegionWidth(), this.content.getRegion().getRegionHeight());
-		shadow.size(shadow.getRegion().getRegionWidth(), shadow.getRegion().getRegionHeight());
-
 		circle.setColor(colorSet.getMainColor());
-		shadow.setColor(colorSet.getShadowColor());
-
 		this.addActor(circle);
-		this.addActor(shadow);
-		this.addActor(this.content);
-
+		
 		this.setWidth(circle.getWidth());
 		this.setHeight(circle.getHeight());
+		
+		circle.toBack();
 	}
 
 }

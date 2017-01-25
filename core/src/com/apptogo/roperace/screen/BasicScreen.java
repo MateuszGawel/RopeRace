@@ -118,4 +118,8 @@ public abstract class BasicScreen implements Screen {
 	public InputMultiplexer getInputMultiplexer() {
 		return inputMultiplexer;
 	}
+
+	public ColorSet getCurrentColorSet() {
+		return currentColorSet;
+	}
 }

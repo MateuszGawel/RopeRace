@@ -1,0 +1,21 @@
+{
+	com.badlogic.gdx.graphics.g2d.BitmapFont: 
+	{ 
+		small: { file: font_small.fnt },
+		medium: { file: font_medium.fnt },
+		big: { file: font_big.fnt },
+	},
+
+	com.badlogic.gdx.graphics.Color: 
+	{
+		white: { a: 1, b: 1, g: 1, r: 1 },
+	},
+	
+	com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: 
+	{
+	    default: { font: medium, fontColor: white },
+	    small: { font: small, fontColor: white },
+	    medium: { font: medium, fontColor: white },
+	    big: { font: big, fontColor: white },
+	},
+}

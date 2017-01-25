@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="36" tilewidth="32" tileheight="32">
- <layer name="Tile Layer 1" width="150" height="36">
-  <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T20ON6AAAAAAAAAAAAAAAAAAAAAAAAAAAIBXA1RgAAE=
-  </data>
- </layer>
+ <properties>
+  <property name="bronzeReq" value="15"/>
+  <property name="goldReq" value="5"/>
+  <property name="silverReq" value="10"/>
+  <property name="type" value="time"/>
+ </properties>
  <objectgroup name="terrain">
   <object x="0" y="0" width="32" height="1120"/>
   <object x="0" y="1120" width="4800" height="32"/>
@@ -43,7 +44,7 @@
   <object x="3410.06" y="227.273" width="128" height="128">
    <ellipse/>
   </object>
-  <object name="end" x="4320" y="320" width="32" height="32" rotation="90">
+  <object name="end" x="544" y="672" width="32" height="32" rotation="90">
    <properties>
     <property name="rotation" value="-90"/>
    </properties>
