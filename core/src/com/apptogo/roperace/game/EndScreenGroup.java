@@ -1,5 +1,6 @@
 package com.apptogo.roperace.game;
 
+import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.custom.MyShapeRenderer;
 import com.apptogo.roperace.custom.MyShapeRenderer.ShapeType;
 import com.apptogo.roperace.main.Main;
@@ -19,15 +20,17 @@ public class EndScreenGroup extends Group {
 	private MyShapeRenderer shapeRenderer;
 	private BasicScreen currentScreen;
 	private HudLabel hudLabel;
+	private Hoop hoop;
 	private boolean showed;
 	
-	public EndScreenGroup(HudLabel hudLabel) {
+	public EndScreenGroup(HudLabel hudLabel, Hoop hoop) {
 		debug();
 		setSize(Main.SCREEN_WIDTH - margin, Main.SCREEN_HEIGHT - margin);
 		setPosition(-Main.SCREEN_WIDTH / 2 + margin / 2, -10000);
 		shapeRenderer = new MyShapeRenderer();
 		currentScreen = Main.getInstance().getCurrentScreen();
 		this.hudLabel = hudLabel;
+		this.hoop = hoop;
 	}
 
 	public void init() {
@@ -66,9 +69,10 @@ public class EndScreenGroup extends Group {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		if(hudLabel.isGameOver() && !showed){
+		if((hudLabel.isGameOver() || hoop.isFinished()) && !showed){
 			init();
 			showed = true;
+			hudLabel.setCounting(false);
 		}
 	}
 
@@ -82,6 +86,14 @@ public class EndScreenGroup extends Group {
 		shapeRenderer.end();
 		batch.begin();
 		super.draw(batch, parentAlpha);
+	}
+
+	public Hoop getHoop() {
+		return hoop;
+	}
+
+	public void setHoop(Hoop hoop) {
+		this.hoop = hoop;
 	}
 
 }

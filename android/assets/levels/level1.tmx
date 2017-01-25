@@ -44,11 +44,7 @@
   <object x="3410.06" y="227.273" width="128" height="128">
    <ellipse/>
   </object>
-  <object name="end" x="544" y="672" width="32" height="32" rotation="90">
-   <properties>
-    <property name="rotation" value="-90"/>
-   </properties>
-  </object>
+  <object name="end" x="96" y="640" width="32" height="32" rotation="180"/>
   <object x="992" y="256" width="128" height="128" rotation="90">
    <ellipse/>
   </object>

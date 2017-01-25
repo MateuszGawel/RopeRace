@@ -2,7 +2,6 @@ package com.apptogo.roperace.game;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.apptogo.roperace.level.LevelData;
@@ -12,12 +11,8 @@ import com.apptogo.roperace.manager.CustomActionManager;
 import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Label;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.utils.Align;
@@ -28,6 +23,7 @@ public class HudLabel extends Group{
 	private Label label;
 	private boolean gameOver;
 	private ColorSet currentColorSet;
+	private boolean counting = true;
 	
 	public HudLabel(LevelData levelData){
 		debug();
@@ -78,6 +74,10 @@ public class HudLabel extends Group{
 			
 			@Override
 			public void perform() {
+				
+				if(!counting)
+					unregister();
+				
 				double currentValue = Double.valueOf(label.getText().toString());
 				label.setText(df.format(currentValue-0.1d));
 				labelContainer.setSize(label.getWidth(), label.getHeight());
@@ -152,6 +152,10 @@ public class HudLabel extends Group{
 
 	public ColorSet getMedalColor() {
 		return currentColorSet;
+	}
+
+	public void setCounting(boolean counting) {
+		this.counting = counting;
 	}
 	
 	

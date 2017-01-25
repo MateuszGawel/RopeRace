@@ -8,7 +8,8 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener
 {
 	
-	public static final ContactSnapshot SNAPSHOT = new ContactSnapshot();
+	public static final ContactSnapshot SNAPSHOT_BEGIN = new ContactSnapshot();
+	public static final ContactSnapshot SNAPSHOT_END = new ContactSnapshot();
 	
 	@Override
 	public void beginContact(Contact contact)
@@ -20,7 +21,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		UserData dataB = UserData.get(fb);
 		
 		if(!dataA.ignoreCollision && !dataB.ignoreCollision) {
-			SNAPSHOT.addContact(dataA, dataB);
+			SNAPSHOT_BEGIN.addContact(dataA, dataB);
 		}
 	}
 
@@ -29,6 +30,13 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 	{
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
+		
+		UserData dataA = UserData.get(fa);
+		UserData dataB = UserData.get(fb);
+		
+		if(!dataA.ignoreCollision && !dataB.ignoreCollision) {
+			SNAPSHOT_END.addContact(dataA, dataB);
+		}
 	}
 
 	@Override

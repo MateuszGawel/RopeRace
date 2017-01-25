@@ -1,5 +1,6 @@
 package com.apptogo.roperace.screen;
 
+import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.game.EndScreenGroup;
 import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.game.HudLabel;
@@ -12,7 +13,6 @@ import com.apptogo.roperace.plugin.CameraFollowingPlugin;
 import com.apptogo.roperace.plugin.GravityPlugin;
 import com.apptogo.roperace.plugin.SteeringPlugin;
 import com.apptogo.roperace.plugin.TouchSteeringPlugin;
-import com.apptogo.roperace.scene2d.Label;
 import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -22,8 +22,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
@@ -49,6 +47,7 @@ public class GameScreen extends BasicScreen {
 	protected SteeringPlugin steeringPlugin;
 	protected CameraFollowingPlugin cameraFollowingPlugin;
 	protected HudLabel hudLabel;
+	protected Hoop hoop;
 	
 	public GameScreen(Main game, int level) {
 		super(game);
@@ -81,7 +80,7 @@ public class GameScreen extends BasicScreen {
 	}
 
 	protected void createEndScreenGroup(){
-		EndScreenGroup endScreenGroup = new EndScreenGroup(hudLabel);
+		EndScreenGroup endScreenGroup = new EndScreenGroup(hudLabel, hoop);
 		hudStage.addActor(endScreenGroup);
 	}
 
@@ -141,7 +140,8 @@ public class GameScreen extends BasicScreen {
 			debugRenderer.render(world, frontStage.getCamera().combined);
 		}
 		//simulate physics and handle body contacts
-		ContactListener.SNAPSHOT.clear();
+		ContactListener.SNAPSHOT_BEGIN.clear();
+		ContactListener.SNAPSHOT_END.clear();
 		world.step(delta, 3, 3);
 		
 		// --- frontstage render last --- //
@@ -213,5 +213,13 @@ public class GameScreen extends BasicScreen {
 
 	public void setLevelData(LevelData levelData) {
 		this.levelData = levelData;
+	}
+
+	public Hoop getHoop() {
+		return hoop;
+	}
+
+	public void setHoop(Hoop hoop) {
+		this.hoop = hoop;
 	}
 }

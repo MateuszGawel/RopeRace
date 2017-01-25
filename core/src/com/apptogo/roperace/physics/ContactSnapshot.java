@@ -35,8 +35,14 @@ public class ContactSnapshot {
 	 * @return boolean if fixtures with provided UserData.key collides with each other
 	 */
 	public boolean collide(String keyA, String keyB){
+		
+		
+		if(!snapshot.isEmpty()){
+			System.out.println(ContactListener.SNAPSHOT_BEGIN.toString());	
+		}
+		
 		for(UserData ud : snapshot.keySet()){
-			if(ud.key == keyA && snapshot.get(keyA).key.contains(keyB))
+			if(ud.key == keyA &&  snapshot.get(ud).key.contains(keyB))
 				return true;
 		}
 		return false;
@@ -130,4 +136,11 @@ public class ContactSnapshot {
 	public void clear(){
 		snapshot.clear();
 	}
+
+	@Override
+	public String toString() {
+		return "ContactSnapshot [snapshot=" + snapshot + "]";
+	}
+	
+	
 }

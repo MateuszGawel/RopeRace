@@ -87,7 +87,7 @@ public class Rope extends GameActor{
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	
 	private void handleBulletCollision(){
-		if(joint != null && ContactListener.SNAPSHOT.collide(UserData.get(ropeBullet), "level")){
+		if(joint != null && ContactListener.SNAPSHOT_BEGIN.collide(UserData.get(ropeBullet), "level")){
        			ropeAttached = true;
 			
 			joint.setMaxLength(player.getBody().getPosition().dst(ropeBullet.getPosition()));

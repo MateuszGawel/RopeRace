@@ -30,11 +30,10 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class LevelGenerator{
 
@@ -87,8 +86,11 @@ public class LevelGenerator{
 				
 				
 				if("end".equals(mapObject.getName())){
-					Float rotation = Float.valueOf((String)((RectangleMapObject) mapObject).getProperties().get("rotation"));
-					Hoop hoop = new Hoop(screen, position, rotation);
+					float rotation = 0;
+					if (((RectangleMapObject) mapObject).getProperties().get("rotation", Float.class) != null)
+						rotation = ((RectangleMapObject) mapObject).getProperties().get("rotation", Float.class);
+					
+					screen.setHoop(new Hoop(screen, position, rotation));
 					continue;
 				}
 				
