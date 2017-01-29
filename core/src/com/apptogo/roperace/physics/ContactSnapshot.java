@@ -34,13 +34,7 @@ public class ContactSnapshot {
 	 * @param keyB
 	 * @return boolean if fixtures with provided UserData.key collides with each other
 	 */
-	public boolean collide(String keyA, String keyB){
-		
-		
-		if(!snapshot.isEmpty()){
-			System.out.println(ContactListener.SNAPSHOT_BEGIN.toString());	
-		}
-		
+	public boolean collide(String keyA, String keyB){	
 		for(UserData ud : snapshot.keySet()){
 			if(ud.key == keyA &&  snapshot.get(ud).key.contains(keyB))
 				return true;

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="36" tilewidth="32" tileheight="32">
  <properties>
-  <property name="bronzeReq" value="15"/>
-  <property name="goldReq" value="5"/>
-  <property name="silverReq" value="10"/>
-  <property name="type" value="time"/>
+  <property name="bronzeReq" value="12"/>
+  <property name="goldReq" value="16"/>
+  <property name="silverReq" value="14"/>
+  <property name="type" value="diamonds"/>
  </properties>
  <objectgroup name="terrain">
   <object x="0" y="0" width="32" height="1120"/>
@@ -44,7 +44,7 @@
   <object x="3410.06" y="227.273" width="128" height="128">
    <ellipse/>
   </object>
-  <object name="end" x="96" y="640" width="32" height="32" rotation="180"/>
+  <object name="end" x="4320" y="320" width="32" height="32" rotation="90"/>
   <object x="992" y="256" width="128" height="128" rotation="90">
    <ellipse/>
   </object>
@@ -60,6 +60,54 @@
     <property name="type" value="top"/>
    </properties>
    <polyline points="0,0 -13.8788,17.8485 -25,28.3333 -40.6667,42 -58.6667,54 -79.3333,64.6667 -114.667,76.3333 -156.667,85.3333 -202.667,89.3333 -242.758,89.4242 -285.939,85.2424 -328.667,77.3333 -356.121,70.2727 -377.97,61.6364 -394.583,54.4167 -409.106,44.2273 -426.227,29.4697 -448.212,7.16667 -470.227,-26.2273 -499.667,-72.6667 -543.667,-152.667 -586.667,-244.667 -616.667,-324.667 -641.667,-405.667 -665.667,-499.667 -676.667,-529.167 -683.297,-541.993 -689.667,-549.667 -697.754,-555.449 -706.667,-559.667 -715.493,-561.319 -726.667,-561.667 -735.819,-560.667 -741.71,-558.775 -746.667,-555.667 -750.667,-551.667 -753.667,-546.167 -755.667,-540.167 -756.667,-533.667 -756.667,-526.167"/>
+  </object>
+  <object name="diamond" x="1606.67" y="89.3333">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="81.3333" y="424">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="458.667" y="645.333">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="93.3333" y="257.333">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="648" y="236">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="1356" y="214.667">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="930.667" y="654.667">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="1720" y="365.333">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="1764" y="525.333">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="1840" y="705.333">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="1940" y="830.667">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="2129.33" y="901.333">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="2296" y="841.333">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="3169.33" y="286.667">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="3478.67" y="102.667">
+   <polygon points="0,0 32,0 16,25.25"/>
+  </object>
+  <object name="diamond" x="4465.33" y="592">
+   <polygon points="0,0 32,0 16,25.25"/>
   </object>
  </objectgroup>
 </map>

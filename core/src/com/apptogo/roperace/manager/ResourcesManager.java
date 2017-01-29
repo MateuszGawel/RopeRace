@@ -102,6 +102,8 @@ public class ResourcesManager {
 		manager.load("medal.png", Texture.class);
 		manager.load("medal_shadow.png", Texture.class);
 		
+		manager.load("diamond.png", Texture.class);
+		
 		manager.finishLoading();
 		
 		loadSkin();

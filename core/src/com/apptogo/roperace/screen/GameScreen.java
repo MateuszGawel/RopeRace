@@ -85,7 +85,7 @@ public class GameScreen extends BasicScreen {
 	}
 
 	protected void createLabel() {
-		hudLabel = new HudLabel(levelData);
+		hudLabel = new HudLabel(levelData, player);
 		hudStage.addActor(hudLabel);
 	}
 	
@@ -221,5 +221,9 @@ public class GameScreen extends BasicScreen {
 
 	public void setHoop(Hoop hoop) {
 		this.hoop = hoop;
+	}
+
+	public HudLabel getHudLabel() {
+		return hudLabel;
 	}
 }

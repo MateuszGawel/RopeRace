@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.apptogo.roperace.actors.Diamond;
 import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.custom.MyShapeRenderer;
 import com.apptogo.roperace.custom.MyShapeRenderer.ShapeType;
@@ -48,6 +49,7 @@ public class LevelGenerator{
 	private Map<Integer, MapObject> polylinesTop = new HashMap<Integer, MapObject>();
 	private Map<Integer, MapObject> polylinesBottom = new HashMap<Integer, MapObject>();
 	private Map<Float[], Float[]> polylineVertices = new HashMap<Float[], Float[]>();
+	private int diamondCounter;
 	
 	public LevelGenerator(GameScreen screen) {
 		this.camera = (OrthographicCamera)screen.getFrontStage().getCamera();
@@ -137,11 +139,23 @@ public class LevelGenerator{
 					worldTransformedVertices[i] = UnitConverter.toBox2dUnits(transformedVertices[i]);
 				}
 				
+				if("diamond".equals(mapObject.getName())){
+					diamondCounter++;
+					String name = "diamond" + diamondCounter;
+					Body body = BodyBuilder.get()
+							.type(BodyType.StaticBody)
+							.position(position)
+							.addFixture(name, "").polygon(worldVertices).sensor(true)
+							.create();
+					new Diamond(screen, body, name);
+					continue;
+				}
+				
 				Body body = BodyBuilder.get()
-				.type(BodyType.StaticBody)
-				.position(position)
-				.addFixture("level", "nonkilling").polygon(worldVertices)
-				.create();
+						.type(BodyType.StaticBody)
+						.position(position)
+						.addFixture("level", "nonkilling").polygon(worldVertices)
+						.create();
 				
 				levelBodies.add(body);
 				UserData.get(body).segmentType = SegmentType.CATCHABLE;

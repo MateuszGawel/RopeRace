@@ -34,11 +34,13 @@ public class Rope extends GameActor{
 	private TextureRegion ropeTextureRegion;
 	private Vector2 shootVector = new Vector2(ROPE_SHOOT_SPEED, 0);
 	private float penetration = 0.02f;
+	private int shootCounter;
 	
 	public Rope(GameScreen screen, GameActor actor) {
 		super("rope");
 		this.screen = screen;
 		this.player = actor;
+		this.shootCounter = 0;
 		
 		ropeTextureRegion = new TextureRegion(ResourcesManager.getInstance().getTexture("chain"));
 		startU2Length = ropeTextureRegion.getU2() - ropeTextureRegion.getU();
@@ -68,6 +70,8 @@ public class Rope extends GameActor{
 		
 		createJoint();
 		triggerAutoRopeCut();
+		
+		shootCounter++;
 	}
 
 	public void destroyCurrentJoint(){
@@ -172,5 +176,9 @@ public class Rope extends GameActor{
 			
 			ropeTextureRegion.setU2(u2Backup);
 		}
+	}
+
+	public int getShootCounter() {
+		return shootCounter;
 	}
 }

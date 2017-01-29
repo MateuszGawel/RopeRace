@@ -45,4 +45,8 @@ public abstract class SteeringPlugin extends AbstractPlugin {
 		rope.destroyCurrentJoint();
 	}
 
+	public Rope getRope() {
+		return rope;
+	}
+	
 }
