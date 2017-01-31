@@ -11,7 +11,6 @@ import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.manager.CustomAction;
 import com.apptogo.roperace.manager.CustomActionManager;
 import com.apptogo.roperace.plugin.KeyboardSteeringPlugin;
-import com.apptogo.roperace.plugin.SteeringPlugin;
 import com.apptogo.roperace.plugin.TouchSteeringPlugin;
 import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Label;
@@ -28,8 +27,10 @@ public class HudLabel extends Group{
 	private LevelData levelData;
 	private Label label;
 	private boolean gameOver;
+	private boolean lessThanBronze;
+	
 	private ColorSet currentColorSet;
-	private boolean counting = true;
+	private boolean counting = false;
 	private GameActor player;
 	private Rope rope;
 	
@@ -96,49 +97,44 @@ public class HudLabel extends Group{
 	}
 	
 	private void createTimeLabel(){
-		
+		currentColorSet = ColorSet.GOLD;
+		label.setText("0");
 		
 		CustomActionManager.getInstance().registerAction(new CustomAction(0.1f, 0) {
-			
+
 			@Override
 			public void perform() {
-				
-				currentColorSet = ColorSet.GOLD;
-				
-				if(!counting)
-					unregister();
-				
 				double currentValue = Double.valueOf(label.getText().toString());
-				label.setText(decimalFormat.format(currentValue-0.1d));
+				
+				if(counting){
+					label.setText(decimalFormat.format(currentValue + 0.1d));
+				}
 				updateSize();
 				
-				if(currentValue == levelData.getBronzeReq() - levelData.getGoldReq()){
+				if (currentValue == levelData.getGoldReq()) {
 					currentColorSet = ColorSet.SILVER;
 					bumpLabel();
-				}
-				else if(currentValue == levelData.getBronzeReq() - levelData.getSilverReq()){
+				} else if (currentValue == levelData.getSilverReq()) {
 					currentColorSet = ColorSet.BRONZE;
 					bumpLabel();
-				}
-				else if(currentValue == 3){
-					//start ticking
-				}
-				else if(currentValue <= 0){
-					//level failed
+				} else if (currentValue == levelData.getSilverReq()) {
 					label.setText("0");
 					unregister();
 					gameOver = true;
 				}
 				label.setColor(currentColorSet.getMainColor());
+
 			}
 		});
 	}
 	
 	private void createDiamondsLabel(){
-
+		counting = true;
 	}
 	
 	private void createRopesLabel(){
+		counting = true;
+		currentColorSet = ColorSet.GOLD;
 		try{
 			rope = player.getPlugin(TouchSteeringPlugin.class).getRope();
 		}
@@ -154,7 +150,8 @@ public class HudLabel extends Group{
 		if(counting){
 			label.setText(String.valueOf(diamondCounter));
 			updateSize();
-
+			lessThanBronze = false;
+			
 			if(currentColorSet == ColorSet.SILVER && diamondCounter >= levelData.getGoldReq()){
 				currentColorSet = ColorSet.GOLD;
 				bumpLabel();
@@ -170,6 +167,7 @@ public class HudLabel extends Group{
 			else if(currentColorSet == null){
 				//TODO add neutral colorset
 				label.setColor(Color.GRAY);
+				lessThanBronze = true;
 				return;
 			}
 			
@@ -179,8 +177,6 @@ public class HudLabel extends Group{
 	
 	private void handleRopesLabel(){
 		if(counting){
-			currentColorSet = ColorSet.GOLD;
-			
 			int ropeCounter = rope.getShootCounter();
 			label.setText(String.valueOf(ropeCounter));
 			updateSize();
@@ -190,11 +186,11 @@ public class HudLabel extends Group{
 				updateSize();
 				gameOver = true;
 			}
-			else if(currentColorSet == ColorSet.SILVER && ropeCounter > levelData.getSilverReq()){
+			else if(currentColorSet == ColorSet.SILVER && ropeCounter == levelData.getSilverReq()+1){
 				currentColorSet = ColorSet.BRONZE;
 				bumpLabel();
 			}
-			else if(currentColorSet == ColorSet.GOLD && ropeCounter > levelData.getGoldReq()){
+			else if(currentColorSet == ColorSet.GOLD && ropeCounter == levelData.getGoldReq()+1){
 				currentColorSet = ColorSet.SILVER;
 				bumpLabel();
 			}
@@ -238,6 +234,10 @@ public class HudLabel extends Group{
 
 	public void onDiamondCollected() {
 		diamondCounter++;
+	}
+
+	public boolean isLessThanBronze() {
+		return lessThanBronze;
 	}
 	
 	

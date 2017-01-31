@@ -4,6 +4,7 @@ import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.game.EndScreenGroup;
 import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.game.HudLabel;
+import com.apptogo.roperace.game.StartGameGroup;
 import com.apptogo.roperace.level.LevelData;
 import com.apptogo.roperace.level.LevelGenerator;
 import com.apptogo.roperace.main.Main;
@@ -23,8 +24,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameScreen extends BasicScreen {
@@ -48,6 +49,8 @@ public class GameScreen extends BasicScreen {
 	protected CameraFollowingPlugin cameraFollowingPlugin;
 	protected HudLabel hudLabel;
 	protected Hoop hoop;
+	private StartGameGroup startGameGroup;
+	private GravityPlugin gravityPlugin;
 	
 	public GameScreen(Main game, int level) {
 		super(game);
@@ -76,7 +79,14 @@ public class GameScreen extends BasicScreen {
 		createLevel();
 		createPlayer();
 		createLabel();
+		createStartGameGroup();
 		createEndScreenGroup();
+	}
+
+	protected void createStartGameGroup() {
+		startGameGroup = new StartGameGroup(levelData);
+		hudStage.addActor(startGameGroup);
+		startGameGroup.init();
 	}
 
 	protected void createEndScreenGroup(){
@@ -92,11 +102,10 @@ public class GameScreen extends BasicScreen {
 	protected void prepareFrontStage() {
 		this.frontViewport = new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT));
 		frontStage.setViewport(frontViewport);
-//		((OrthographicCamera) frontStage.getCamera()).zoom = 0.7f; //0.7 is ok
 	}
 
 	protected void prepareHudStage() {
-		this.hudViewport = new ExtendViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		this.hudViewport = new FitViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		this.hudStage = new Stage(this.hudViewport);
 		((OrthographicCamera) hudStage.getCamera()).position.set(0f, 0f, 0f);
 		
@@ -118,9 +127,11 @@ public class GameScreen extends BasicScreen {
 		
 		cameraFollowingPlugin = new CameraFollowingPlugin(levelGenerator.getMapSize());
 		steeringPlugin = new TouchSteeringPlugin(this);
+		gravityPlugin = new GravityPlugin();
+		
 		player.addPlugin(cameraFollowingPlugin);
 		player.addPlugin(steeringPlugin);
-		player.addPlugin(new GravityPlugin());
+		player.addPlugin(gravityPlugin);
 	}
 	
 	protected void createLevel(){	
@@ -151,23 +162,30 @@ public class GameScreen extends BasicScreen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(currentColorSet.getMainColor().r, currentColorSet.getMainColor().g, currentColorSet.getMainColor().b, currentColorSet.getMainColor().a);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		this.backViewport.apply();
-		this.frontViewport.apply();
-		
+
 		this.backStage.act(delta);
 		this.frontStage.act(delta);
 		this.hudStage.act(delta);
 		
+		this.backViewport.apply();
 		this.backStage.draw();
+		
+		this.frontViewport.apply();
 		this.levelGenerator.render();
 		this.frontStage.draw();
-		this.hudStage.draw();
 		
 		step(delta);
 		handleInput();
 		
 		this.cameraFollowingPlugin.updateCamera();
 
+		this.hudViewport.apply();
+		this.hudStage.draw();
+		
+		if(!gravityPlugin.isStarted() && startGameGroup.isFinished()){
+			gravityPlugin.setStarted(true);
+			hudLabel.setCounting(true);
+		}
 	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -177,6 +195,7 @@ public class GameScreen extends BasicScreen {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
+		this.hudStage.getViewport().update(width, height);
 		cameraFollowingPlugin.postSetActor();
 	}
 

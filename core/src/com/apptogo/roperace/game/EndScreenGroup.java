@@ -24,7 +24,6 @@ public class EndScreenGroup extends Group {
 	private boolean showed;
 	
 	public EndScreenGroup(HudLabel hudLabel, Hoop hoop) {
-		debug();
 		setSize(Main.SCREEN_WIDTH - margin, Main.SCREEN_HEIGHT - margin);
 		setPosition(-Main.SCREEN_WIDTH / 2 + margin / 2, -10000);
 		shapeRenderer = new MyShapeRenderer();
@@ -40,7 +39,7 @@ public class EndScreenGroup extends Group {
 		action.setInterpolation(Interpolation.elasticOut);
 		this.addAction(action);
 
-		if(!hudLabel.isGameOver()){
+		if(!hudLabel.isGameOver() && !hudLabel.isLessThanBronze()){
 			createMedal(hudLabel.getMedalColor());
 		}
 		createLabel();
@@ -55,7 +54,7 @@ public class EndScreenGroup extends Group {
 
 	private void createLabel() {
 		String labelText = "";
-		if(hudLabel.isGameOver())
+		if(hudLabel.isGameOver() || hudLabel.isLessThanBronze())
 			labelText = "Game Over";
 		else
 			labelText = "Congratulations";

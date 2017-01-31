@@ -1,20 +1,12 @@
 package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.main.Main;
-import com.apptogo.roperace.physics.ContactListener;
-import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Listener;
 import com.apptogo.roperace.scene2d.ShadowedButton;
 import com.apptogo.roperace.scene2d.ShadowedButton.ButtonSize;
-import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.viewport.FillViewport;
 
 public class MenuScreen extends BasicScreen {
 	

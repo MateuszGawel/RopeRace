@@ -10,6 +10,7 @@ public class Label extends com.badlogic.gdx.scenes.scene2d.ui.Label {
     }
 
     public static Label get(String text, String labelStyle) {
+    	ResourcesManager.getInstance().skin.getFont(labelStyle).getData().markupEnabled = true;
         return new Label(text, ResourcesManager.getInstance().skin, labelStyle);
     }
 
