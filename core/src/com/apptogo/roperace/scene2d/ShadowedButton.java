@@ -29,6 +29,7 @@ public class ShadowedButton extends Group {
 	public ShadowedButton(String content, ColorSet colorSet, ButtonSize buttonSize) {
 		this(content, colorSet);
 		addCircleBackground(colorSet, buttonSize);
+		setSize(this.circle.getWidth(), this.circle.getHeight());
 	}
 	
 	public void applyColorToContent(ColorSet colorSet){

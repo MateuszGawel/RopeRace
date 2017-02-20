@@ -27,7 +27,6 @@ public class HudLabel extends Group{
 	private LevelData levelData;
 	private Label label;
 	private boolean gameOver;
-	private boolean lessThanBronze;
 	
 	private ColorSet currentColorSet;
 	private boolean counting = false;
@@ -37,7 +36,7 @@ public class HudLabel extends Group{
 	private Container<Label> labelContainer;
 	private SequenceAction sequence;
 	private DecimalFormat decimalFormat;
-	private int diamondCounter;
+	private int starCounter;
 	
 	public HudLabel(LevelData levelData, GameActor player){
 		this.player = player;
@@ -48,8 +47,8 @@ public class HudLabel extends Group{
 		createLabel();
 		
 		switch(levelData.getType()){
-		case DIAMONDS:
-			createDiamondsLabel();
+		case STARS:
+			createStarsLabel();
 			break;
 		case ROPES:
 			createRopesLabel();
@@ -128,7 +127,7 @@ public class HudLabel extends Group{
 		});
 	}
 	
-	private void createDiamondsLabel(){
+	private void createStarsLabel(){
 		counting = true;
 	}
 	
@@ -146,28 +145,25 @@ public class HudLabel extends Group{
 	private void handleTimeLabel(){
 	}
 	
-	private void handleDiamondsLabel(){
+	private void handleStarsLabel(){
 		if(counting){
-			label.setText(String.valueOf(diamondCounter));
+			label.setText(String.valueOf(starCounter));
 			updateSize();
-			lessThanBronze = false;
 			
-			if(currentColorSet == ColorSet.SILVER && diamondCounter >= levelData.getGoldReq()){
+			if(currentColorSet == ColorSet.SILVER && starCounter >= levelData.getGoldReq()){
 				currentColorSet = ColorSet.GOLD;
 				bumpLabel();
 			}
-			else if(currentColorSet == ColorSet.BRONZE && diamondCounter >= levelData.getSilverReq()){
+			else if(currentColorSet == ColorSet.BRONZE && starCounter >= levelData.getSilverReq()){
 				currentColorSet = ColorSet.SILVER;
 				bumpLabel();
 			}
-			else if(currentColorSet == null && diamondCounter >= levelData.getBronzeReq()){
+			else if(currentColorSet == ColorSet.GRAY && starCounter >= levelData.getBronzeReq()){
 				currentColorSet = ColorSet.BRONZE;
 				bumpLabel();
 			}
 			else if(currentColorSet == null){
-				//TODO add neutral colorset
-				label.setColor(Color.GRAY);
-				lessThanBronze = true;
+				currentColorSet = ColorSet.GRAY;
 				return;
 			}
 			
@@ -204,8 +200,8 @@ public class HudLabel extends Group{
 		super.act(delta);
 		
 		switch(levelData.getType()){
-		case DIAMONDS:
-			handleDiamondsLabel();
+		case STARS:
+			handleStarsLabel();
 			break;
 		case ROPES:
 			handleRopesLabel();
@@ -232,13 +228,12 @@ public class HudLabel extends Group{
 		this.counting = counting;
 	}
 
-	public void onDiamondCollected() {
-		diamondCounter++;
+	public void onStarCollected() {
+		starCounter++;
 	}
 
-	public boolean isLessThanBronze() {
-		return lessThanBronze;
+	public ColorSet getCurrentColorSet() {
+		return currentColorSet;
 	}
-	
 	
 }

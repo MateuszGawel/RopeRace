@@ -79,6 +79,12 @@ public class ResourcesManager {
 		manager.load("back-button_shadow.png", Texture.class);
 		manager.load("worlds-button.png", Texture.class);
 		manager.load("worlds-button_shadow.png", Texture.class);
+		manager.load("restart.png", Texture.class);
+		manager.load("restart_shadow.png", Texture.class);
+		manager.load("ok.png", Texture.class);
+		manager.load("ok_shadow.png", Texture.class);
+		manager.load("bonus.png", Texture.class);
+		manager.load("bonus_shadow.png", Texture.class);
 		
 		manager.load("1.png", Texture.class);
 		manager.load("2.png", Texture.class);
@@ -103,6 +109,7 @@ public class ResourcesManager {
 		manager.load("medal_shadow.png", Texture.class);
 		
 		manager.load("diamond.png", Texture.class);
+		manager.load("star.png", Texture.class);
 		
 		manager.finishLoading();
 		

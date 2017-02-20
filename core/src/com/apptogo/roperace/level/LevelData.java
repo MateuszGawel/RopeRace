@@ -2,8 +2,12 @@ package com.apptogo.roperace.level;
 
 public class LevelData {
 
+	public static final int BRONZE_POINTS = 10;
+	public static final int SILVER_POINTS = 20;
+	public static final int GOLD_POINTS = 30;
+	
 	public enum LevelType {
-		TIME, DIAMONDS, ROPES
+		TIME, STARS, ROPES
 	}
 
 	private LevelType type;

@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.apptogo.roperace.actors.Diamond;
+import com.apptogo.roperace.actors.Star;
 import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.custom.MyShapeRenderer;
 import com.apptogo.roperace.custom.MyShapeRenderer.ShapeType;
@@ -49,7 +49,7 @@ public class LevelGenerator{
 	private Map<Integer, MapObject> polylinesTop = new HashMap<Integer, MapObject>();
 	private Map<Integer, MapObject> polylinesBottom = new HashMap<Integer, MapObject>();
 	private Map<Float[], Float[]> polylineVertices = new HashMap<Float[], Float[]>();
-	private int diamondCounter;
+	private int starCounter;
 	
 	public LevelGenerator(GameScreen screen) {
 		this.camera = (OrthographicCamera)screen.getFrontStage().getCamera();
@@ -114,10 +114,30 @@ public class LevelGenerator{
 					startingPoint = position;
 					continue;
 				}
-
+				
 				float radius = UnitConverter.toBox2dUnits(Math.max(ellipse.height / 2, ellipse.width / 2));
+				
+				if("star".equals(mapObject.getName())){
+					starCounter++;
+					String name = "star" + starCounter;
+					Body body = BodyBuilder
+							.get()
+							.type(BodyType.StaticBody)
+							.position(position)
+							.addFixture(name, "").circle(radius)
+							.sensor(true)
+							.create();
+					new Star(screen, body, name);
+					continue;
+				}
+				
 
-				Body body = BodyBuilder.get().type(BodyType.StaticBody).position(position).addFixture("level", "nonkilling").circle(radius).create();
+				Body body = BodyBuilder
+						.get()
+						.type(BodyType.StaticBody)
+						.position(position)
+						.addFixture("level", "nonkilling").circle(radius)
+						.create();
 
 				levelBodies.add(body);
 				UserData.get(body).segmentType = SegmentType.CATCHABLE;
@@ -137,18 +157,6 @@ public class LevelGenerator{
 				for (int i = 0; i < vertices.length; ++i) {
 					worldVertices[i] = UnitConverter.toBox2dUnits(vertices[i]);
 					worldTransformedVertices[i] = UnitConverter.toBox2dUnits(transformedVertices[i]);
-				}
-				
-				if("diamond".equals(mapObject.getName())){
-					diamondCounter++;
-					String name = "diamond" + diamondCounter;
-					Body body = BodyBuilder.get()
-							.type(BodyType.StaticBody)
-							.position(position)
-							.addFixture(name, "").polygon(worldVertices).sensor(true)
-							.create();
-					new Diamond(screen, body, name);
-					continue;
 				}
 				
 				Body body = BodyBuilder.get()

@@ -34,7 +34,6 @@ public abstract class BasicScreen implements Screen {
 
 	@Override
 	public void show() {
-
 		this.backViewport = new FillViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		this.backStage = new Stage(this.backViewport);
 		((OrthographicCamera) backStage.getCamera()).position.set(0f, 0f, 0f);
