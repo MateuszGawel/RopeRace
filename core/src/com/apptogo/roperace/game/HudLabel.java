@@ -220,10 +220,6 @@ public class HudLabel extends Group{
 		return gameOver;
 	}
 
-	public ColorSet getMedalColor() {
-		return currentColorSet;
-	}
-
 	public void setCounting(boolean counting) {
 		this.counting = counting;
 	}
