@@ -1,9 +1,5 @@
 package com.apptogo.roperace.game;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-
 import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.custom.MyShapeRenderer;
 import com.apptogo.roperace.custom.MyShapeRenderer.ShapeType;
@@ -20,11 +16,12 @@ import com.apptogo.roperace.screen.BasicScreen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -100,13 +97,12 @@ public class EndScreenGroup extends Group {
 			public void perform() {
 				if(bronzeMedal != null){
 					bronzeMedal.setVisible(true);
-					bronzeMedal.addAction(Actions.moveTo(bronzeMedal.getX(), getHeight() + bronzeMedal.getHeight() + 20, 0.7f, Interpolation.exp5In));
+					bronzeMedal.addAction(Actions.moveTo(bronzeMedal.getX(), getHeight() + bronzeMedal.getHeight() + 20, 0.5f, Interpolation.exp5In));
 					CustomActionManager.getInstance().registerAction(new CustomAction(0.5f) {
 						@Override
 						public void perform() {
 							setScoreValue(LevelData.BRONZE_POINTS);
 							updateScoreSize();
-							scoreSequence.restart();
 							bumpScoreLabel();
 							scoreLabel.setColor(ColorSet.BRONZE.getMainColor());
 						}
@@ -117,14 +113,13 @@ public class EndScreenGroup extends Group {
 					silverMedal.toFront();
 					SequenceAction sequence = new SequenceAction();
 				    sequence.addAction(Actions.delay(0.5f));
-				    sequence.addAction(Actions.moveTo(silverMedal.getX(), getHeight() + silverMedal.getHeight() + 20, 0.7f, Interpolation.exp5In));
+				    sequence.addAction(Actions.moveTo(silverMedal.getX(), getHeight() + silverMedal.getHeight() + 20, 0.5f, Interpolation.exp5In));
 					silverMedal.addAction(sequence);
 					CustomActionManager.getInstance().registerAction(new CustomAction(1f) {
 						@Override
 						public void perform() {
 							setScoreValue(LevelData.SILVER_POINTS);
 							updateScoreSize();
-							scoreSequence.restart();
 							bumpScoreLabel();
 							scoreLabel.setColor(ColorSet.SILVER.getMainColor());
 						}
@@ -135,14 +130,13 @@ public class EndScreenGroup extends Group {
 					goldMedal.toFront();
 					SequenceAction sequence = new SequenceAction();
 				    sequence.addAction(Actions.delay(1f));
-				    sequence.addAction(Actions.moveTo(goldMedal.getX(), getHeight() + goldMedal.getHeight() + 20, 0.7f, Interpolation.exp5In));
+				    sequence.addAction(Actions.moveTo(goldMedal.getX(), getHeight() + goldMedal.getHeight() + 20, 0.5f, Interpolation.exp5In));
 				    goldMedal.addAction(sequence);
 					CustomActionManager.getInstance().registerAction(new CustomAction(1.5f) {
 						@Override
 						public void perform() {
 							setScoreValue(LevelData.GOLD_POINTS);
 							updateScoreSize();
-							scoreSequence.restart();
 							bumpScoreLabel();
 							scoreLabel.setColor(ColorSet.GOLD.getMainColor());
 						}
@@ -158,7 +152,7 @@ public class EndScreenGroup extends Group {
 		Image diamondImage = Image.getFromTexture("diamond");
 		diamondImage.setSize(diamondImage.getWidth()*0.7f, diamondImage.getHeight()*0.7f);
 		this.addActor(diamondImage);
-		totalLabel = Label.get("2000", "big");
+		totalLabel = Label.get("200", "big");
 		totalLabel.setColor(ColorSet.PURPLE.getMainColor());
 		this.addActor(totalLabel);		
 		totalLabel.position(getWidth()/2 - totalLabel.getWidth()/2 + diamondImage.getWidth()/2, getHeight()/2 - totalLabel.getHeight() + 100);
@@ -178,9 +172,18 @@ public class EndScreenGroup extends Group {
 			updateScoreSize();
 			
 			scoreSequence = new SequenceAction();
-		    scoreSequence.addAction(Actions.scaleBy(0.5f, 0.5f, 0.07f, Interpolation.exp5In));
-		    scoreSequence.addAction(Actions.delay(0.05f));
-		    scoreSequence.addAction(Actions.scaleBy(-0.5f, -0.5f, 0.07f, Interpolation.exp5Out));
+			ScaleByAction s1 = new ScaleByAction();
+			DelayAction d = new DelayAction(0.05f);
+			ScaleByAction s2 = new ScaleByAction();
+			s1.setAmount(0.5f);
+			s1.setDuration(0.05f);
+			s1.setInterpolation(Interpolation.exp5In);
+			s2.setAmount(-0.5f);
+			s2.setDuration(0.05f);
+			s2.setInterpolation(Interpolation.exp5Out);
+		    scoreSequence.addAction(s1);
+		    scoreSequence.addAction(d);
+		    scoreSequence.addAction(s2);
 
 		    //move total to the right
 			totalLabel.position(totalLabel.getX() + getWidth()/2 - margin - 150, totalLabel.getY());
@@ -190,6 +193,7 @@ public class EndScreenGroup extends Group {
 	
 	private void bumpScoreLabel(){
 		scoreLabelContainer.addAction(scoreSequence);
+		scoreSequence.restart();
 	}
 	
 	private void updateScoreSize(){

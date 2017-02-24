@@ -14,10 +14,10 @@ import com.apptogo.roperace.plugin.KeyboardSteeringPlugin;
 import com.apptogo.roperace.plugin.TouchSteeringPlugin;
 import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Label;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.utils.Align;
@@ -80,14 +80,25 @@ public class HudLabel extends Group{
 		addActor(labelContainer);
 		
 		sequence = new SequenceAction();
-	    sequence.addAction(Actions.scaleBy(0.3f, 0.3f, 0.05f, Interpolation.exp5In));
-	    sequence.addAction(Actions.delay(0.05f));
-	    sequence.addAction(Actions.scaleBy(-0.3f, -0.3f, 0.05f, Interpolation.exp5Out));
+		ScaleByAction s1 = new ScaleByAction();
+		DelayAction d = new DelayAction(0.05f);
+		ScaleByAction s2 = new ScaleByAction();
+		s1.setAmount(0.3f);
+		s1.setDuration(0.05f);
+		s1.setInterpolation(Interpolation.exp5In);
+		s2.setAmount(-0.3f);
+		s2.setDuration(0.05f);
+		s2.setInterpolation(Interpolation.exp5Out);
+		
+	    sequence.addAction(s1);
+	    sequence.addAction(d);
+	    sequence.addAction(s2);
 	}
 	
 	private void bumpLabel(){
-		sequence.restart();
+
 		labelContainer.addAction(sequence);
+		sequence.restart();
 	}
 	
 	private void updateSize(){
