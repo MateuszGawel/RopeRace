@@ -68,7 +68,7 @@ public class SplashScreen implements Screen {
 
 		case END:
 			if (logo.getActions().size == 0) {
-				main.setScreen(new MenuScreen(main));
+				main.setScreen(new MenuScreen());
 			}
 			break;
 		}

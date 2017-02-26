@@ -28,8 +28,8 @@ public abstract class BasicScreen implements Screen {
 	
 	protected ColorSet currentColorSet = ColorSet.BLUE;
 	
-	public BasicScreen(Main game) {
-		this.game = game;
+	public BasicScreen() {
+		this.game = Main.getInstance();
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public abstract class BasicScreen implements Screen {
 
 	protected void handleInput() {
 		if (Gdx.input.isKeyJustPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			game.setScreen(new MenuScreen(game));
+			game.setScreen(new MenuScreen());
 		}
 	}
 

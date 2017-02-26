@@ -5,6 +5,8 @@ package com.apptogo.roperace.main;
 import com.apptogo.roperace.callback.GameCallback;
 import com.apptogo.roperace.manager.CustomActionManager;
 import com.apptogo.roperace.manager.ResourcesManager;
+import com.apptogo.roperace.save.GameData;
+import com.apptogo.roperace.save.SaveManager;
 import com.apptogo.roperace.screen.BasicScreen;
 import com.apptogo.roperace.screen.SplashScreen;
 import com.badlogic.gdx.Application;
@@ -19,7 +21,7 @@ public class Main extends Game {
 	public static final float SCREEN_WIDTH = 1280f, SCREEN_HEIGHT = 768f;
 	
 	public static GameCallback gameCallback;
-
+	
 	public static Main getInstance() {
 		return (Main) Gdx.app.getApplicationListener();
 	}
@@ -64,6 +66,7 @@ public class Main extends Game {
 		ResourcesManager.create();
 		CustomActionManager.create();
 		ResourcesManager.getInstance().loadResources();
+		SaveManager.create();
 		this.setScreen(new SplashScreen(this));
 	}
 
@@ -76,5 +79,6 @@ public class Main extends Game {
 	public void dispose() {
 		ResourcesManager.destroy();
 		CustomActionManager.destroy();
+		SaveManager.destroy();
 	}
 }

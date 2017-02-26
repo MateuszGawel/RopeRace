@@ -25,6 +25,8 @@ public class StartGameGroup extends Group {
 	private SequenceAction scoreSequence;
 	
 	private boolean finished;
+
+	private CustomAction removeAction;
 	
 	public StartGameGroup(LevelData levelData){
 		setSize(Main.SCREEN_WIDTH, 0);
@@ -74,16 +76,17 @@ public class StartGameGroup extends Group {
 	protected void removeSelf(){
 		remove();
 		finished = true;
+		removeAction.unregister();
 	}
 	
 	private void notifyAfterDelay(float delay){
-		CustomActionManager.getInstance().registerAction(new CustomAction(delay) {
-			
+		removeAction = new CustomAction(delay) {
 			@Override
 			public void perform() {
 				removeSelf();
 			}
-		});
+		};
+		CustomActionManager.getInstance().registerAction(removeAction);
 	}
 
 	public boolean isFinished() {

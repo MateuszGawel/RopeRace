@@ -29,10 +29,10 @@ public class Hoop extends Group{
 		
 		body = BodyBuilder.get()
 				.type(BodyType.StaticBody)
-				.addFixture("hoop1").box(1.75f, 0.25f, 0, 0.125f).sensor(true)
-				.addFixture("hoop2").box(1.75f, 0.25f, 0, -0.125f).sensor(true)
-				.addFixture("hoop").box(0.25f, 0.5f, -1f, 0).sensor(false)
-				.addFixture("hoop").box(0.25f, 0.5f, 1f, 0).sensor(false)
+				.addFixture("hoop1").box(2f, 0.25f, 0, 0.125f).sensor(true)
+				.addFixture("hoop2").box(2f, 0.25f, 0, -0.125f).sensor(true)
+				.addFixture("hoop").box(0.2f, 0.5f, -1.1f, 0).sensor(false)
+				.addFixture("hoop").box(0.2f, 0.5f, 1.1f, 0).sensor(false)
 				.create();
 		
 		body.setTransform(position, (float)Math.toRadians(rotation));

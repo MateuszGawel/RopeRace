@@ -12,7 +12,7 @@ public abstract class CustomAction extends Actor {
 	private int loops = 1;
 	
 	@SuppressWarnings("unused")
-	private Object[] args;
+	protected Object[] args;
 
 	/**
 	 * During creation you have to override perform method

@@ -1,27 +1,15 @@
 package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.main.Main;
-import com.apptogo.roperace.physics.ContactListener;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Listener;
 import com.apptogo.roperace.scene2d.ShadowedButton;
 import com.apptogo.roperace.scene2d.ShadowedButton.ButtonSize;
-import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.viewport.FillViewport;
 
 public class WorldSelectionScreen extends BasicScreen {
-
-	public WorldSelectionScreen(Main game) {
-		super(game);
-	}
-	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ---------------------------------------------- PREPARATION ----------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -42,20 +30,20 @@ public class WorldSelectionScreen extends BasicScreen {
 		float big_padding = 100;
 		
 		ShadowedButton backButton = new ShadowedButton("back-button", currentColorSet, ButtonSize.SMALL);
-		backButton.addListener(Listener.click(game, new MenuScreen(game)));
+		backButton.addListener(Listener.click(game, new MenuScreen()));
 		backButton.setPosition(Main.SCREEN_WIDTH / 2 - backButton.getWidth() - small_padding, -Main.SCREEN_HEIGHT/2 + small_padding);
 		frontStage.addActor(backButton);
 
 		Image world1 = Image.getFromTexture("world1");
 		world1.size(world1.getRegion().getRegionWidth(), world1.getRegion().getRegionHeight());
 		world1.position(-Main.SCREEN_WIDTH/2 + big_padding, Main.SCREEN_HEIGHT/2 - world1.getHeight() - big_padding);
-		world1.addListener(Listener.click(game, new LevelSelectionScreen(game)));
+		world1.addListener(Listener.click(game, new LevelSelectionScreen()));
 		frontStage.addActor(world1);
 		
 		Image world2 = Image.getFromTexture("world2");
 		world2.size(world2.getRegion().getRegionWidth(), world2.getRegion().getRegionHeight());
 		world2.position(-Main.SCREEN_WIDTH/2 + world2.getWidth() + 2*big_padding , Main.SCREEN_HEIGHT/2 - world2.getHeight() - big_padding);
-		world2.addListener(Listener.click(game, new LevelSelectionScreen(game)));
+		world2.addListener(Listener.click(game, new LevelSelectionScreen()));
 		frontStage.addActor(world2);
 	
 	}
@@ -110,7 +98,7 @@ public class WorldSelectionScreen extends BasicScreen {
 	@Override
 	protected void handleInput() {
 		if (Gdx.input.isKeyJustPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			game.setScreen(new MenuScreen(game));
+			game.setScreen(new MenuScreen());
 		}
 	}
 	/** ---------------------------------------------------------------------------------------------------------- **/

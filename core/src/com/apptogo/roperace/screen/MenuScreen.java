@@ -10,10 +10,6 @@ import com.badlogic.gdx.graphics.GL20;
 
 public class MenuScreen extends BasicScreen {
 	
-	public MenuScreen(Main game) {
-		super(game);
-	}
-	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ---------------------------------------------- PREPARATION ----------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -42,12 +38,12 @@ public class MenuScreen extends BasicScreen {
 		frontStage.addActor(logo);
 		
 		ShadowedButton worldsButton = new ShadowedButton("worlds-button", currentColorSet, ButtonSize.SMALL);
-		worldsButton.addListener(Listener.click(game, new WorldSelectionScreen(game)));
+		worldsButton.addListener(Listener.click(game, new WorldSelectionScreen()));
 		worldsButton.setPosition(Main.SCREEN_WIDTH/2-worldsButton.getWidth()-padding, -Main.SCREEN_HEIGHT/2+padding);
 		frontStage.addActor(worldsButton);
 
 		ShadowedButton playButton = new ShadowedButton("play-button", currentColorSet, ButtonSize.BIG);
-		playButton.addListener(Listener.click(game, new GameScreen(game, 1)));
+		playButton.addListener(Listener.click(game, new GameScreen(1)));
 		playButton.setPosition(-playButton.getWidth()/2, -playButton.getHeight()/2 - 100);
 		frontStage.addActor(playButton);	
 	}

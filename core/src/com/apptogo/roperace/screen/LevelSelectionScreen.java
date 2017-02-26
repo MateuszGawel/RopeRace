@@ -17,11 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 public class LevelSelectionScreen extends BasicScreen {
 
 	private static final int NUMBER_OF_LEVELS = 10;
-
-	public LevelSelectionScreen(Main game) {
-		super(game);
-	}
-
 	private Table table;
 	private ScrollPane scrollPane;
 
@@ -39,7 +34,7 @@ public class LevelSelectionScreen extends BasicScreen {
 		float small_padding = 20;
 		
 		ShadowedButton backButton = new ShadowedButton("back-button", currentColorSet, ButtonSize.SMALL);
-		backButton.addListener(Listener.click(game, new WorldSelectionScreen(game)));
+		backButton.addListener(Listener.click(game, new WorldSelectionScreen()));
 		backButton.setPosition(Main.SCREEN_WIDTH / 2 - backButton.getWidth() - small_padding, -Main.SCREEN_HEIGHT/2 + small_padding);
 		frontStage.addActor(backButton);
 
@@ -56,7 +51,7 @@ public class LevelSelectionScreen extends BasicScreen {
 		for (int i = 1; i < NUMBER_OF_LEVELS; i++) {
 			
 			ShadowedButton button = new ShadowedButton(String.valueOf(i), ColorSet.BLUE, ButtonSize.BIG);
-			button.addListener(Listener.click(game, new GameScreen(game, i)));
+			button.addListener(Listener.click(game, new GameScreen(i)));
 			Cell<ShadowedButton> cell = table.add(button);
 			if (i == 1) {
 				cell.pad(0, Main.SCREEN_WIDTH / 2 - button.getWidth() / 2, 0, padding);
@@ -119,7 +114,7 @@ public class LevelSelectionScreen extends BasicScreen {
 	@Override
 	protected void handleInput() {
 		if (Gdx.input.isKeyJustPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			game.setScreen(new WorldSelectionScreen(game));
+			game.setScreen(new WorldSelectionScreen());
 		}
 	}
 }

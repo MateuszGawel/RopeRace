@@ -1,5 +1,7 @@
 package com.apptogo.roperace.game;
 
+import java.util.Random;
+
 import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.custom.MyShapeRenderer;
 import com.apptogo.roperace.custom.MyShapeRenderer.ShapeType;
@@ -7,12 +9,16 @@ import com.apptogo.roperace.level.LevelData;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.manager.CustomAction;
 import com.apptogo.roperace.manager.CustomActionManager;
+import com.apptogo.roperace.save.SaveManager;
 import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Label;
 import com.apptogo.roperace.scene2d.ShadowedButton;
 import com.apptogo.roperace.scene2d.ShadowedButton.ButtonSize;
 import com.apptogo.roperace.screen.BasicScreen;
+import com.apptogo.roperace.screen.GameScreen;
+import com.apptogo.roperace.screen.LevelSelectionScreen;
+import com.apptogo.roperace.screen.MenuScreen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
@@ -29,33 +35,48 @@ import com.badlogic.gdx.utils.Align;
 
 public class EndScreenGroup extends Group {
 
+	/** ---------------------------------------------------------------------------------------------------------- **/
+	/** ------------------------------------------------ FIELDS -------------------------------------------------- **/
+	/** ---------------------------------------------------------------------------------------------------------- **/
+
 	private float margin = 100;
+	private boolean showed;
+	private boolean success;
+	private int levelNo;
+
 	private MyShapeRenderer shapeRenderer;
 	private BasicScreen currentScreen;
 	private HudLabel hudLabel;
 	private Hoop hoop;
-	private boolean showed;
-	private boolean success;
+
 	private Label scoreLabel;
 	private Label totalLabel;
-	
 	private Container<Label> scoreLabelContainer;
 	private SequenceAction scoreSequence;
-	
+
 	private CustomAction transferPointsAction;
 	private CustomAction initMedalsAction;
-	
+	private CustomAction shakeAction;
+
 	private ShadowedButton goldMedal;
 	private ShadowedButton silverMedal;
 	private ShadowedButton bronzeMedal;
-	
-	public EndScreenGroup(HudLabel hudLabel, Hoop hoop) {
-		setSize(Main.SCREEN_WIDTH - 2*margin, Main.SCREEN_HEIGHT - 2*margin);
+	private ColorSet earnedMedal;
+
+	/** ---------------------------------------------------------------------------------------------------------- **/
+	/** ------------------------------------------------- INIT --------------------------------------------------- **/
+	/** ---------------------------------------------------------------------------------------------------------- 
+	 * @param level **/
+
+	public EndScreenGroup(HudLabel hudLabel, Hoop hoop, int level) {
+		setSize(Main.SCREEN_WIDTH - 2 * margin, Main.SCREEN_HEIGHT - 2 * margin);
 		setPosition(-Main.SCREEN_WIDTH / 2 + margin, -10000);
+		setOrigin(getWidth() / 2, getHeight() / 2);
 		shapeRenderer = new MyShapeRenderer();
 		currentScreen = Main.getInstance().getCurrentScreen();
 		this.hudLabel = hudLabel;
 		this.hoop = hoop;
+		this.levelNo = level;
 	}
 
 	public void init() {
@@ -65,112 +86,168 @@ public class EndScreenGroup extends Group {
 		action.setInterpolation(Interpolation.elasticOut);
 		this.addAction(action);
 
-		if(!hudLabel.isGameOver() && hudLabel.getCurrentColorSet() != ColorSet.GRAY){
+		if (!hudLabel.isGameOver() && hudLabel.getCurrentColorSet().getMedalNumber() != 0) {
 			success = true;
 		}
-		
-		if(success)
+
+		if (success)
 			createMedals();
 		createTitle();
 		createButtons();
 		createPointLabels();
 		createActions();
 	}
-	
-	private void createActions() {
-		transferPointsAction = new CustomAction(0.01f, 0) {
-			
-			@Override
-			public void perform() {
-				
-				setScoreValue(getScoreValue()-1);
-				setTotalValue(getTotalValue()+1);
-				
-				if(getScoreValue() <= 0)
-					unregister();
-			}
-		};
-		
-		initMedalsAction = new CustomAction(1f) {
-			
-			@Override
-			public void perform() {
-				if(bronzeMedal != null){
-					bronzeMedal.setVisible(true);
-					bronzeMedal.addAction(Actions.moveTo(bronzeMedal.getX(), getHeight() + bronzeMedal.getHeight() + 20, 0.5f, Interpolation.exp5In));
-					CustomActionManager.getInstance().registerAction(new CustomAction(0.5f) {
-						@Override
-						public void perform() {
-							setScoreValue(LevelData.BRONZE_POINTS);
-							updateScoreSize();
-							bumpScoreLabel();
-							scoreLabel.setColor(ColorSet.BRONZE.getMainColor());
-						}
-					});
-				}
-				if(silverMedal != null){
-					silverMedal.setVisible(true);
-					silverMedal.toFront();
-					SequenceAction sequence = new SequenceAction();
-				    sequence.addAction(Actions.delay(0.5f));
-				    sequence.addAction(Actions.moveTo(silverMedal.getX(), getHeight() + silverMedal.getHeight() + 20, 0.5f, Interpolation.exp5In));
-					silverMedal.addAction(sequence);
-					CustomActionManager.getInstance().registerAction(new CustomAction(1f) {
-						@Override
-						public void perform() {
-							setScoreValue(LevelData.SILVER_POINTS);
-							updateScoreSize();
-							bumpScoreLabel();
-							scoreLabel.setColor(ColorSet.SILVER.getMainColor());
-						}
-					});
-				}
-				if(goldMedal != null){
-					goldMedal.setVisible(true);
-					goldMedal.toFront();
-					SequenceAction sequence = new SequenceAction();
-				    sequence.addAction(Actions.delay(1f));
-				    sequence.addAction(Actions.moveTo(goldMedal.getX(), getHeight() + goldMedal.getHeight() + 20, 0.5f, Interpolation.exp5In));
-				    goldMedal.addAction(sequence);
-					CustomActionManager.getInstance().registerAction(new CustomAction(1.5f) {
-						@Override
-						public void perform() {
-							setScoreValue(LevelData.GOLD_POINTS);
-							updateScoreSize();
-							bumpScoreLabel();
-							scoreLabel.setColor(ColorSet.GOLD.getMainColor());
-						}
-					});
-				}
-			}
-		};
-		CustomActionManager.getInstance().registerAction(initMedalsAction);
+
+	/** ---------------------------------------------------------------------------------------------------------- **/
+	/** ----------------------------------------------- CREATION ------------------------------------------------- **/
+	/** ---------------------------------------------------------------------------------------------------------- **/
+
+	private void createMedals() {
+
+		bronzeMedal = new ShadowedButton("medal", ColorSet.BRONZE);
+		bronzeMedal.setPosition(getWidth() / 2 - bronzeMedal.getWidth() / 2, getHeight() + 500);
+		bronzeMedal.applyColorToContent(ColorSet.BRONZE);
+		bronzeMedal.setVisible(false);
+		this.addActor(bronzeMedal);
+
+		silverMedal = new ShadowedButton("medal", ColorSet.SILVER);
+		silverMedal.setPosition(getWidth() / 2 - silverMedal.getWidth() / 2, getHeight() + 500);
+		silverMedal.applyColorToContent(ColorSet.SILVER);
+		silverMedal.setVisible(false);
+		this.addActor(silverMedal);
+
+		goldMedal = new ShadowedButton("medal", ColorSet.GOLD);
+		goldMedal.setPosition(getWidth() / 2 - goldMedal.getWidth() / 2, getHeight() + 500);
+		goldMedal.applyColorToContent(ColorSet.GOLD);
+		goldMedal.setVisible(false);
+		this.addActor(goldMedal);
+
+		//modify position if already earned
+		earnedMedal = SaveManager.getInstance().getMedalForLevel(levelNo);
+		if (earnedMedal.getMedalNumber() > 0) {
+			bronzeMedal.setPosition(bronzeMedal.getX(), bronzeMedal.getHeight() + 20);
+			bronzeMedal.setVisible(true);
+		}
+		if (earnedMedal.getMedalNumber() > 1) {
+			silverMedal.setPosition(silverMedal.getX(), silverMedal.getHeight() + 20);
+			silverMedal.setVisible(true);
+		}
+		if (earnedMedal.getMedalNumber() > 2) {
+			goldMedal.setPosition(goldMedal.getX(), goldMedal.getHeight() + 20);
+			goldMedal.setVisible(true);
+		}
 	}
 
-	
+	private void createTitle() {
+		String labelText = "";
+		if (success)
+			labelText = "Congratulations";
+		else
+			labelText = "Game Over";
+
+		Label scoreLabel = Label.get(labelText, "big");
+
+		scoreLabel.position(getWidth() / 2 - scoreLabel.getWidth() / 2, getHeight() - scoreLabel.getHeight() - 20);
+		scoreLabel.setColor(currentScreen.getCurrentColorSet().getMainColor());
+		this.addActor(scoreLabel);
+	}
+
+	private void createButtons() {
+		ColorSet currentColorset = Main.getInstance().getCurrentScreen().getCurrentColorSet();
+		
+		ShadowedButton restart = new ShadowedButton("restart", currentColorset, ButtonSize.SMALL);
+		restart.setPosition(getWidth() - restart.getWidth() / 2 - margin - 150, margin / 2);
+		restart.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if(CustomActionManager.getInstance().getRegisteredActionCount() == 0){
+					//				SaveManager.getInstance().addPoints(getScoreValue());
+					//				SaveManager.getInstance().unlockLevel(levelNo, hudLabel.getCurrentColorSet());
+					Main.getInstance().setScreen(new GameScreen(levelNo));
+				}
+			}
+		});
+		this.addActor(restart);
+
+		if (success) {
+			ShadowedButton ok = new ShadowedButton("ok", currentColorset, ButtonSize.SMALL);
+			ok.setPosition(getWidth() / 2 - ok.getWidth() / 2, margin / 2);
+			ok.addListener(new ClickListener() {
+				private boolean clickedOnce;
+
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					if (CustomActionManager.getInstance().getRegisteredActionCount() == 0 && !clickedOnce && getScoreValue() > 0) {
+						CustomActionManager.getInstance().registerAction(transferPointsAction);
+						SaveManager.getInstance().addPoints(getScoreValue());
+						SaveManager.getInstance().unlockLevel(levelNo, hudLabel.getCurrentColorSet());
+						clickedOnce = true;
+					} else if (CustomActionManager.getInstance().getRegisteredActionCount() == 0 && clickedOnce && !transferPointsAction.isRegistered()) {
+						//TODO change it to nextleve function
+						Main.getInstance().setScreen(new LevelSelectionScreen());
+					}
+				}
+			});
+			this.addActor(ok);
+		} else {
+			ShadowedButton back = new ShadowedButton("back-button", currentColorset, ButtonSize.SMALL);
+			back.setPosition(getWidth() / 2 - back.getWidth() / 2, margin / 2);
+			back.addListener(new ClickListener() {
+
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					if(CustomActionManager.getInstance().getRegisteredActionCount() == 0)
+						Main.getInstance().setScreen(new MenuScreen());
+				}
+			});
+			this.addActor(back);
+		}
+
+		if (success /* and determine when it should ba available*/) {
+			ShadowedButton bonus = new ShadowedButton("bonus", currentColorset, ButtonSize.SMALL);
+			bonus.setPosition(margin + 150 - bonus.getWidth() / 2, margin / 2);
+			bonus.addListener(new ClickListener() {
+
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					CustomActionManager.getInstance().registerAction(new CustomAction(0.01f, getScoreValue()) {
+
+						@Override
+						public void perform() {
+							if(CustomActionManager.getInstance().getRegisteredActionCount() == 0)
+								setScoreValue(getScoreValue() + 1);
+						}
+					});
+				}
+			});
+			this.addActor(bonus);
+		}
+	}
+
 	private void createPointLabels() {
 		Image diamondImage = Image.getFromTexture("diamond");
-		diamondImage.setSize(diamondImage.getWidth()*0.7f, diamondImage.getHeight()*0.7f);
+		diamondImage.setSize(diamondImage.getWidth() * 0.7f, diamondImage.getHeight() * 0.7f);
 		this.addActor(diamondImage);
-		totalLabel = Label.get("200", "big");
+		totalLabel = Label.get(String.valueOf(SaveManager.getInstance().getPoints()), "big");
 		totalLabel.setColor(ColorSet.PURPLE.getMainColor());
-		this.addActor(totalLabel);		
-		totalLabel.position(getWidth()/2 - totalLabel.getWidth()/2 + diamondImage.getWidth()/2, getHeight()/2 - totalLabel.getHeight() + 100);
-		diamondImage.setPosition(getWidth()/2 - totalLabel.getWidth()/2 - diamondImage.getWidth()/2, getHeight() - 220 - diamondImage.getHeight() / 2);
-		
-		if(success){
-			scoreLabel = Label.get("0", "big");
-			scoreLabel.position(margin + 150 - scoreLabel.getWidth()/2, getHeight()/2 - scoreLabel.getHeight() + 100);
+		this.addActor(totalLabel);
+		totalLabel.position(getWidth() / 2 - totalLabel.getWidth() / 2 + diamondImage.getWidth() / 2, getHeight() / 2 - totalLabel.getHeight() + 100);
+		diamondImage.setPosition(getWidth() / 2 - totalLabel.getWidth() / 2 - diamondImage.getWidth() / 2, getHeight() - 220 - diamondImage.getHeight() / 2);
+
+		if (success) {
+			scoreLabel = Label.get("00", "big");
+			scoreLabel.position(margin + 150 - scoreLabel.getWidth() / 2, getHeight() / 2 - scoreLabel.getHeight() + 100);
 			scoreLabel.setColor(ColorSet.GRAY.getMainColor());
+			scoreLabel.setVisible(false);
 			this.addActor(scoreLabel);
-			
+
 			scoreLabelContainer = new Container<Label>(scoreLabel);
 			scoreLabelContainer.setTransform(true);
-			scoreLabelContainer.setPosition(margin + 150 - scoreLabel.getWidth()/2, getHeight()/2 - scoreLabel.getHeight() + 100);
+			scoreLabelContainer.setPosition(margin + 150 - scoreLabel.getWidth() / 2, getHeight() / 2 - scoreLabel.getHeight() + 100);
 			scoreLabelContainer.align(Align.left);
 			addActor(scoreLabelContainer);
-			updateScoreSize();
-			
+
 			scoreSequence = new SequenceAction();
 			ScaleByAction s1 = new ScaleByAction();
 			DelayAction d = new DelayAction(0.05f);
@@ -181,102 +258,139 @@ public class EndScreenGroup extends Group {
 			s2.setAmount(-0.5f);
 			s2.setDuration(0.05f);
 			s2.setInterpolation(Interpolation.exp5Out);
-		    scoreSequence.addAction(s1);
-		    scoreSequence.addAction(d);
-		    scoreSequence.addAction(s2);
+			scoreSequence.addAction(s1);
+			scoreSequence.addAction(d);
+			scoreSequence.addAction(s2);
 
-		    //move total to the right
-			totalLabel.position(totalLabel.getX() + getWidth()/2 - margin - 150, totalLabel.getY());
-			diamondImage.position(diamondImage.getX() + getWidth()/2 - margin - 150, diamondImage.getY());
+			//move total to the right
+			totalLabel.position(totalLabel.getX() + getWidth() / 2 - margin - 150, totalLabel.getY());
+			diamondImage.position(diamondImage.getX() + getWidth() / 2 - margin - 150, diamondImage.getY());
 		}
 	}
-	
-	private void bumpScoreLabel(){
+
+	private void createActions() {
+		transferPointsAction = new CustomAction(0.01f, 0) {
+
+			@Override
+			public void perform() {
+				setScoreValue(getScoreValue() - 1);
+				setTotalValue(getTotalValue() + 1);
+
+				if (getScoreValue() <= 0){
+					unregister();
+				}
+			}
+		};
+
+		initMedalsAction = new CustomAction(1f) {
+
+			private float delay = 0f;
+
+			@Override
+			public void perform() {
+				if (hudLabel.getCurrentColorSet().getMedalNumber() > 0 && earnedMedal.getMedalNumber() < 1) {
+					bronzeMedal.setVisible(true);
+					bronzeMedal.addAction(Actions.moveTo(bronzeMedal.getX(), bronzeMedal.getHeight() + 20, 0.5f, Interpolation.exp5In));
+					delay += 0.5f;
+					CustomActionManager.getInstance().registerAction(new CustomAction(delay) {
+						@Override
+						public void perform() {
+							setScoreValue(getScoreValue() + LevelData.BRONZE_POINTS);
+							bumpScoreLabel();
+							scoreLabel.setColor(ColorSet.BRONZE.getMainColor());
+							CustomActionManager.getInstance().registerAction(shakeAction);
+						}
+					});
+				}
+				if (hudLabel.getCurrentColorSet().getMedalNumber() > 1 && earnedMedal.getMedalNumber() < 2) {
+					silverMedal.setVisible(true);
+					SequenceAction sequence = new SequenceAction();
+					sequence.addAction(Actions.delay(delay));
+					sequence.addAction(Actions.moveTo(silverMedal.getX(), silverMedal.getHeight() + 20, 0.5f, Interpolation.exp5In));
+					silverMedal.addAction(sequence);
+					delay += 0.5f;
+					CustomActionManager.getInstance().registerAction(new CustomAction(delay) {
+						@Override
+						public void perform() {
+							setScoreValue(getScoreValue() + LevelData.SILVER_POINTS);
+							bumpScoreLabel();
+							scoreLabel.setColor(ColorSet.SILVER.getMainColor());
+							CustomActionManager.getInstance().registerAction(shakeAction);
+						}
+					});
+				}
+				if (hudLabel.getCurrentColorSet().getMedalNumber() > 2 && earnedMedal.getMedalNumber() < 3) {
+					goldMedal.setVisible(true);
+					SequenceAction sequence = new SequenceAction();
+					sequence.addAction(Actions.delay(delay));
+					sequence.addAction(Actions.moveTo(goldMedal.getX(), goldMedal.getHeight() + 20, 0.5f, Interpolation.exp5In));
+					goldMedal.addAction(sequence);
+					delay += 0.5f;
+					CustomActionManager.getInstance().registerAction(new CustomAction(delay) {
+						@Override
+						public void perform() {
+							setScoreValue(getScoreValue() + LevelData.GOLD_POINTS);
+							bumpScoreLabel();
+							scoreLabel.setColor(ColorSet.GOLD.getMainColor());
+							CustomActionManager.getInstance().registerAction(shakeAction);
+						}
+					});
+				}
+			}
+			
+		};
+		CustomActionManager.getInstance().registerAction(initMedalsAction);
+
+		shakeAction = new CustomAction(0f, 7, this) {
+
+			private Float origPositionX;
+			private Float origPositionY;
+
+			@Override
+			public void perform() {
+				Group endScreenGroup = (Group) args[0];
+
+				if (origPositionX == null || origPositionY == null) {
+					origPositionX = endScreenGroup.getX();
+					origPositionY = endScreenGroup.getY();
+				}
+				float xTilt = (new Random().nextFloat() - 0.5f) * 5;
+				float yTilt = (new Random().nextFloat() - 0.5f) * 5;
+				float degrees = new Random().nextFloat() - 0.5f;
+
+				endScreenGroup.setPosition(endScreenGroup.getX() + xTilt, endScreenGroup.getY() + yTilt);
+				endScreenGroup.setRotation(degrees);
+			}
+
+			@Override
+			public void onFinish() {
+				Group endScreenGroup = (Group) args[0];
+				endScreenGroup.setPosition(origPositionX, origPositionY);
+				endScreenGroup.setRotation(0);
+			}
+
+		};
+	}
+
+	/** ---------------------------------------------------------------------------------------------------------- **/
+	/** ----------------------------------------------- HELPERS -------------------------------------------------- **/
+	/** ---------------------------------------------------------------------------------------------------------- **/
+
+	private void bumpScoreLabel() {
+		scoreLabelContainer.setSize(scoreLabel.getWidth(), scoreLabel.getHeight());
+		scoreLabelContainer.setOrigin(scoreLabelContainer.getWidth() / 2, scoreLabelContainer.getHeight() / 2);
 		scoreLabelContainer.addAction(scoreSequence);
 		scoreSequence.restart();
 	}
-	
-	private void updateScoreSize(){
-		scoreLabelContainer.setSize(scoreLabel.getWidth(), scoreLabel.getHeight());
-		scoreLabelContainer.setOrigin(scoreLabelContainer.getWidth()/2, scoreLabelContainer.getHeight()/2);
-	}
-	
-	private void createMedals() {
-		if(hudLabel.getCurrentColorSet() == ColorSet.GOLD){
-			goldMedal = new ShadowedButton("medal", ColorSet.GOLD);
-			goldMedal.setPosition(getWidth()/2 - goldMedal.getWidth() / 2, getHeight() + 500);
-			goldMedal.applyColorToContent(ColorSet.GOLD);
-			goldMedal.setVisible(false);
-			this.addActor(goldMedal);
-		}
-		
-		if(hudLabel.getCurrentColorSet() == ColorSet.GOLD || hudLabel.getCurrentColorSet() == ColorSet.SILVER){
-			silverMedal = new ShadowedButton("medal", ColorSet.SILVER);
-			silverMedal.setPosition(getWidth()/2 - silverMedal.getWidth() / 2, getHeight() + 500);
-			silverMedal.applyColorToContent(ColorSet.SILVER);
-			silverMedal.setVisible(false);
-			this.addActor(silverMedal);
-		}
-		
-		if(hudLabel.getCurrentColorSet() == ColorSet.GOLD || hudLabel.getCurrentColorSet() == ColorSet.SILVER || hudLabel.getCurrentColorSet() == ColorSet.BRONZE){
-			bronzeMedal = new ShadowedButton("medal", ColorSet.BRONZE);
-			bronzeMedal.setPosition(getWidth()/2 - bronzeMedal.getWidth() / 2, getHeight() + 500);
-			bronzeMedal.applyColorToContent(ColorSet.BRONZE);
-			bronzeMedal.setVisible(false);
-			this.addActor(bronzeMedal);
-		}
 
-	}
-
-	private void createTitle() {
-		String labelText = "";
-		if(success)
-			labelText = "Congratulations";
-		else
-			labelText = "Game Over";
-		
-		Label scoreLabel = Label.get(labelText, "big");
-		
-		scoreLabel.position(getWidth()/2 - scoreLabel.getWidth() / 2, getHeight() - scoreLabel.getHeight() - 20);
-		scoreLabel.setColor(currentScreen.getCurrentColorSet().getMainColor());
-		this.addActor(scoreLabel);
-	}
-	
-	private void createButtons(){
-		ColorSet currentColorset = Main.getInstance().getCurrentScreen().getCurrentColorSet();
-		
-		ShadowedButton restart = new ShadowedButton("restart", currentColorset, ButtonSize.SMALL);
-		restart.setPosition(getWidth() - restart.getWidth()/2 - margin - 150, margin/2);
-		this.addActor(restart);
-		
-		if(success){
-			ShadowedButton ok = new ShadowedButton("ok", currentColorset, ButtonSize.SMALL);
-			ok.setPosition(getWidth()/2 - ok.getWidth() / 2, margin/2);
-			ok.addListener(new ClickListener(){
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					CustomActionManager.getInstance().registerAction(transferPointsAction);
-				}
-			});
-			this.addActor(ok);
-		}
-		else{
-			ShadowedButton ok = new ShadowedButton("back-button", currentColorset, ButtonSize.SMALL);
-			ok.setPosition(getWidth()/2 - ok.getWidth() / 2, margin/2);
-			this.addActor(ok);
-		}
-		
-		if(success /* and determine when it should ba available*/){
-			ShadowedButton bonus = new ShadowedButton("bonus", currentColorset, ButtonSize.SMALL);
-			bonus.setPosition(margin + 150 - bonus.getWidth()/2, margin/2);
-			this.addActor(bonus);
-		}
-	}
+	/** ---------------------------------------------------------------------------------------------------------- **/
+	/** ----------------------------------------------- ACT/DRAW ------------------------------------------------- **/
+	/** ---------------------------------------------------------------------------------------------------------- **/
 
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		if((hudLabel.isGameOver() || hoop.isFinished()) && !showed){
+		if ((hudLabel.isGameOver() || hoop.isFinished()) && !showed) {
 			init();
 			showed = true;
 			hudLabel.setCounting(false);
@@ -295,6 +409,10 @@ public class EndScreenGroup extends Group {
 		super.draw(batch, parentAlpha);
 	}
 
+	/** ---------------------------------------------------------------------------------------------------------- **/
+	/** -------------------------------------------- GETTERS/SETTERS---------------------------------------------- **/
+	/** ---------------------------------------------------------------------------------------------------------- **/
+
 	public Hoop getHoop() {
 		return hoop;
 	}
@@ -303,19 +421,21 @@ public class EndScreenGroup extends Group {
 		this.hoop = hoop;
 	}
 
-	private void setTotalValue(int value){
+	private void setTotalValue(int value) {
 		totalLabel.setText(String.valueOf(value));
 	}
-	
-	private void setScoreValue(int value){
+
+	private void setScoreValue(int value) {
+		if (!scoreLabel.isVisible())
+			scoreLabel.setVisible(true);
 		scoreLabel.setText(String.valueOf(value));
 	}
-	
-	private int getTotalValue(){
+
+	private int getTotalValue() {
 		return Integer.valueOf(totalLabel.getText().toString());
 	}
-	
-	private int getScoreValue(){
+
+	private int getScoreValue() {
 		return Integer.valueOf(scoreLabel.getText().toString());
 	}
 }

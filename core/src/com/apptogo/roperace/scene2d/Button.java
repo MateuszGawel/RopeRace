@@ -1,7 +1,6 @@
 package com.apptogo.roperace.scene2d;
 
 import com.apptogo.roperace.manager.ResourcesManager;
-import com.apptogo.roperace.plugin.SoundPlugin;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;

@@ -52,13 +52,13 @@ public class GameScreen extends BasicScreen {
 	private StartGameGroup startGameGroup;
 	private GravityPlugin gravityPlugin;
 	
-	public GameScreen(Main game, int level) {
-		super(game);
+	public GameScreen(int level) {
+		super();
 		this.level = level;
 	}
 	
-	public GameScreen(Main game) {
-		super(game);
+	public GameScreen() {
+		super();
 		this.level = 1; //TODO get last level from save
 	}
 	
@@ -90,7 +90,7 @@ public class GameScreen extends BasicScreen {
 	}
 
 	protected void createEndScreenGroup(){
-		EndScreenGroup endScreenGroup = new EndScreenGroup(hudLabel, hoop);
+		EndScreenGroup endScreenGroup = new EndScreenGroup(hudLabel, hoop, level);
 		hudStage.addActor(endScreenGroup);
 	}
 
@@ -132,6 +132,7 @@ public class GameScreen extends BasicScreen {
 		player.addPlugin(cameraFollowingPlugin);
 		player.addPlugin(steeringPlugin);
 		player.addPlugin(gravityPlugin);
+		
 	}
 	
 	protected void createLevel(){	
