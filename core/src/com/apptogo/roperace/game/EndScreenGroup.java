@@ -197,8 +197,9 @@ public class EndScreenGroup extends Group {
 
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					if(CustomActionManager.getInstance().getRegisteredActionCount() == 0)
+					if(CustomActionManager.getInstance().getRegisteredActionCount() == 0){
 						Main.getInstance().setScreen(new MenuScreen());
+					}
 				}
 			});
 			this.addActor(back);
@@ -211,14 +212,15 @@ public class EndScreenGroup extends Group {
 
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					CustomActionManager.getInstance().registerAction(new CustomAction(0.01f, getScoreValue()) {
+					if (CustomActionManager.getInstance().getRegisteredActionCount() == 0) {
+						CustomActionManager.getInstance().registerAction(new CustomAction(0.01f, getScoreValue()) {
 
-						@Override
-						public void perform() {
-							if(CustomActionManager.getInstance().getRegisteredActionCount() == 0)
+							@Override
+							public void perform() {
 								setScoreValue(getScoreValue() + 1);
-						}
-					});
+							}
+						});
+					}
 				}
 			});
 			this.addActor(bonus);
