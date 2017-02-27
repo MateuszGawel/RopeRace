@@ -22,6 +22,7 @@ import com.apptogo.roperace.screen.MenuScreen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -206,13 +207,20 @@ public class EndScreenGroup extends Group {
 		}
 
 		if (success /* and determine when it should ba available*/) {
-			ShadowedButton bonus = new ShadowedButton("bonus", currentColorset, ButtonSize.SMALL);
+			final ShadowedButton bonus = new ShadowedButton("bonus", currentColorset, ButtonSize.SMALL);
 			bonus.setPosition(margin + 150 - bonus.getWidth() / 2, margin / 2);
+			bonus.setOrigin(Align.center);
+			
+			final Action pulse = Actions.forever(Actions.sequence(Actions.scaleTo(1.1f, 1.1f, 0.5f), Actions.scaleTo(0.9f, 0.9f, 0.5f)));
+			bonus.addAction(pulse);
+			
 			bonus.addListener(new ClickListener() {
 
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
 					if (CustomActionManager.getInstance().getRegisteredActionCount() == 0) {
+						bonus.removeAction(pulse);
+						bonus.setVisible(false);
 						CustomActionManager.getInstance().registerAction(new CustomAction(0.01f, getScoreValue()) {
 
 							@Override
@@ -224,6 +232,8 @@ public class EndScreenGroup extends Group {
 				}
 			});
 			this.addActor(bonus);
+			
+
 		}
 	}
 
