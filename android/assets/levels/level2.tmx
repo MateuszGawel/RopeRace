@@ -77,7 +77,7 @@
   <object x="640" y="768" width="608" height="32"/>
   <object x="32" y="192" width="1120" height="32"/>
   <object x="32" y="0" width="1216" height="32"/>
-  <object name="end" x="128" y="96" width="32" height="32" rotation="90"/>
+  <object name="end" x="79.5" y="3072.5" width="32" height="32"/>
   <object name="start" x="64" y="2912" width="64" height="64">
    <ellipse/>
   </object>

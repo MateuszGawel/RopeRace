@@ -17,7 +17,6 @@ import com.apptogo.roperace.scene2d.ShadowedButton;
 import com.apptogo.roperace.scene2d.ShadowedButton.ButtonSize;
 import com.apptogo.roperace.screen.BasicScreen;
 import com.apptogo.roperace.screen.GameScreen;
-import com.apptogo.roperace.screen.LevelSelectionScreen;
 import com.apptogo.roperace.screen.MenuScreen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -59,6 +58,7 @@ public class EndScreenGroup extends Group {
 	private CustomAction initMedalsAction;
 	private CustomAction shakeAction;
 
+	private ShadowedButton bonus;
 	private ShadowedButton goldMedal;
 	private ShadowedButton silverMedal;
 	private ShadowedButton bronzeMedal;
@@ -94,8 +94,8 @@ public class EndScreenGroup extends Group {
 		if (success)
 			createMedals();
 		createTitle();
-		createButtons();
 		createPointLabels();
+		createButtons();
 		createActions();
 	}
 
@@ -155,14 +155,14 @@ public class EndScreenGroup extends Group {
 
 	private void createButtons() {
 		ColorSet currentColorset = Main.getInstance().getCurrentScreen().getCurrentColorSet();
-		
+
 		ShadowedButton restart = new ShadowedButton("restart", currentColorset, ButtonSize.SMALL);
 		restart.setPosition(getWidth() - restart.getWidth() / 2 - margin - 150, margin / 2);
 		restart.addListener(new ClickListener() {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if(CustomActionManager.getInstance().getRegisteredActionCount() == 0){
+				if (CustomActionManager.getInstance().getRegisteredActionCount() == 0) {
 					//				SaveManager.getInstance().addPoints(getScoreValue());
 					//				SaveManager.getInstance().unlockLevel(levelNo, hudLabel.getCurrentColorSet());
 					Main.getInstance().setScreen(new GameScreen(levelNo));
@@ -184,9 +184,8 @@ public class EndScreenGroup extends Group {
 						SaveManager.getInstance().addPoints(getScoreValue());
 						SaveManager.getInstance().unlockLevel(levelNo, hudLabel.getCurrentColorSet());
 						clickedOnce = true;
-					} else if (CustomActionManager.getInstance().getRegisteredActionCount() == 0 && clickedOnce && !transferPointsAction.isRegistered()) {
-						//TODO change it to nextleve function
-						Main.getInstance().setScreen(new LevelSelectionScreen());
+					} else if ((CustomActionManager.getInstance().getRegisteredActionCount() == 0  && !transferPointsAction.isRegistered()) || clickedOnce) {
+						Main.getInstance().setScreen(new GameScreen(levelNo + 1));
 					}
 				}
 			});
@@ -198,7 +197,7 @@ public class EndScreenGroup extends Group {
 
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					if(CustomActionManager.getInstance().getRegisteredActionCount() == 0){
+					if (CustomActionManager.getInstance().getRegisteredActionCount() == 0) {
 						Main.getInstance().setScreen(new MenuScreen());
 					}
 				}
@@ -206,14 +205,14 @@ public class EndScreenGroup extends Group {
 			this.addActor(back);
 		}
 
-		if (success /* and determine when it should ba available*/) {
-			final ShadowedButton bonus = new ShadowedButton("bonus", currentColorset, ButtonSize.SMALL);
+		if (success /* and determine when it should ba available*/ && hudLabel.getCurrentColorSet().getMedalNumber() > earnedMedal.getMedalNumber()) {
+			bonus = new ShadowedButton("bonus", currentColorset, ButtonSize.SMALL);
 			bonus.setPosition(margin + 150 - bonus.getWidth() / 2, margin / 2);
 			bonus.setOrigin(Align.center);
-			
+
 			final Action pulse = Actions.forever(Actions.sequence(Actions.scaleTo(1.1f, 1.1f, 0.5f), Actions.scaleTo(0.9f, 0.9f, 0.5f)));
 			bonus.addAction(pulse);
-			
+
 			bonus.addListener(new ClickListener() {
 
 				@Override
@@ -232,7 +231,6 @@ public class EndScreenGroup extends Group {
 				}
 			});
 			this.addActor(bonus);
-			
 
 		}
 	}
@@ -285,10 +283,12 @@ public class EndScreenGroup extends Group {
 
 			@Override
 			public void perform() {
+				bonus.setVisible(false);
+
 				setScoreValue(getScoreValue() - 1);
 				setTotalValue(getTotalValue() + 1);
 
-				if (getScoreValue() <= 0){
+				if (getScoreValue() <= 0) {
 					unregister();
 				}
 			}
@@ -349,7 +349,7 @@ public class EndScreenGroup extends Group {
 					});
 				}
 			}
-			
+
 		};
 		CustomActionManager.getInstance().registerAction(initMedalsAction);
 
@@ -448,6 +448,8 @@ public class EndScreenGroup extends Group {
 	}
 
 	private int getScoreValue() {
+		if (scoreLabel == null)
+			return 0;
 		return Integer.valueOf(scoreLabel.getText().toString());
 	}
 }

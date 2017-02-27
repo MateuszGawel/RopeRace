@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class LevelSelectionScreen extends BasicScreen {
 
@@ -26,18 +28,26 @@ public class LevelSelectionScreen extends BasicScreen {
 
 	@Override
 	protected void prepare() {
+		prepareBackStage();
 		prepareFrontStage();
 		prepareScrollPane();
 	}
 
 	protected void prepareFrontStage() {
+		frontViewport = new FillViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		frontStage.setViewport(frontViewport);
+	}
+	
+	protected void prepareBackStage(){
 		float small_padding = 20;
 		
 		ShadowedButton backButton = new ShadowedButton("back-button", currentColorSet, ButtonSize.SMALL);
 		backButton.addListener(Listener.click(game, new WorldSelectionScreen()));
 		backButton.setPosition(Main.SCREEN_WIDTH / 2 - backButton.getWidth() - small_padding, -Main.SCREEN_HEIGHT/2 + small_padding);
-		frontStage.addActor(backButton);
-
+		backStage.addActor(backButton);
+		
+		backViewport = new FitViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		backStage.setViewport(backViewport);
 	}
 
 	private void prepareScrollPane() {

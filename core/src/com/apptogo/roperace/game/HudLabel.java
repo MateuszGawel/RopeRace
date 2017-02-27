@@ -37,6 +37,7 @@ public class HudLabel extends Group{
 	private SequenceAction sequence;
 	private DecimalFormat decimalFormat;
 	private int starCounter;
+	private CustomAction timeCountingAction;
 	
 	public HudLabel(LevelData levelData, GameActor player){
 		this.player = player;
@@ -109,8 +110,7 @@ public class HudLabel extends Group{
 	private void createTimeLabel(){
 		currentColorSet = ColorSet.GOLD;
 		label.setText("0");
-		
-		CustomActionManager.getInstance().registerAction(new CustomAction(0.1f, 0) {
+		timeCountingAction = new CustomAction(0.1f, 0) {
 
 			@Override
 			public void perform() {
@@ -135,7 +135,8 @@ public class HudLabel extends Group{
 				label.setColor(currentColorSet.getMainColor());
 
 			}
-		});
+		};
+		CustomActionManager.getInstance().registerAction(timeCountingAction);
 	}
 	
 	private void createStarsLabel(){
@@ -233,6 +234,9 @@ public class HudLabel extends Group{
 
 	public void setCounting(boolean counting) {
 		this.counting = counting;
+		if(!counting && timeCountingAction != null){
+			timeCountingAction.unregister();
+		}
 	}
 
 	public void onStarCollected() {
