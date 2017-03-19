@@ -1,15 +1,28 @@
 package com.apptogo.roperace.screen;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.apptogo.roperace.game.UnlockWorldScreenGroup;
 import com.apptogo.roperace.main.Main;
-import com.apptogo.roperace.scene2d.Image;
+import com.apptogo.roperace.manager.CustomAction;
+import com.apptogo.roperace.manager.CustomActionManager;
+import com.apptogo.roperace.save.SaveManager;
+import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Listener;
 import com.apptogo.roperace.scene2d.ShadowedButton;
 import com.apptogo.roperace.scene2d.ShadowedButton.ButtonSize;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class WorldSelectionScreen extends BasicScreen {
+	private UnlockWorldScreenGroup unlockWorldScreenGroup;
+	private static final float SMALL_PADDING = 20;
+	private static final float BIG_PADDING = 100;
+	private Map<Integer, ShadowedButton> worldButtons = new HashMap<Integer, ShadowedButton>();
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ---------------------------------------------- PREPARATION ----------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -18,6 +31,12 @@ public class WorldSelectionScreen extends BasicScreen {
 	protected void prepare() {
 		prepareBackStage();
 		prepareFrontStage();
+		prepareUnlockWorldScreen();
+	}
+
+	private void prepareUnlockWorldScreen() {
+		unlockWorldScreenGroup = new UnlockWorldScreenGroup();
+		frontStage.addActor(unlockWorldScreenGroup);
 	}
 
 	protected void prepareBackStage() {
@@ -26,29 +45,66 @@ public class WorldSelectionScreen extends BasicScreen {
 	}
 
 	protected void prepareFrontStage() {		
-		float small_padding = 20;
-		float big_padding = 100;
+
 		
 		ShadowedButton backButton = new ShadowedButton("back-button", currentColorSet, ButtonSize.SMALL);
 		backButton.addListener(Listener.click(game, new MenuScreen()));
-		backButton.setPosition(Main.SCREEN_WIDTH / 2 - backButton.getWidth() - small_padding, -Main.SCREEN_HEIGHT/2 + small_padding);
+		backButton.setPosition(Main.SCREEN_WIDTH / 2 - backButton.getWidth() - SMALL_PADDING, -Main.SCREEN_HEIGHT/2 + SMALL_PADDING);
 		frontStage.addActor(backButton);
 
-		Image world1 = Image.getFromTexture("world1");
-		world1.size(world1.getRegion().getRegionWidth(), world1.getRegion().getRegionHeight());
-		world1.position(-Main.SCREEN_WIDTH/2 + big_padding, Main.SCREEN_HEIGHT/2 - world1.getHeight() - big_padding);
-		world1.addListener(Listener.click(game, new LevelSelectionScreen()));
-		frontStage.addActor(world1);
-		
-		Image world2 = Image.getFromTexture("world2");
-		world2.size(world2.getRegion().getRegionWidth(), world2.getRegion().getRegionHeight());
-		world2.position(-Main.SCREEN_WIDTH/2 + world2.getWidth() + 2*big_padding , Main.SCREEN_HEIGHT/2 - world2.getHeight() - big_padding);
-		world2.addListener(Listener.click(game, new LevelSelectionScreen()));
-		frontStage.addActor(world2);
+		prepareWorldButton(1, ColorSet.BLUE, 100);
+		prepareWorldButton(2, ColorSet.GREEN, 100);
 	
 	}
 	
+	private void refreshWorldButton(int worldNumber, int cost){
+		ShadowedButton currentButton = worldButtons.get(worldNumber);
+		prepareWorldButton(worldNumber, currentButton.getColorSet(), cost);
+		currentButton.remove();
+	}
 	
+	private void prepareWorldButton(final int worldNumber, ColorSet colorSet, final int cost){
+		ShadowedButton worldButton = new ShadowedButton(getWorldRegion(worldNumber), colorSet, ButtonSize.BIG);
+		worldButton.setPosition(-Main.SCREEN_WIDTH/2 - worldButton.getWidth() + worldNumber*BIG_PADDING + worldNumber * worldButton.getWidth(), Main.SCREEN_HEIGHT/2 - worldButton.getHeight() - BIG_PADDING);
+		if(SaveManager.getInstance().isWorldUnlocked(worldNumber)){
+			worldButton.addListener(Listener.click(game, new LevelSelectionScreen(worldNumber, colorSet)));
+		}
+		else{
+			worldButton.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					unlockWorldScreenGroup.init(worldNumber, cost);
+				}
+			});
+		}
+		frontStage.addActor(worldButton);
+		worldButtons.put(worldNumber, worldButton);
+	}
+	
+	private String getWorldRegion(int worldNumber){
+		if(SaveManager.getInstance().isWorldUnlocked(worldNumber))
+			return "world" + worldNumber;
+		else
+			return "locker";
+	}
+	
+	public void unlockWorld(int worldNumber, final int cost){
+		SaveManager.getInstance().usePoints(cost);
+		SaveManager.getInstance().unlockWorld(worldNumber);
+		refreshWorldButton(worldNumber, cost);
+		
+		if (cost > 0) {
+			transferPointsAction = new CustomAction(0.01f, cost) {
+
+				@Override
+				public void perform() {
+					setScoreValue(getScoreValue() - 1);
+				}
+
+			};
+			CustomActionManager.getInstance().registerAction(transferPointsAction);
+		}
+	}
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** -------------------------------------------------- STEP -------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/

@@ -41,7 +41,7 @@ public class LevelGenerator{
 	private TiledMap map;
 	private OrthographicCamera  camera;
 	private Vector2 startingPoint;
-	private int levelNumber;
+	private int levelNo;
 	private GameScreen screen;
 	
 	private MyShapeRenderer shapeRenderer;
@@ -57,9 +57,9 @@ public class LevelGenerator{
 		this.screen = screen;
 	}
 
-	public void loadLevel(int levelNumber){
-		this.levelNumber = levelNumber;
-		map = ResourcesManager.getInstance().loadAndGetTiledMap(levelNumber);
+	public void loadLevel(int levelno, int worldNo){
+		this.levelNo = levelno;
+		map = ResourcesManager.getInstance().loadAndGetTiledMap(levelno, worldNo);
 		fillLevelData();
 		createObjects();
 	}
@@ -190,7 +190,7 @@ public class LevelGenerator{
 		createPolylines();
 		
 		if(startingPoint == null){
-			throw new LevelException("Starting point must be set on map: level" + levelNumber);
+			throw new LevelException("Starting point must be set on map: level" + levelNo);
 		}
 	}
 

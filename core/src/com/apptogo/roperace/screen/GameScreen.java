@@ -39,7 +39,8 @@ public class GameScreen extends BasicScreen {
 	protected GameActor player;
 	protected GameActor ground, ceiling;
 	
-	protected int level;
+	protected int levelNo;
+	protected int worldNo;
 	protected LevelGenerator levelGenerator;
 	protected LevelData levelData;
 	
@@ -52,14 +53,15 @@ public class GameScreen extends BasicScreen {
 	private StartGameGroup startGameGroup;
 	private GravityPlugin gravityPlugin;
 	
-	public GameScreen(int level) {
+	public GameScreen(int levelNo, int worldNo) {
 		super();
-		this.level = level;
+		this.levelNo = levelNo;
+		this.worldNo = worldNo;
 	}
 	
 	public GameScreen() {
 		super();
-		this.level = 1; //TODO get last level from save
+		this.levelNo = 1; //TODO get last level from save
 	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -90,7 +92,7 @@ public class GameScreen extends BasicScreen {
 	}
 
 	protected void createEndScreenGroup(){
-		EndScreenGroup endScreenGroup = new EndScreenGroup(hudLabel, hoop, level);
+		EndScreenGroup endScreenGroup = new EndScreenGroup(hudLabel, hoop, levelNo, worldNo);
 		hudStage.addActor(endScreenGroup);
 	}
 
@@ -137,7 +139,7 @@ public class GameScreen extends BasicScreen {
 	
 	protected void createLevel(){	
 		levelGenerator = new LevelGenerator(this);
-		levelGenerator.loadLevel(level);
+		levelGenerator.loadLevel(levelNo, worldNo);
 	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/

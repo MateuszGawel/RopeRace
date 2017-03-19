@@ -1,6 +1,8 @@
 package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.main.Main;
+import com.apptogo.roperace.save.LevelNode;
+import com.apptogo.roperace.save.SaveManager;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Listener;
 import com.apptogo.roperace.scene2d.ShadowedButton;
@@ -42,8 +44,9 @@ public class MenuScreen extends BasicScreen {
 		worldsButton.setPosition(Main.SCREEN_WIDTH/2-worldsButton.getWidth()-padding, -Main.SCREEN_HEIGHT/2+padding);
 		frontStage.addActor(worldsButton);
 
+		LevelNode levelNode = SaveManager.getInstance().getLatestAvailableLevel();
 		ShadowedButton playButton = new ShadowedButton("play-button", currentColorSet, ButtonSize.BIG);
-		playButton.addListener(Listener.click(game, new GameScreen(1)));
+		playButton.addListener(Listener.click(game, new GameScreen(levelNode.getLevelNo(), levelNode.getWorldNo())));
 		playButton.setPosition(-playButton.getWidth()/2, -playButton.getHeight()/2 - 100);
 		frontStage.addActor(playButton);	
 	}

@@ -48,6 +48,10 @@ public abstract class CustomAction extends Actor {
 		this(delay, loops);
 		this.args = args;
 	}
+	
+	public void setArgs(Object... args){
+		this.args = args;
+	}
 
 	/**
 	 * override this method. Define behaviour.

@@ -1,6 +1,7 @@
 package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.main.Main;
+import com.apptogo.roperace.save.SaveManager;
 import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Listener;
@@ -21,6 +22,13 @@ public class LevelSelectionScreen extends BasicScreen {
 	private static final int NUMBER_OF_LEVELS = 10;
 	private Table table;
 	private ScrollPane scrollPane;
+	private int worldNumber;
+
+	public LevelSelectionScreen(int worldNumber, ColorSet colorSet) {
+		super();
+		this.worldNumber = worldNumber;
+		this.currentColorSet = colorSet;
+	}
 
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ---------------------------------------------- PREPARATION ----------------------------------------------- **/
@@ -48,6 +56,7 @@ public class LevelSelectionScreen extends BasicScreen {
 		
 		backViewport = new FitViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		backStage.setViewport(backViewport);
+		inputMultiplexer.addProcessor(backStage);
 	}
 
 	private void prepareScrollPane() {
@@ -59,9 +68,16 @@ public class LevelSelectionScreen extends BasicScreen {
 		table.row().pad(0, padding, 0, padding);
 
 		for (int i = 1; i < NUMBER_OF_LEVELS; i++) {
+			ShadowedButton button;
+
+			if(SaveManager.getInstance().isLevelUnlocked(i, worldNumber)){
+				button = new ShadowedButton(String.valueOf(i), currentColorSet, ButtonSize.BIG);
+				button.addListener(Listener.click(game, new GameScreen(i, worldNumber)));
+			}
+			else{
+				button = new ShadowedButton("locker", currentColorSet, ButtonSize.BIG);
+			}
 			
-			ShadowedButton button = new ShadowedButton(String.valueOf(i), ColorSet.BLUE, ButtonSize.BIG);
-			button.addListener(Listener.click(game, new GameScreen(i)));
 			Cell<ShadowedButton> cell = table.add(button);
 			if (i == 1) {
 				cell.pad(0, Main.SCREEN_WIDTH / 2 - button.getWidth() / 2, 0, padding);

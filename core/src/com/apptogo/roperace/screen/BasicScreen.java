@@ -1,14 +1,18 @@
 package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.main.Main;
+import com.apptogo.roperace.manager.CustomAction;
 import com.apptogo.roperace.manager.CustomActionManager;
+import com.apptogo.roperace.save.SaveManager;
 import com.apptogo.roperace.scene2d.ColorSet;
+import com.apptogo.roperace.scene2d.Label;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g3d.particles.ResourceData.SaveData;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -27,6 +31,10 @@ public abstract class BasicScreen implements Screen {
 	protected InputMultiplexer inputMultiplexer;
 	
 	protected ColorSet currentColorSet = ColorSet.BLUE;
+
+	protected CustomAction transferPointsAction;
+
+	private Label scoreLabel;
 	
 	public BasicScreen() {
 		this.game = Main.getInstance();
@@ -50,8 +58,30 @@ public abstract class BasicScreen implements Screen {
 
 		//prepare CustomActionManager
 		backStage.addActor(CustomActionManager.getInstance());
+		
+		createLabel();
 	}
 
+	private void createLabel() {
+		scoreLabel = Label.get(String.valueOf(SaveManager.getInstance().getPoints()), "big");
+		scoreLabel.position(Main.SCREEN_WIDTH/2-scoreLabel.getWidth()-10, Main.SCREEN_HEIGHT/2 - 70);
+		scoreLabel.setColor(ColorSet.PURPLE.getMainColor());
+		backStage.addActor(scoreLabel);
+
+	}
+	
+	protected void setScoreValue(int value) {
+		if (!scoreLabel.isVisible())
+			scoreLabel.setVisible(true);
+		scoreLabel.setText(String.valueOf(value));
+	}
+	
+	public int getScoreValue() {
+		if (scoreLabel == null)
+			return 0;
+		return Integer.valueOf(scoreLabel.getText().toString());
+	}
+	
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);

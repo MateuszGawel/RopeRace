@@ -65,7 +65,9 @@ public class ResourcesManager {
 		manager.load("touchpad-knob.png", Texture.class);
 		manager.load("circle.png", Texture.class);
 		manager.load("world1.png", Texture.class);
+		manager.load("world1_shadow.png", Texture.class);
 		manager.load("world2.png", Texture.class);
+		manager.load("world2_shadow.png", Texture.class);
 		manager.load("ball.png", Texture.class);
 		manager.load("viewfinder.png", Texture.class);
 		manager.load("chain.png", Texture.class);
@@ -84,6 +86,8 @@ public class ResourcesManager {
 		manager.load("ok_shadow.png", Texture.class);
 		manager.load("bonus.png", Texture.class);
 		manager.load("bonus_shadow.png", Texture.class);
+		manager.load("locker.png", Texture.class);
+		manager.load("locker_shadow.png", Texture.class);
 		
 		manager.load("1.png", Texture.class);
 		manager.load("2.png", Texture.class);
@@ -168,10 +172,11 @@ public class ResourcesManager {
 	 * @param levelNumber
 	 * @return TiledMap of level
 	 */
-	public TiledMap loadAndGetTiledMap(int levelNumber) {
-		manager.load("levels/level" + levelNumber + ".tmx", TiledMap.class);
+	public TiledMap loadAndGetTiledMap(int levelNumber, int worldNo) {
+		String levelPath = "levels/level-" + worldNo + "-" + levelNumber + ".tmx";
+		manager.load(levelPath, TiledMap.class);
 		manager.finishLoading();
-		return manager.get("levels/level" + levelNumber + ".tmx");
+		return manager.get(levelPath);
 	}
 
 	/**

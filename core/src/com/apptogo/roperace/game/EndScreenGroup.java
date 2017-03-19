@@ -18,6 +18,7 @@ import com.apptogo.roperace.scene2d.ShadowedButton.ButtonSize;
 import com.apptogo.roperace.screen.BasicScreen;
 import com.apptogo.roperace.screen.GameScreen;
 import com.apptogo.roperace.screen.MenuScreen;
+import com.apptogo.roperace.screen.WorldSelectionScreen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
@@ -43,6 +44,7 @@ public class EndScreenGroup extends Group {
 	private boolean showed;
 	private boolean success;
 	private int levelNo;
+	private int worldNo;
 
 	private MyShapeRenderer shapeRenderer;
 	private BasicScreen currentScreen;
@@ -69,15 +71,16 @@ public class EndScreenGroup extends Group {
 	/** ---------------------------------------------------------------------------------------------------------- 
 	 * @param level **/
 
-	public EndScreenGroup(HudLabel hudLabel, Hoop hoop, int level) {
+	public EndScreenGroup(HudLabel hudLabel, Hoop hoop, int level, int worldNo) {
 		setSize(Main.SCREEN_WIDTH - 2 * margin, Main.SCREEN_HEIGHT - 2 * margin);
-		setPosition(-Main.SCREEN_WIDTH / 2 + margin, -10000);
+		setPosition(-Main.SCREEN_WIDTH / 2 + margin, -1000);
 		setOrigin(getWidth() / 2, getHeight() / 2);
 		shapeRenderer = new MyShapeRenderer();
 		currentScreen = Main.getInstance().getCurrentScreen();
 		this.hudLabel = hudLabel;
 		this.hoop = hoop;
 		this.levelNo = level;
+		this.worldNo = worldNo;
 	}
 
 	public void init() {
@@ -124,7 +127,7 @@ public class EndScreenGroup extends Group {
 		this.addActor(goldMedal);
 
 		//modify position if already earned
-		earnedMedal = SaveManager.getInstance().getMedalForLevel(levelNo);
+		earnedMedal = SaveManager.getInstance().getMedalForLevel(levelNo, worldNo);
 		if (earnedMedal.getMedalNumber() > 0) {
 			bronzeMedal.setPosition(bronzeMedal.getX(), bronzeMedal.getHeight() + 20);
 			bronzeMedal.setVisible(true);
@@ -163,9 +166,7 @@ public class EndScreenGroup extends Group {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				if (CustomActionManager.getInstance().getRegisteredActionCount() == 0) {
-					//				SaveManager.getInstance().addPoints(getScoreValue());
-					//				SaveManager.getInstance().unlockLevel(levelNo, hudLabel.getCurrentColorSet());
-					Main.getInstance().setScreen(new GameScreen(levelNo));
+					Main.getInstance().setScreen(new GameScreen(levelNo, worldNo));
 				}
 			}
 		});
@@ -182,10 +183,13 @@ public class EndScreenGroup extends Group {
 					if (CustomActionManager.getInstance().getRegisteredActionCount() == 0 && !clickedOnce && getScoreValue() > 0) {
 						CustomActionManager.getInstance().registerAction(transferPointsAction);
 						SaveManager.getInstance().addPoints(getScoreValue());
-						SaveManager.getInstance().unlockLevel(levelNo, hudLabel.getCurrentColorSet());
+						SaveManager.getInstance().completeLevel(levelNo, worldNo, hudLabel.getCurrentColorSet());
 						clickedOnce = true;
 					} else if ((CustomActionManager.getInstance().getRegisteredActionCount() == 0  && !transferPointsAction.isRegistered()) || clickedOnce) {
-						Main.getInstance().setScreen(new GameScreen(levelNo + 1));
+						if(levelNo == 9)
+							Main.getInstance().setScreen(new WorldSelectionScreen());
+						else
+							Main.getInstance().setScreen(new GameScreen(levelNo+1, worldNo));
 					}
 				}
 			});

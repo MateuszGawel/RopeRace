@@ -11,7 +11,7 @@ import com.googlecode.gwt.crypto.client.TripleDesKeyGenerator;
 
 public class SaveManager {
 
-	private static final boolean ALWAYS_CLEAR = true;
+	private static final boolean DEBUG_ALWAYS_CLEAR = true;
 	
 	private Preferences save;
 	private TripleDesCipher encryptor;
@@ -25,7 +25,7 @@ public class SaveManager {
 	private GameData load() {
 		Json json = new Json();
 
-		if(ALWAYS_CLEAR){
+		if(DEBUG_ALWAYS_CLEAR){
 			gameData = new GameData();
 			save();
 		}
@@ -69,8 +69,8 @@ public class SaveManager {
 		return gameData.getPoints();
 	}
 	
-	public void unlockLevel(int levelNo, ColorSet medal) {
-		LevelNode levelNode = getByNumber(levelNo);
+	public void completeLevel(int levelNo, int worldNo, ColorSet medal) {
+		LevelNode levelNode = getByNumber(levelNo, worldNo);
 
 		if (levelNode != null) {
 			if (levelNode.getMedal().getMedalNumber() < medal.getMedalNumber()) {
@@ -78,31 +78,62 @@ public class SaveManager {
 				save();
 			}
 		} else {
-			levelNode = new LevelNode(levelNo, medal);
+			levelNode = new LevelNode(levelNo, worldNo, medal);
 			gameData.getUnlockedLevels().add(levelNode);
 			save();
 		}
 	}
 	
-	public ColorSet getMedalForLevel(int levelNo){
-		LevelNode levelNode = getByNumber(levelNo);
+	public void unlockWorld(Integer worldNumber){
+		gameData.getUnlockedWorlds().add(worldNumber);
+		save();
+	}
+	
+	public ColorSet getMedalForLevel(int levelNo, int worldNo){
+		LevelNode levelNode = getByNumber(levelNo, worldNo);
 		if(levelNode != null)
 			return levelNode.getMedal();
 		else
 			return ColorSet.GRAY;
 	}
+	
+	public boolean isLevelUnlocked(int levelNumber, int worldNumber){
+		//first is always unlocked
+		if(levelNumber == 1)
+			return true;
+		
+		//check if previous one exists. It means that the current one is available
+		LevelNode level = getByNumber(levelNumber-1, worldNumber);
+		if(level == null)
+			return false;
+		else
+			return true;
+	}
+	
+	public LevelNode getLatestAvailableLevel() {
+		if(gameData.getUnlockedLevels().isEmpty())
+			return new LevelNode(1, 1, ColorSet.GRAY);
+		
+		return gameData.getUnlockedLevels().get(gameData.getUnlockedLevels().size()-1);
+	}
+	
+	public boolean isWorldUnlocked(Integer worldNumber) {
+		return gameData.getUnlockedWorlds().contains(worldNumber);
+	}
 
+	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------ HELPERS ------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
 
-	private LevelNode getByNumber(int levelNo) {
+	private LevelNode getByNumber(int levelNo, int worldNo) {
 		for (LevelNode levelNode : gameData.getUnlockedLevels()) {
-			if (levelNode.getLevelNo() == levelNo)
+			if (levelNode.getLevelNo() == levelNo && levelNode.getWorldNo() == worldNo)
 				return levelNode;
 		}
 		return null;
 	}
+
 
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ---------------------------------------------- ENCRYPTION ------------------------------------------------ **/
@@ -162,6 +193,4 @@ public class SaveManager {
 	public static SaveManager getInstance() {
 		return INSTANCE;
 	}
-
-
 }

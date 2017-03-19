@@ -8,11 +8,15 @@ public class ShadowedButton extends Group {
 	private Image content;
 	private Image shadow;
 
+	private ColorSet colorSet;
+	
 	public enum ButtonSize{
 		BIG, SMALL
 	}
 	
 	public ShadowedButton(String content, ColorSet colorSet){
+		setName(content);
+		this.colorSet = colorSet;
 		this.content = Image.getFromTexture(content);
 		this.shadow = Image.getFromTexture(content + "_shadow");
 
@@ -54,6 +58,10 @@ public class ShadowedButton extends Group {
 		this.setHeight(circle.getHeight());
 		
 		circle.toBack();
+	}
+
+	public ColorSet getColorSet() {
+		return colorSet;
 	}
 
 }
