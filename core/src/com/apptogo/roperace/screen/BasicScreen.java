@@ -66,7 +66,7 @@ public abstract class BasicScreen implements Screen {
 		scoreLabel = Label.get(String.valueOf(SaveManager.getInstance().getPoints()), "big");
 		scoreLabel.position(Main.SCREEN_WIDTH/2-scoreLabel.getWidth()-10, Main.SCREEN_HEIGHT/2 - 70);
 		scoreLabel.setColor(ColorSet.PURPLE.getMainColor());
-		backStage.addActor(scoreLabel);
+		frontStage.addActor(scoreLabel);
 
 	}
 	

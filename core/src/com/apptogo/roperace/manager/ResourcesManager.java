@@ -88,6 +88,8 @@ public class ResourcesManager {
 		manager.load("bonus_shadow.png", Texture.class);
 		manager.load("locker.png", Texture.class);
 		manager.load("locker_shadow.png", Texture.class);
+		manager.load("balls.png", Texture.class);
+		manager.load("balls_shadow.png", Texture.class);
 		
 		manager.load("1.png", Texture.class);
 		manager.load("2.png", Texture.class);
@@ -107,6 +109,11 @@ public class ResourcesManager {
 		manager.load("7_shadow.png", Texture.class);
 		manager.load("8_shadow.png", Texture.class);
 		manager.load("9_shadow.png", Texture.class);
+		
+		manager.load("ball1.png", Texture.class);
+		manager.load("ball2.png", Texture.class);
+		manager.load("ball3.png", Texture.class);
+		manager.load("ball4.png", Texture.class);
 		
 		manager.load("medal.png", Texture.class);
 		manager.load("medal_shadow.png", Texture.class);

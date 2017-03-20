@@ -1,76 +1,99 @@
 package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.main.Main;
-import com.apptogo.roperace.save.LevelNode;
 import com.apptogo.roperace.save.SaveManager;
+import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Listener;
 import com.apptogo.roperace.scene2d.ShadowedButton;
 import com.apptogo.roperace.scene2d.ShadowedButton.ButtonSize;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public class MenuScreen extends BasicScreen {
-	
+public class BallSelectionScreen extends BasicScreen {
+
+	private Table table;
+	private ScrollPane scrollPane;
+
+	public BallSelectionScreen() {
+		super();
+	}
+
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ---------------------------------------------- PREPARATION ----------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
-	
+
 	@Override
 	protected void prepare() {
-
 		prepareBackStage();
 		prepareFrontStage();
-	}
-
-	protected void prepareBackStage() {
-		//		Image background = Image.get("background").width(Main.SCREEN_WIDTH).position(0, -Main.SCREEN_HEIGHT / 2f).centerX();
-		//		backStage.addActor(background);
+		prepareScrollPane();
 	}
 
 	protected void prepareFrontStage() {
-		//frontStage.setViewport(new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT)));
-		
-		float padding = 20;
-		
-		Image logo = Image.getFromTexture("roperace-logo");
-		logo.size(logo.getRegion().getRegionWidth(), logo.getRegion().getRegionHeight());
-		logo.position(0, Main.SCREEN_HEIGHT/2 - logo.getHeight() - padding).centerX();
-		logo.setColor(currentColorSet.getMainColor());
-		frontStage.addActor(logo);
-		
-		ShadowedButton worldsButton = new ShadowedButton("worlds-button", currentColorSet, ButtonSize.SMALL);
-		worldsButton.addListener(Listener.click(game, new WorldSelectionScreen()));
-		worldsButton.setPosition(Main.SCREEN_WIDTH/2-worldsButton.getWidth()-padding, -Main.SCREEN_HEIGHT/2+padding);
-		frontStage.addActor(worldsButton);
-		
-		ShadowedButton ballsButton = new ShadowedButton("balls", currentColorSet, ButtonSize.SMALL);
-		ballsButton.addListener(Listener.click(game, new BallSelectionScreen()));
-		ballsButton.setPosition(Main.SCREEN_WIDTH/2-2*ballsButton.getWidth()-padding - 20, -Main.SCREEN_HEIGHT/2+padding);
-		frontStage.addActor(ballsButton);
-
-		LevelNode levelNode = SaveManager.getInstance().getLatestAvailableLevel();
-		ShadowedButton playButton = new ShadowedButton("play-button", currentColorSet, ButtonSize.BIG);
-		playButton.addListener(Listener.click(game, new GameScreen(levelNode.getLevelNo(), levelNode.getWorldNo())));
-		playButton.setPosition(-playButton.getWidth()/2, -playButton.getHeight()/2 - 100);
-		frontStage.addActor(playButton);	
+		frontViewport = new FillViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		frontStage.setViewport(frontViewport);
 	}
 	
-	
+	protected void prepareBackStage(){
+		float small_padding = 20;
+		
+		ShadowedButton backButton = new ShadowedButton("back-button", currentColorSet, ButtonSize.SMALL);
+		backButton.addListener(Listener.click(game, new MenuScreen()));
+		backButton.setPosition(Main.SCREEN_WIDTH / 2 - backButton.getWidth() - small_padding, -Main.SCREEN_HEIGHT/2 + small_padding);
+		backStage.addActor(backButton);
+		
+		backViewport = new FitViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		backStage.setViewport(backViewport);
+		inputMultiplexer.addProcessor(backStage);
+	}
+
+	private void prepareScrollPane() {
+		float padding = 50;
+
+		TextureRegion dummyImage = Image.getFromTexture("circle").getRegion();
+
+		table = new Table();
+		table.row().pad(0, padding, 0, padding);
+
+		for (int i = 1; i <= 4; i++) {
+			Image ball = Image.getFromTexture("ball"+i);
+
+			
+			Cell<Image> cell = table.add(ball);
+			if (i == 1) {
+				cell.pad(0, Main.SCREEN_WIDTH / 2 - ball.getWidth() / 2, 0, padding);
+			}
+		}
+
+		scrollPane = new ScrollPane(table);
+		scrollPane.setScrollingDisabled(false, true);
+		scrollPane.setFadeScrollBars(false);
+		scrollPane.setSize(Main.SCREEN_WIDTH, dummyImage.getRegionHeight());
+		scrollPane.setPosition(-Main.SCREEN_WIDTH / 2, -dummyImage.getRegionWidth() / 2);
+		frontStage.addActor(scrollPane);
+	}
+
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** -------------------------------------------------- STEP -------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
-	
+
 	@Override
 	protected void step(float delta) {
 		// --- backstage render first --- //
 
 		//simulate physics and handle body contacts
 
-
 		// --- frontstage render last --- //
 	}
-	
+
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -92,7 +115,7 @@ public class MenuScreen extends BasicScreen {
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------ DISPOSE ------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
-	
+
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
@@ -102,9 +125,11 @@ public class MenuScreen extends BasicScreen {
 	public void dispose() {
 		super.dispose();
 	}
-
-	/** ---------------------------------------------------------------------------------------------------------- **/
-	/** -------------------------------------------- GETTERS / SETTERS --------------------------------------------**/
-	/** ---------------------------------------------------------------------------------------------------------- **/
 	
+	@Override
+	protected void handleInput() {
+		if (Gdx.input.isKeyJustPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			game.setScreen(new WorldSelectionScreen());
+		}
+	}
 }
