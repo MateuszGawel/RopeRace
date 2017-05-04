@@ -160,7 +160,7 @@ public class EndScreenGroup extends Group {
 		ColorSet currentColorset = Main.getInstance().getCurrentScreen().getCurrentColorSet();
 
 		ShadowedButton restart = new ShadowedButton("restart", currentColorset, ButtonSize.SMALL);
-		restart.setPosition(getWidth() - restart.getWidth() / 2 - margin - 150, margin / 2);
+		restart.setPosition(getWidth() - restart.getWidth()*1.5f, margin / 2);
 		restart.addListener(new ClickListener() {
 
 			@Override
@@ -172,71 +172,84 @@ public class EndScreenGroup extends Group {
 		});
 		this.addActor(restart);
 
+		ShadowedButton back = new ShadowedButton("back-button", currentColorset, ButtonSize.SMALL);
+		back.setPosition(back.getWidth() / 2, margin / 2);
+		back.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if (CustomActionManager.getInstance().getRegisteredActionCount() == 0) {
+					Main.getInstance().setScreen(new MenuScreen());
+				}
+			}
+		});
+		this.addActor(back);
+		
 		if (success) {
-			ShadowedButton ok = new ShadowedButton("ok", currentColorset, ButtonSize.SMALL);
+			final ShadowedButton ok = new ShadowedButton("ok", currentColorset, ButtonSize.SMALL);
 			ok.setPosition(getWidth() / 2 - ok.getWidth() / 2, margin / 2);
 			ok.addListener(new ClickListener() {
-				private boolean clickedOnce;
 
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					if (CustomActionManager.getInstance().getRegisteredActionCount() == 0 && !clickedOnce && getScoreValue() > 0) {
-						CustomActionManager.getInstance().registerAction(transferPointsAction);
-						SaveManager.getInstance().addPoints(getScoreValue());
-						SaveManager.getInstance().completeLevel(levelNo, worldNo, hudLabel.getCurrentColorSet());
-						clickedOnce = true;
-					} else if ((CustomActionManager.getInstance().getRegisteredActionCount() == 0  && !transferPointsAction.isRegistered()) || clickedOnce) {
-						if(levelNo == 9)
-							Main.getInstance().setScreen(new WorldSelectionScreen());
-						else
-							Main.getInstance().setScreen(new GameScreen(levelNo+1, worldNo));
+					if(canClickOk()){
+						MoveToAction action = new MoveToAction();
+						action.setPosition(getWidth() / 2 - ok.getWidth() / 2, margin / 2);
+						action.setDuration(1f);
+						action.setInterpolation(Interpolation.bounceOut);
+						ok.addAction(action);
+						
+						clickOk();
 					}
 				}
+				
 			});
 			this.addActor(ok);
-		} else {
-			ShadowedButton back = new ShadowedButton("back-button", currentColorset, ButtonSize.SMALL);
-			back.setPosition(getWidth() / 2 - back.getWidth() / 2, margin / 2);
-			back.addListener(new ClickListener() {
 
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					if (CustomActionManager.getInstance().getRegisteredActionCount() == 0) {
-						Main.getInstance().setScreen(new MenuScreen());
+			if (/* and determine when it should ba available*/hudLabel.getCurrentColorSet().getMedalNumber() > earnedMedal.getMedalNumber()) {
+				bonus = new ShadowedButton("bonus", currentColorset, ButtonSize.SMALL);
+				bonus.setPosition(getWidth() / 2 - bonus.getWidth() - 10, margin / 2);
+				ok.setPosition(getWidth() / 2 + 10, margin / 2);
+				bonus.setOrigin(Align.center);
+
+				final Action pulse = Actions.forever(Actions.sequence(Actions.scaleTo(1.1f, 1.1f, 0.5f), Actions.scaleTo(0.9f, 0.9f, 0.5f)));
+				bonus.addAction(pulse);
+
+				bonus.addListener(new ClickListener() {
+
+					@Override
+					public void clicked(InputEvent event, float x, float y) {
+						if (CustomActionManager.getInstance().getRegisteredActionCount() == 0) {
+							bonus.removeAction(pulse);
+							bonus.setVisible(false);
+							
+							MoveToAction action = new MoveToAction();
+							action.setPosition(getWidth() / 2 - ok.getWidth() / 2, margin / 2);
+							action.setDuration(1f);
+							action.setInterpolation(Interpolation.bounceOut);
+							ok.addAction(action);
+							
+							CustomActionManager.getInstance().registerAction(new CustomAction(0.01f, getScoreValue()) {
+
+								@Override
+								public void perform() {
+									setScoreValue(getScoreValue() + 1);
+								}
+
+								@Override
+								public void onFinish() {
+									if(canClickOk())
+										clickOk();
+								}
+							});
+						}
 					}
-				}
-			});
-			this.addActor(back);
+				});
+				this.addActor(bonus);
+
+			}
 		}
 
-		if (success /* and determine when it should ba available*/ && hudLabel.getCurrentColorSet().getMedalNumber() > earnedMedal.getMedalNumber()) {
-			bonus = new ShadowedButton("bonus", currentColorset, ButtonSize.SMALL);
-			bonus.setPosition(margin + 150 - bonus.getWidth() / 2, margin / 2);
-			bonus.setOrigin(Align.center);
-
-			final Action pulse = Actions.forever(Actions.sequence(Actions.scaleTo(1.1f, 1.1f, 0.5f), Actions.scaleTo(0.9f, 0.9f, 0.5f)));
-			bonus.addAction(pulse);
-
-			bonus.addListener(new ClickListener() {
-
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					if (CustomActionManager.getInstance().getRegisteredActionCount() == 0) {
-						bonus.removeAction(pulse);
-						bonus.setVisible(false);
-						CustomActionManager.getInstance().registerAction(new CustomAction(0.01f, getScoreValue()) {
-
-							@Override
-							public void perform() {
-								setScoreValue(getScoreValue() + 1);
-							}
-						});
-					}
-				}
-			});
-			this.addActor(bonus);
-
-		}
 	}
 
 	private void createPointLabels() {
@@ -296,6 +309,18 @@ public class EndScreenGroup extends Group {
 					unregister();
 				}
 			}
+
+			@Override
+			public void onFinish() {
+				CustomActionManager.getInstance().registerAction(new CustomAction(1f) {
+
+					@Override
+					public void perform() {
+						switchLevel();
+					}
+				});
+			}
+			
 		};
 
 		initMedalsAction = new CustomAction(1f) {
@@ -355,7 +380,10 @@ public class EndScreenGroup extends Group {
 			}
 
 		};
-		CustomActionManager.getInstance().registerAction(initMedalsAction);
+		
+		if(earnedMedal != null){
+			CustomActionManager.getInstance().registerAction(initMedalsAction);
+		}
 
 		shakeAction = new CustomAction(0f, 7, this) {
 
@@ -397,6 +425,40 @@ public class EndScreenGroup extends Group {
 		scoreLabelContainer.setOrigin(scoreLabelContainer.getWidth() / 2, scoreLabelContainer.getHeight() / 2);
 		scoreLabelContainer.addAction(scoreSequence);
 		scoreSequence.restart();
+	}
+	
+	private void clickOk() {
+		if (getScoreValue() > 0) {
+			CustomActionManager.getInstance().registerAction(transferPointsAction);
+			SaveManager.getInstance().addPoints(getScoreValue());
+			SaveManager.getInstance().completeLevel(levelNo, worldNo, hudLabel.getCurrentColorSet());
+		} else {
+			switchLevel();
+		}
+	}
+	
+	private boolean canClickOk(){
+		return CustomActionManager.getInstance().getRegisteredActionCount() == 0 && success && !transferPointsAction.isRegistered();
+	}
+	
+	private void switchLevel(){
+		MoveToAction action = new MoveToAction();
+		action.setPosition(-Main.SCREEN_WIDTH / 2 + margin, 500);
+		action.setDuration(0.5f);
+		action.setInterpolation(Interpolation.pow5In);
+		this.addAction(action);
+
+		CustomActionManager.getInstance().registerAction(new CustomAction(0.7f) {
+
+			@Override
+			public void perform() {
+				if (levelNo == 9)
+					Main.getInstance().setScreen(new WorldSelectionScreen());
+				else
+					Main.getInstance().setScreen(new GameScreen(levelNo + 1, worldNo));
+			}
+		});
+
 	}
 
 	/** ---------------------------------------------------------------------------------------------------------- **/

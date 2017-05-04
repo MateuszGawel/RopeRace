@@ -5,7 +5,6 @@ package com.apptogo.roperace.main;
 import com.apptogo.roperace.callback.GameCallback;
 import com.apptogo.roperace.manager.CustomActionManager;
 import com.apptogo.roperace.manager.ResourcesManager;
-import com.apptogo.roperace.save.GameData;
 import com.apptogo.roperace.save.SaveManager;
 import com.apptogo.roperace.screen.BasicScreen;
 import com.apptogo.roperace.screen.SplashScreen;
@@ -21,6 +20,7 @@ public class Main extends Game {
 	public static final float SCREEN_WIDTH = 1280f, SCREEN_HEIGHT = 768f;
 	
 	public static GameCallback gameCallback;
+	private Screen screenToSet = null;
 	
 	public static Main getInstance() {
 		return (Main) Gdx.app.getApplicationListener();
@@ -41,11 +41,7 @@ public class Main extends Game {
 	
 	@Override
 	public void setScreen(Screen screen) {
-		//        if (this.screen != null && this.screen instanceof BasicScreen) {
-		//        	((BasicScreen)this.screen).fadeOut(screen);
-		//    	}
-		//        else
-		doSetScreen(screen);
+		screenToSet = screen;
 	}
 
 	public void doSetScreen(Screen screen) {
@@ -73,6 +69,11 @@ public class Main extends Game {
 	@Override
 	public void render() {
 		super.render();
+		
+		if(screenToSet != null){
+			doSetScreen(screenToSet);
+			screenToSet = null;
+		}
 	}
 
 	@Override
