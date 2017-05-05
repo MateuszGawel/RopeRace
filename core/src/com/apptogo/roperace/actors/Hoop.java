@@ -36,7 +36,9 @@ public class Hoop extends Group{
 				.create();
 		
 		body.setTransform(position, (float)Math.toRadians(rotation));
-		
+		hoopTop.setPosition(position.x, position.y);
+		hoopBottom.setPosition(position.x, position.y);
+
 		screen.getFrontStage().addActor(this);
 	}
 
@@ -51,6 +53,7 @@ public class Hoop extends Group{
 		hoopTop.toFront();
 		hoopBottom.toBack();
 		
+		System.out.println("hoop width: " + hoopTop.getWidth());
 		hoopTop.setPosition(getX() - hoopTop.getWidth()/2, getY() - hoopTop.getHeight()/2);
 		hoopBottom.setPosition(getX() - hoopBottom.getWidth()/2, getY() - hoopBottom.getHeight()/2);
 		

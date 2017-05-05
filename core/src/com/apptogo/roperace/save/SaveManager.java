@@ -27,11 +27,13 @@ public class SaveManager {
 
 		if(DEBUG_ALWAYS_CLEAR){
 			gameData = new GameData();
+			completeLevel(1, 1, ColorSet.GRAY);
 			save();
 		}
 
 		if (save.getString(GameData.NAME, null) == null) {
 			gameData = new GameData();
+			completeLevel(1, 1, ColorSet.GRAY);
 			save();
 		}
 
@@ -76,8 +78,20 @@ public class SaveManager {
 			if (levelNode.getMedal().getMedalNumber() < medal.getMedalNumber()) {
 				levelNode.setMedal(medal);
 				save();
+				
+				//unlock next
+				LevelNode newLevelNode;
+				if(worldNo == 9){
+					newLevelNode = new LevelNode(1, worldNo+1, ColorSet.GRAY);
+				}
+				else{
+					newLevelNode = new LevelNode(levelNo+1, worldNo, ColorSet.GRAY);
+				}
+				gameData.getUnlockedLevels().add(newLevelNode);
+				save();
 			}
-		} else {
+		} 
+		else {
 			levelNode = new LevelNode(levelNo, worldNo, medal);
 			gameData.getUnlockedLevels().add(levelNode);
 			save();
@@ -98,12 +112,12 @@ public class SaveManager {
 	}
 	
 	public boolean isLevelUnlocked(int levelNumber, int worldNumber){
-		//first is always unlocked
-		if(levelNumber == 1)
-			return true;
+//		//first is always unlocked
+//		if(levelNumber == 1)
+//			return true;
 		
 		//check if previous one exists. It means that the current one is available
-		LevelNode level = getByNumber(levelNumber-1, worldNumber);
+		LevelNode level = getByNumber(levelNumber, worldNumber);
 		if(level == null)
 			return false;
 		else
@@ -111,8 +125,8 @@ public class SaveManager {
 	}
 	
 	public LevelNode getLatestAvailableLevel() {
-		if(gameData.getUnlockedLevels().isEmpty())
-			return new LevelNode(1, 1, ColorSet.GRAY);
+//		if(gameData.getUnlockedLevels().isEmpty())
+//			return new LevelNode(1, 1, ColorSet.GRAY);
 		
 		return gameData.getUnlockedLevels().get(gameData.getUnlockedLevels().size()-1);
 	}

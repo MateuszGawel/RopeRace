@@ -18,13 +18,17 @@ public class ImmaterialGameActor extends AbstractActor {
 		//we add animation deltaOffset and few lines below we subtracting it. Thanks that actor and graphic is always in the same position.
 		//more information about deltaOffset in AnimationActor
 
-		if(getWidth() == 0 && getHeight() == 0)
+		currentAnimation.act(delta);
+		
+		if(getWidth() == 0 && getHeight() == 0){
+			System.out.println("seting width: " + currentAnimation.getWidth());
 			setSize(currentAnimation.getWidth(), currentAnimation.getHeight());
+		}
 
 		currentAnimation.position(getX() - currentAnimation.getDeltaOffset().x, getY() - currentAnimation.getDeltaOffset().y);
 		currentAnimation.setOrigin(getOriginX(), getOriginY());
 		currentAnimation.setRotation(getRotation());
-		currentAnimation.act(delta);
+		
 	}
 
 	@Override

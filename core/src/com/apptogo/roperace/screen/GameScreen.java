@@ -170,6 +170,8 @@ public class GameScreen extends BasicScreen {
 		this.frontStage.act(delta);
 		this.hudStage.act(delta);
 		
+		this.cameraFollowingPlugin.updateCamera();
+		
 		this.backViewport.apply();
 		this.backStage.draw();
 		
@@ -180,8 +182,6 @@ public class GameScreen extends BasicScreen {
 		step(delta);
 		handleInput();
 		
-		this.cameraFollowingPlugin.updateCamera();
-
 		this.hudViewport.apply();
 		this.hudStage.draw();
 		
