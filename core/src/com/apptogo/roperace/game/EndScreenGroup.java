@@ -253,7 +253,7 @@ public class EndScreenGroup extends Group {
 	}
 
 	private void createPointLabels() {
-		Image diamondImage = Image.getFromTexture("diamond");
+		Image diamondImage = Image.get("diamond");
 		diamondImage.setSize(diamondImage.getWidth() * 0.7f, diamondImage.getHeight() * 0.7f);
 		this.addActor(diamondImage);
 		totalLabel = Label.get(String.valueOf(SaveManager.getInstance().getPoints()), "big");

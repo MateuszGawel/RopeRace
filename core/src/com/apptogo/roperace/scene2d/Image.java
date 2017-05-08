@@ -3,6 +3,7 @@ package com.apptogo.roperace.scene2d;
 import com.apptogo.roperace.manager.ResourcesManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 
@@ -14,7 +15,7 @@ public class Image extends com.badlogic.gdx.scenes.scene2d.ui.Image {
 		return new Image(ResourcesManager.getInstance().getAtlasRegion(regionName));
 	}
 	
-	public static Image getFromTexture(String textureName) {
+	public static Image getFrodmTexture(String textureName) {
 		return new Image(ResourcesManager.getInstance().getTexture(textureName));
 	}
 
@@ -25,6 +26,7 @@ public class Image extends com.badlogic.gdx.scenes.scene2d.ui.Image {
 
 	public Image(TextureRegion region) {
 		super(region);
+		this.region = region;
 	}
 
 	public Image(Texture region) {
@@ -92,4 +94,5 @@ public class Image extends com.badlogic.gdx.scenes.scene2d.ui.Image {
 	public TextureRegion getRegion() {
 		return region;
 	}
+
 }

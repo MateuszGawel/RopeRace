@@ -19,6 +19,8 @@ public class AnimationActor extends Actor {
 	protected boolean doAnimate = true;
 	private boolean finished;
 	
+	protected Array<AtlasRegion> animationRegions;
+	
 	// values to calculate delta offset to prevent animation jittering caused by trimming
 	private Vector2 previousOffset = new Vector2();
 	private Vector2 currentOffset = new Vector2();
@@ -150,5 +152,13 @@ public class AnimationActor extends Actor {
 	public void setFinished(boolean finished) {
 		this.finished = finished;
 		stateTime = 0;
+	}
+
+	public Array<AtlasRegion> getAnimationRegions() {
+		return animationRegions;
+	}
+
+	public void setAnimationRegions(Array<AtlasRegion> animationRegions) {
+		this.animationRegions = animationRegions;
 	}
 }

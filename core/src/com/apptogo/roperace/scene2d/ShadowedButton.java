@@ -1,5 +1,7 @@
 package com.apptogo.roperace.scene2d;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class ShadowedButton extends Group {
@@ -17,17 +19,19 @@ public class ShadowedButton extends Group {
 	public ShadowedButton(String content, ColorSet colorSet){
 		setName(content);
 		this.colorSet = colorSet;
-		this.content = Image.getFromTexture(content);
-		this.shadow = Image.getFromTexture(content + "_shadow");
-
-		this.content.size(this.content.getRegion().getRegionWidth(), this.content.getRegion().getRegionHeight());
-		shadow.size(shadow.getRegion().getRegionWidth(), shadow.getRegion().getRegionHeight());
-
-		shadow.setColor(colorSet.getShadowColor());
-
+		
+		this.shadow = Image.get(content + "_shadow");
+		AtlasRegion shadowRegion = ((AtlasRegion)this.shadow.getRegion());
+		this.shadow.setColor(colorSet.getShadowColor());
+		this.shadow.position(shadowRegion.offsetX, shadowRegion.offsetY);
 		this.addActor(shadow);
+		
+		this.content = Image.get(content);
+		AtlasRegion contentRegion = ((AtlasRegion)this.content.getRegion());
+		this.content.position(contentRegion.offsetX, contentRegion.offsetY);
 		this.addActor(this.content);
-		setSize(this.content.getWidth(), this.content.getHeight());
+		
+		setSize(contentRegion.originalWidth, contentRegion.originalHeight);
 	}
 	
 	public ShadowedButton(String content, ColorSet colorSet, ButtonSize buttonSize) {
@@ -44,13 +48,12 @@ public class ShadowedButton extends Group {
 	
 	private void addCircleBackground(ColorSet colorSet, ButtonSize buttonSize){
 		if(buttonSize == ButtonSize.BIG){
-			this.circle = Image.getFromTexture("circle");
+			this.circle = Image.get("circle");
 		}
 		else{
-			this.circle = Image.getFromTexture("circle-small");
+			this.circle = Image.get("circle-small");
 		}
 		
-		circle.size(circle.getRegion().getRegionWidth(), circle.getRegion().getRegionHeight());
 		circle.setColor(colorSet.getMainColor());
 		this.addActor(circle);
 		

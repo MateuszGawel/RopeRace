@@ -58,13 +58,13 @@ public class BallSelectionScreen extends BasicScreen {
 	private void prepareScrollPane() {
 		float padding = 50;
 
-		TextureRegion dummyImage = Image.getFromTexture("circle").getRegion();
+		TextureRegion dummyImage = Image.get("circle").getRegion();
 
 		table = new Table();
 		table.row().pad(0, padding, 0, padding);
 
 		for (int i = 1; i <= 4; i++) {
-			Image ball = Image.getFromTexture("ball"+i);
+			Image ball = Image.get("ball"+i);
 
 			
 			Cell<Image> cell = table.add(ball);

@@ -42,7 +42,7 @@ public class Rope extends GameActor{
 		this.player = actor;
 		this.shootCounter = 0;
 		
-		ropeTextureRegion = new TextureRegion(ResourcesManager.getInstance().getTexture("chain"));
+		ropeTextureRegion = new TextureRegion(ResourcesManager.getInstance().getAtlasRegion("chain"));
 		startU2Length = ropeTextureRegion.getU2() - ropeTextureRegion.getU();
 		
 		//rope bullet (rope end)

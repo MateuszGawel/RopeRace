@@ -52,74 +52,75 @@ public class ResourcesManager {
 	 */
 	public void loadResources() {
 		//textures
-		manager.load("menu_atlas.pack", TextureAtlas.class);
+//		manager.load("menu_atlas.pack", TextureAtlas.class);
+		manager.load("atlas.pack", TextureAtlas.class);
 
 		//sounds
 		//e.g	manager.load("sound.ogg", Sound.class);
 
 		//textures
-		manager.load("roperace-logo.png", Texture.class);
-		manager.load("play-button.png", Texture.class);
-		manager.load("play-button_shadow.png", Texture.class);
-		manager.load("touchpad-background.png", Texture.class);
-		manager.load("touchpad-knob.png", Texture.class);
-		manager.load("circle.png", Texture.class);
-		manager.load("world1.png", Texture.class);
-		manager.load("world1_shadow.png", Texture.class);
-		manager.load("world2.png", Texture.class);
-		manager.load("world2_shadow.png", Texture.class);
-		manager.load("ball.png", Texture.class);
-		manager.load("viewfinder.png", Texture.class);
-		manager.load("chain.png", Texture.class);
-		manager.load("chain-end.png", Texture.class);
-		manager.load("hoop-top.png", Texture.class);
-		manager.load("hoop-bottom.png", Texture.class);
-		
-		manager.load("circle-small.png", Texture.class);
-		manager.load("back-button.png", Texture.class);
-		manager.load("back-button_shadow.png", Texture.class);
-		manager.load("worlds-button.png", Texture.class);
-		manager.load("worlds-button_shadow.png", Texture.class);
-		manager.load("restart.png", Texture.class);
-		manager.load("restart_shadow.png", Texture.class);
-		manager.load("ok.png", Texture.class);
-		manager.load("ok_shadow.png", Texture.class);
-		manager.load("bonus.png", Texture.class);
-		manager.load("bonus_shadow.png", Texture.class);
-		manager.load("locker.png", Texture.class);
-		manager.load("locker_shadow.png", Texture.class);
-		manager.load("balls.png", Texture.class);
-		manager.load("balls_shadow.png", Texture.class);
-		
-		manager.load("1.png", Texture.class);
-		manager.load("2.png", Texture.class);
-		manager.load("3.png", Texture.class);
-		manager.load("4.png", Texture.class);
-		manager.load("5.png", Texture.class);
-		manager.load("6.png", Texture.class);
-		manager.load("7.png", Texture.class);
-		manager.load("8.png", Texture.class);
-		manager.load("9.png", Texture.class);
-		manager.load("1_shadow.png", Texture.class);
-		manager.load("2_shadow.png", Texture.class);
-		manager.load("3_shadow.png", Texture.class);
-		manager.load("4_shadow.png", Texture.class);
-		manager.load("5_shadow.png", Texture.class);
-		manager.load("6_shadow.png", Texture.class);
-		manager.load("7_shadow.png", Texture.class);
-		manager.load("8_shadow.png", Texture.class);
-		manager.load("9_shadow.png", Texture.class);
-		
-		manager.load("ball1.png", Texture.class);
-		manager.load("ball2.png", Texture.class);
-		manager.load("ball3.png", Texture.class);
-		manager.load("ball4.png", Texture.class);
-		
-		manager.load("medal.png", Texture.class);
-		manager.load("medal_shadow.png", Texture.class);
-		
-		manager.load("diamond.png", Texture.class);
-		manager.load("star.png", Texture.class);
+//		manager.load("roperace-logo.png", Texture.class);
+//		manager.load("play-button.png", Texture.class);
+//		manager.load("play-button_shadow.png", Texture.class);
+//		manager.load("touchpad-background.png", Texture.class);
+//		manager.load("touchpad-knob.png", Texture.class);
+//		manager.load("circle.png", Texture.class);
+//		manager.load("world1.png", Texture.class);
+//		manager.load("world1_shadow.png", Texture.class);
+//		manager.load("world2.png", Texture.class);
+//		manager.load("world2_shadow.png", Texture.class);
+//		manager.load("ball.png", Texture.class);
+//		manager.load("viewfinder.png", Texture.class);
+//		manager.load("chain.png", Texture.class);
+//		manager.load("chain-end.png", Texture.class);
+//		manager.load("hoop-top.png", Texture.class);
+//		manager.load("hoop-bottom.png", Texture.class);
+//		
+//		manager.load("circle-small.png", Texture.class);
+//		manager.load("back-button.png", Texture.class);
+//		manager.load("back-button_shadow.png", Texture.class);
+//		manager.load("worlds-button.png", Texture.class);
+//		manager.load("worlds-button_shadow.png", Texture.class);
+//		manager.load("restart.png", Texture.class);
+//		manager.load("restart_shadow.png", Texture.class);
+//		manager.load("ok.png", Texture.class);
+//		manager.load("ok_shadow.png", Texture.class);
+//		manager.load("bonus.png", Texture.class);
+//		manager.load("bonus_shadow.png", Texture.class);
+//		manager.load("locker.png", Texture.class);
+//		manager.load("locker_shadow.png", Texture.class);
+//		manager.load("balls.png", Texture.class);
+//		manager.load("balls_shadow.png", Texture.class);
+//		
+//		manager.load("1.png", Texture.class);
+//		manager.load("2.png", Texture.class);
+//		manager.load("3.png", Texture.class);
+//		manager.load("4.png", Texture.class);
+//		manager.load("5.png", Texture.class);
+//		manager.load("6.png", Texture.class);
+//		manager.load("7.png", Texture.class);
+//		manager.load("8.png", Texture.class);
+//		manager.load("9.png", Texture.class);
+//		manager.load("1_shadow.png", Texture.class);
+//		manager.load("2_shadow.png", Texture.class);
+//		manager.load("3_shadow.png", Texture.class);
+//		manager.load("4_shadow.png", Texture.class);
+//		manager.load("5_shadow.png", Texture.class);
+//		manager.load("6_shadow.png", Texture.class);
+//		manager.load("7_shadow.png", Texture.class);
+//		manager.load("8_shadow.png", Texture.class);
+//		manager.load("9_shadow.png", Texture.class);
+//		
+//		manager.load("ball1.png", Texture.class);
+//		manager.load("ball2.png", Texture.class);
+//		manager.load("ball3.png", Texture.class);
+//		manager.load("ball4.png", Texture.class);
+//		
+//		manager.load("medal.png", Texture.class);
+//		manager.load("medal_shadow.png", Texture.class);
+//		
+//		manager.load("diamond.png", Texture.class);
+//		manager.load("star.png", Texture.class);
 		
 		manager.finishLoading();
 		
@@ -130,7 +131,7 @@ public class ResourcesManager {
 	 * Loads skin from file
 	 */
 	public void loadSkin() {
-		skin = new Skin(Gdx.files.internal("skin.json"), manager.get("menu_atlas.pack", TextureAtlas.class));
+		skin = new Skin(Gdx.files.internal("skin.json"), manager.get("atlas.pack", TextureAtlas.class));
 		manager.finishLoading();
 	}
 
@@ -216,14 +217,22 @@ public class ResourcesManager {
 			AtlasRegion region = new AtlasRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 			regions.add(region);
 		}
+	
 		
 		Comparator<AtlasRegion> comparator = new Comparator<AtlasRegion>() {
 			@Override
 			public int compare(AtlasRegion arg0, AtlasRegion arg1) {
-				int no0 = Integer.parseInt(arg0.name.replaceAll("[^\\d]", ""));
-				int no1 = Integer.parseInt(arg1.name.replaceAll("[^\\d]", ""));
-
-				return (no0 - no1);
+				try{
+					int no0 = Integer.parseInt(arg0.name.replaceAll("[^\\d]", ""));
+					int no1 = Integer.parseInt(arg1.name.replaceAll("[^\\d]", ""));
+					return (no0 - no1);
+				}
+				catch(NumberFormatException e){
+					//TODO add logging here
+				}
+				
+				return 0;
+				
 			}
 		};
 

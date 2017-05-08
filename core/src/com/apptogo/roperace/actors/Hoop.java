@@ -4,6 +4,7 @@ import com.apptogo.roperace.game.ImmaterialGameActor;
 import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.physics.ContactListener;
 import com.apptogo.roperace.screen.GameScreen;
+import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -54,7 +55,7 @@ public class Hoop extends Group{
 		hoopBottom.toBack();
 		
 		System.out.println("hoop width: " + hoopTop.getWidth());
-		hoopTop.setPosition(getX() - hoopTop.getWidth()/2, getY() - hoopTop.getHeight()/2);
+		hoopTop.setPosition(getX() - hoopTop.getWidth()/2, getY() - UnitConverter.toBox2dUnits(hoopTop.getCurrentAnimation().getAnimationRegions().first().originalHeight/2));
 		hoopBottom.setPosition(getX() - hoopBottom.getWidth()/2, getY() - hoopBottom.getHeight()/2);
 		
 		hoopTop.setOrigin(getOriginX(), getOriginY());

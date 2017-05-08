@@ -62,7 +62,7 @@ public class LevelSelectionScreen extends BasicScreen {
 	private void prepareScrollPane() {
 		float padding = 50;
 
-		TextureRegion dummyImage = Image.getFromTexture("circle").getRegion();
+		TextureRegion dummyImage = Image.get("circle").getRegion();
 
 		table = new Table();
 		table.row().pad(0, padding, 0, padding);

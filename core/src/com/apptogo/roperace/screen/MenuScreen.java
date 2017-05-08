@@ -3,6 +3,7 @@ package com.apptogo.roperace.screen;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.save.LevelNode;
 import com.apptogo.roperace.save.SaveManager;
+import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Listener;
 import com.apptogo.roperace.scene2d.ShadowedButton;
@@ -33,8 +34,8 @@ public class MenuScreen extends BasicScreen {
 		
 		float padding = 20;
 		
-		Image logo = Image.getFromTexture("roperace-logo");
-		logo.size(logo.getRegion().getRegionWidth(), logo.getRegion().getRegionHeight());
+		Image logo = Image.get("roperace-logo");
+		logo.size(logo.getWidth(), logo.getHeight());
 		logo.position(0, Main.SCREEN_HEIGHT/2 - logo.getHeight() - padding).centerX();
 		logo.setColor(currentColorSet.getMainColor());
 		frontStage.addActor(logo);

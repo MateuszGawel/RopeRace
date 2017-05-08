@@ -61,7 +61,6 @@ public class GameScreen extends BasicScreen {
 	
 	public GameScreen() {
 		super();
-		this.levelNo = 1; //TODO get last level from save
 	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -122,7 +121,8 @@ public class GameScreen extends BasicScreen {
 				.addFixture("player").circle(0.5f).density(2.5f).friction(0.5f).restitution(0.5f)
 				.create());
 		player.getBody().setLinearDamping(-0.02f);
-		player.setStaticImage("ball");
+		player.setStaticImage("ball3");
+		player.getCurrentAnimation().scaleFrames(1/UnitConverter.PPM * 0.3f);
 
 		player.modifyCustomOffsets(0f, 0f);
 		frontStage.addActor(player);

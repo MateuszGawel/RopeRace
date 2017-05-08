@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.apptogo.roperace.manager.ResourcesManager;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.utils.Array;
 
 public class Animation extends AnimationActor {
+	
+	
+	
     /**
      * @param pattern will be used as animation name if not overriden by name() method
      * @return created animation
@@ -62,9 +66,11 @@ public class Animation extends AnimationActor {
         super(frameDuration, keyFrames);
     }
 
-    public Animation(float frameDuration, Array<? extends TextureRegion> keyFrames, PlayMode playMode)
+    @SuppressWarnings("unchecked")
+	public Animation(float frameDuration, Array<? extends TextureRegion> keyFrames, PlayMode playMode)
     {
         super(frameDuration, keyFrames, playMode);
+        animationRegions = (Array<AtlasRegion>) keyFrames;
     }
 
     

@@ -29,8 +29,8 @@ public abstract class SteeringPlugin extends AbstractPlugin {
 	}
 
 	private void createTouchpad() {
-		Drawable knob = Image.getFromTexture("touchpad-knob").getDrawable();
-		Drawable background = Image.getFromTexture("touchpad-background").getDrawable();
+		Drawable knob = Image.get("touchpad-knob").getDrawable();
+		Drawable background = Image.get("touchpad-background").getDrawable();
 		float margin = 20;
 
 		touchpad = new MyTouchpad(2, new TouchpadStyle(background, knob));
