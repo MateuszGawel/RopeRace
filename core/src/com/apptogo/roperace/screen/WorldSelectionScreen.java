@@ -3,7 +3,7 @@ package com.apptogo.roperace.screen;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.apptogo.roperace.game.UnlockWorldScreenGroup;
+import com.apptogo.roperace.game.UnlockScreenGroup;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.manager.CustomAction;
 import com.apptogo.roperace.manager.CustomActionManager;
@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class WorldSelectionScreen extends BasicScreen {
-	private UnlockWorldScreenGroup unlockWorldScreenGroup;
+	private UnlockScreenGroup unlockWorldScreenGroup;
 	private static final float SMALL_PADDING = 20;
 	private static final float BIG_PADDING = 100;
 	private Map<Integer, ShadowedButton> worldButtons = new HashMap<Integer, ShadowedButton>();
@@ -35,7 +35,7 @@ public class WorldSelectionScreen extends BasicScreen {
 	}
 
 	private void prepareUnlockWorldScreen() {
-		unlockWorldScreenGroup = new UnlockWorldScreenGroup();
+		unlockWorldScreenGroup = new UnlockScreenGroup("Unlock world");
 		frontStage.addActor(unlockWorldScreenGroup);
 	}
 
@@ -88,23 +88,13 @@ public class WorldSelectionScreen extends BasicScreen {
 			return "locker";
 	}
 	
-	public void unlockWorld(int worldNumber, final int cost){
-		SaveManager.getInstance().usePoints(cost);
+	@Override
+	public void unlockAction(int worldNumber, final int cost){
 		SaveManager.getInstance().unlockWorld(worldNumber);
+		transferPoints(cost);
 		refreshWorldButton(worldNumber, cost);
-		
-		if (cost > 0) {
-			transferPointsAction = new CustomAction(0.01f, cost) {
-
-				@Override
-				public void perform() {
-					setScoreValue(getScoreValue() - 1);
-				}
-
-			};
-			CustomActionManager.getInstance().registerAction(transferPointsAction);
-		}
 	}
+	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** -------------------------------------------------- STEP -------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/

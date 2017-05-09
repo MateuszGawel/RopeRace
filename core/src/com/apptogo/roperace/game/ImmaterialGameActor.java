@@ -21,7 +21,6 @@ public class ImmaterialGameActor extends AbstractActor {
 		currentAnimation.act(delta);
 		
 		if(getWidth() == 0 && getHeight() == 0){
-			System.out.println("seting width: " + currentAnimation.getWidth());
 			setSize(currentAnimation.getWidth(), currentAnimation.getHeight());
 		}
 

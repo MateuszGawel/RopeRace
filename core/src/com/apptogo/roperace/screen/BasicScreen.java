@@ -116,6 +116,27 @@ public abstract class BasicScreen implements Screen {
 
 	abstract protected void step(float delta);
 
+	
+	
+	protected void transferPoints(int cost){
+		SaveManager.getInstance().usePoints(cost);
+		
+		if (cost > 0) {
+			transferPointsAction = new CustomAction(0.01f, cost) {
+
+				@Override
+				public void perform() {
+					setScoreValue(getScoreValue() - 1);
+				}
+
+			};
+			CustomActionManager.getInstance().registerAction(transferPointsAction);
+		}
+	}
+	public void unlockAction(int worldNumber, int cost) {
+		//to implement in child class
+	}
+	
 	@Override
 	public void pause() {
 	}
@@ -150,4 +171,6 @@ public abstract class BasicScreen implements Screen {
 	public ColorSet getCurrentColorSet() {
 		return currentColorSet;
 	}
+
+
 }

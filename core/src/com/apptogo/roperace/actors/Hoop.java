@@ -54,7 +54,6 @@ public class Hoop extends Group{
 		hoopTop.toFront();
 		hoopBottom.toBack();
 		
-		System.out.println("hoop width: " + hoopTop.getWidth());
 		hoopTop.setPosition(getX() - hoopTop.getWidth()/2, getY() - UnitConverter.toBox2dUnits(hoopTop.getCurrentAnimation().getAnimationRegions().first().originalHeight/2));
 		hoopBottom.setPosition(getX() - hoopBottom.getWidth()/2, getY() - hoopBottom.getHeight()/2);
 		

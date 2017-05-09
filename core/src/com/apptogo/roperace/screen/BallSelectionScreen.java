@@ -1,7 +1,9 @@
 package com.apptogo.roperace.screen;
 
+import com.apptogo.roperace.game.UnlockScreenGroup;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.save.SaveManager;
+import com.apptogo.roperace.scene2d.BallButton;
 import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Listener;
@@ -11,16 +13,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class BallSelectionScreen extends BasicScreen {
 
+	public static final int BALL_COST = 50;
+	
 	private Table table;
 	private ScrollPane scrollPane;
+	private UnlockScreenGroup unlockBallScreenGroup;
 
 	public BallSelectionScreen() {
 		super();
@@ -35,6 +42,12 @@ public class BallSelectionScreen extends BasicScreen {
 		prepareBackStage();
 		prepareFrontStage();
 		prepareScrollPane();
+		prepareUnlockBallScreen();
+	}
+	
+	private void prepareUnlockBallScreen() {
+		unlockBallScreenGroup = new UnlockScreenGroup("Unlock ball");
+		frontStage.addActor(unlockBallScreenGroup);
 	}
 
 	protected void prepareFrontStage() {
@@ -64,10 +77,19 @@ public class BallSelectionScreen extends BasicScreen {
 		table.row().pad(0, padding, 0, padding);
 
 		for (int i = 1; i <= 4; i++) {
-			Image ball = Image.get("ball"+i);
-
-			
-			Cell<Image> cell = table.add(ball);
+			final BallButton ball = new BallButton(i, currentColorSet);
+			ball.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					if (ball.isUnlocked()) {
+						getBallButton(SaveManager.getInstance().getActiveBall()).setActive(false);
+						ball.setActive(true);
+					} else {
+						((BallSelectionScreen) Main.getInstance().getCurrentScreen()).getBallScreenGroup().init(ball.getNumber(), BallSelectionScreen.BALL_COST);
+					}
+				}
+			});
+			Cell<BallButton> cell = table.add(ball);
 			if (i == 1) {
 				cell.pad(0, Main.SCREEN_WIDTH / 2 - ball.getWidth() / 2, 0, padding);
 			}
@@ -81,6 +103,19 @@ public class BallSelectionScreen extends BasicScreen {
 		frontStage.addActor(scrollPane);
 	}
 
+	public UnlockScreenGroup getBallScreenGroup() {
+		return unlockBallScreenGroup;
+	}
+	
+	@Override
+	public void unlockAction(int ballNumber, final int cost){
+		getBallButton(ballNumber).unlock();
+		transferPoints(cost);
+	}
+	private BallButton getBallButton(int number){
+		return (BallButton)table.getCells().get(number-1).getActor();
+	}
+	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** -------------------------------------------------- STEP -------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -129,7 +164,9 @@ public class BallSelectionScreen extends BasicScreen {
 	@Override
 	protected void handleInput() {
 		if (Gdx.input.isKeyJustPressed(Keys.BACK) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			game.setScreen(new WorldSelectionScreen());
+			game.setScreen(new MenuScreen());
 		}
 	}
+
+
 }

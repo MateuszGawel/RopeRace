@@ -14,6 +14,7 @@ import com.apptogo.roperace.plugin.CameraFollowingPlugin;
 import com.apptogo.roperace.plugin.GravityPlugin;
 import com.apptogo.roperace.plugin.SteeringPlugin;
 import com.apptogo.roperace.plugin.TouchSteeringPlugin;
+import com.apptogo.roperace.save.SaveManager;
 import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -121,7 +122,7 @@ public class GameScreen extends BasicScreen {
 				.addFixture("player").circle(0.5f).density(2.5f).friction(0.5f).restitution(0.5f)
 				.create());
 		player.getBody().setLinearDamping(-0.02f);
-		player.setStaticImage("ball3");
+		player.setStaticImage("ball"+SaveManager.getInstance().getActiveBall());
 		player.getCurrentAnimation().scaleFrames(1/UnitConverter.PPM * 0.3f);
 
 		player.modifyCustomOffsets(0f, 0f);
@@ -151,7 +152,7 @@ public class GameScreen extends BasicScreen {
 		// --- backstage render first --- //
 		//debug renderer
 		if(!Main.isAndroid()){
-			debugRenderer.render(world, frontStage.getCamera().combined);
+			//debugRenderer.render(world, frontStage.getCamera().combined);
 		}
 		//simulate physics and handle body contacts
 		ContactListener.SNAPSHOT_BEGIN.clear();

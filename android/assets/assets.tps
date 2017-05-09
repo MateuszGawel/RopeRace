@@ -110,7 +110,7 @@
             <key>sizeConstraints</key>
             <enum type="AlgorithmSettings::SizeConstraints">AnySize</enum>
             <key>forceSquared</key>
-            <false/>
+            <true/>
             <key>forceWordAligned</key>
             <false/>
             <key>maxRects</key>
@@ -215,7 +215,6 @@
             <filename>ball2.png</filename>
             <filename>ball3.png</filename>
             <filename>ball4.png</filename>
-            <filename>ball-icon1.png</filename>
             <filename>balls.png</filename>
             <filename>balls_shadow.png</filename>
             <filename>bonus.png</filename>
@@ -250,7 +249,6 @@
             <filename>font_small.png</filename>
             <filename>font_big.png</filename>
             <filename>font_medium.png</filename>
-            <filename>playerBall.png</filename>
             <filename>chain.png</filename>
         </array>
         <key>ignoreFileList</key>

@@ -34,7 +34,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
-public class UnlockWorldScreenGroup extends Group {
+public class UnlockScreenGroup extends Group {
 
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------ FIELDS -------------------------------------------------- **/
@@ -42,27 +42,30 @@ public class UnlockWorldScreenGroup extends Group {
 
 	private float margin = 150;
 	private MyShapeRenderer shapeRenderer;
-	private WorldSelectionScreen currentScreen;
+	private BasicScreen currentScreen;
 	
 	//changable values
 	private int cost;
-	private int worldNumber;
+	private int number;
+	private String label;
+	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------- INIT --------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- 
 	 * @param level **/
 
-	public UnlockWorldScreenGroup() {
+	public UnlockScreenGroup(String label) {
 		setSize(Main.SCREEN_WIDTH - 4 * margin, Main.SCREEN_HEIGHT - 2 * margin);
 		setPosition(-getWidth()/2, -1000);
 		setOrigin(getWidth() / 2, getHeight() / 2);
 		shapeRenderer = new MyShapeRenderer();
-		currentScreen = (WorldSelectionScreen)Main.getInstance().getCurrentScreen();
+		currentScreen = Main.getInstance().getCurrentScreen();
+		this.label = label;
 	}
 
-	public void init(int worldNumber, int cost) {
+	public void init(int number, int cost) {
 		this.cost = cost;
-		this.worldNumber = worldNumber;
+		this.number = number;
 		
 		MoveToAction action = new MoveToAction();
 		action.setPosition(-getWidth()/2, -Main.SCREEN_HEIGHT / 2 + margin);
@@ -82,9 +85,7 @@ public class UnlockWorldScreenGroup extends Group {
 	
 
 	private void createTitle() {
-		
-		String titleText = "Unlock world";
-		Label scoreLabel = Label.get(titleText, "big");
+		Label scoreLabel = Label.get(label, "big");
 		scoreLabel.position(getWidth() / 2 - scoreLabel.getWidth() / 2, getHeight() - scoreLabel.getHeight() - 20);
 		scoreLabel.setColor(currentScreen.getCurrentColorSet().getMainColor());
 		this.addActor(scoreLabel);
@@ -118,7 +119,7 @@ public class UnlockWorldScreenGroup extends Group {
 			ok.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					currentScreen.unlockWorld(worldNumber, cost);
+					currentScreen.unlockAction(number, cost);
 					removeSelf();
 
 				}

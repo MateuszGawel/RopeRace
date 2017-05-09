@@ -27,13 +27,11 @@ public class SaveManager {
 
 		if(DEBUG_ALWAYS_CLEAR){
 			gameData = new GameData();
-			completeLevel(1, 1, ColorSet.GRAY);
 			save();
 		}
 
 		if (save.getString(GameData.NAME, null) == null) {
 			gameData = new GameData();
-			completeLevel(1, 1, ColorSet.GRAY);
 			save();
 		}
 
@@ -112,10 +110,6 @@ public class SaveManager {
 	}
 	
 	public boolean isLevelUnlocked(int levelNumber, int worldNumber){
-//		//first is always unlocked
-//		if(levelNumber == 1)
-//			return true;
-		
 		//check if previous one exists. It means that the current one is available
 		LevelNode level = getByNumber(levelNumber, worldNumber);
 		if(level == null)
@@ -125,9 +119,6 @@ public class SaveManager {
 	}
 	
 	public LevelNode getLatestAvailableLevel() {
-//		if(gameData.getUnlockedLevels().isEmpty())
-//			return new LevelNode(1, 1, ColorSet.GRAY);
-		
 		return gameData.getUnlockedLevels().get(gameData.getUnlockedLevels().size()-1);
 	}
 	
@@ -135,6 +126,29 @@ public class SaveManager {
 		return gameData.getUnlockedWorlds().contains(worldNumber);
 	}
 
+	public boolean isBallUnlocked(Integer number) {
+		return gameData.getUnlockedBalls().contains(number);
+	}
+	
+	public void unlockBall(Integer number) {
+		if(!isBallUnlocked(number)){
+			gameData.getUnlockedBalls().add(number);
+			save();
+		}
+	}
+	
+	public void setActiveBall(int number) {
+		gameData.setActiveBall(number);
+		save();
+	}
+	
+	public int getActiveBall() {
+		return gameData.getActiveBall();
+	}
+	
+	public boolean isBallActive(int number) {
+		return gameData.getActiveBall() == number;
+	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------ HELPERS ------------------------------------------------- **/
@@ -207,4 +221,5 @@ public class SaveManager {
 	public static SaveManager getInstance() {
 		return INSTANCE;
 	}
+
 }

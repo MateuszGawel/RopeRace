@@ -6,14 +6,17 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class ShadowedButton extends Group {
 
-	private Image circle;
-	private Image content;
-	private Image shadow;
+	protected Image circle;
+	protected Image content;
+	protected Image shadow;
 
-	private ColorSet colorSet;
+	protected ColorSet colorSet;
 	
 	public enum ButtonSize{
 		BIG, SMALL
+	}
+	
+	public ShadowedButton() {
 	}
 	
 	public ShadowedButton(String content, ColorSet colorSet){
@@ -40,13 +43,15 @@ public class ShadowedButton extends Group {
 		setSize(this.circle.getWidth(), this.circle.getHeight());
 	}
 	
+
+
 	public void applyColorToContent(ColorSet colorSet){
 		content.setColor(colorSet.getMainColor());
 		shadow.setColor(colorSet.getShadowColor());
 		shadow.toFront();
 	}
 	
-	private void addCircleBackground(ColorSet colorSet, ButtonSize buttonSize){
+	protected void addCircleBackground(ColorSet colorSet, ButtonSize buttonSize){
 		if(buttonSize == ButtonSize.BIG){
 			this.circle = Image.get("circle");
 		}
