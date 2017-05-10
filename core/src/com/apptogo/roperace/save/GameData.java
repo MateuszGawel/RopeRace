@@ -3,7 +3,7 @@ package com.apptogo.roperace.save;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.apptogo.roperace.scene2d.ColorSet;
+import com.apptogo.roperace.enums.ColorSet;
 
 public class GameData {
 

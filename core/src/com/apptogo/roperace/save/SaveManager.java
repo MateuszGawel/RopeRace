@@ -1,6 +1,6 @@
 package com.apptogo.roperace.save;
 
-import com.apptogo.roperace.scene2d.ColorSet;
+import com.apptogo.roperace.enums.ColorSet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Json;

@@ -5,6 +5,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 import com.apptogo.roperace.actors.Rope;
+import com.apptogo.roperace.enums.ColorSet;
 import com.apptogo.roperace.exception.PluginException;
 import com.apptogo.roperace.level.LevelData;
 import com.apptogo.roperace.main.Main;
@@ -12,7 +13,6 @@ import com.apptogo.roperace.manager.CustomAction;
 import com.apptogo.roperace.manager.CustomActionManager;
 import com.apptogo.roperace.plugin.KeyboardSteeringPlugin;
 import com.apptogo.roperace.plugin.TouchSteeringPlugin;
-import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Label;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Group;

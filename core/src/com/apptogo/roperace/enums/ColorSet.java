@@ -1,4 +1,4 @@
-package com.apptogo.roperace.scene2d;
+package com.apptogo.roperace.enums;
 
 import com.badlogic.gdx.graphics.Color;
 

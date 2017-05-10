@@ -1,8 +1,8 @@
 package com.apptogo.roperace.screen;
 
+import com.apptogo.roperace.enums.ColorSet;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.save.SaveManager;
-import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Listener;
 import com.apptogo.roperace.scene2d.ShadowedButton;

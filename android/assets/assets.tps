@@ -250,6 +250,8 @@
             <filename>font_big.png</filename>
             <filename>font_medium.png</filename>
             <filename>chain.png</filename>
+            <filename>ball6.png</filename>
+            <filename>ball5.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

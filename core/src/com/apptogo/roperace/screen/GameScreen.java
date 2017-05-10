@@ -1,6 +1,7 @@
 package com.apptogo.roperace.screen;
 
 import com.apptogo.roperace.actors.Hoop;
+import com.apptogo.roperace.enums.BallData;
 import com.apptogo.roperace.game.EndScreenGroup;
 import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.game.HudLabel;
@@ -39,6 +40,7 @@ public class GameScreen extends BasicScreen {
 
 	protected GameActor player;
 	protected GameActor ground, ceiling;
+	protected BallData ball = BallData.NORMAL;
 	
 	protected int levelNo;
 	protected int worldNo;
@@ -115,14 +117,18 @@ public class GameScreen extends BasicScreen {
 	}
 	
 	protected void createPlayer(){
+		
+		int activeBallNumber = SaveManager.getInstance().getActiveBall();
+		this.ball = BallData.valueOf(activeBallNumber);
+		
 		player = new GameActor("player");
 		player.setBody(BodyBuilder.get()
 				.type(BodyType.DynamicBody)
 				.position(levelGenerator.getStartingPoint())
-				.addFixture("player").circle(0.5f).density(2.5f).friction(0.5f).restitution(0.5f)
+				.addFixture("player").circle(ball.size).density(ball.density).friction(ball.friction).restitution(ball.restitution)
 				.create());
-		player.getBody().setLinearDamping(-0.02f);
-		player.setStaticImage("ball"+SaveManager.getInstance().getActiveBall());
+		player.getBody().setLinearDamping(ball.damping);
+		player.setStaticImage("ball"+activeBallNumber);
 		player.getCurrentAnimation().scaleFrames(1/UnitConverter.PPM * 0.3f);
 
 		player.modifyCustomOffsets(0f, 0f);

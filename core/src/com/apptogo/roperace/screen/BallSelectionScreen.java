@@ -1,10 +1,10 @@
 package com.apptogo.roperace.screen;
 
+import com.apptogo.roperace.enums.ColorSet;
 import com.apptogo.roperace.game.UnlockScreenGroup;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.save.SaveManager;
 import com.apptogo.roperace.scene2d.BallButton;
-import com.apptogo.roperace.scene2d.ColorSet;
 import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Listener;
 import com.apptogo.roperace.scene2d.ShadowedButton;
@@ -24,6 +24,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class BallSelectionScreen extends BasicScreen {
 
 	public static final int BALL_COST = 50;
+	
+	private static final int BALL_COUNT = 6;
 	
 	private Table table;
 	private ScrollPane scrollPane;
@@ -76,7 +78,7 @@ public class BallSelectionScreen extends BasicScreen {
 		table = new Table();
 		table.row().pad(0, padding, 0, padding);
 
-		for (int i = 1; i <= 4; i++) {
+		for (int i = 1; i <= BALL_COUNT; i++) {
 			final BallButton ball = new BallButton(i, currentColorSet);
 			ball.addListener(new ClickListener() {
 				@Override

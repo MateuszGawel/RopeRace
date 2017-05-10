@@ -1,6 +1,6 @@
 package com.apptogo.roperace.save;
 
-import com.apptogo.roperace.scene2d.ColorSet;
+import com.apptogo.roperace.enums.ColorSet;
 
 public class LevelNode {
 	private int levelNo;
