@@ -142,48 +142,6 @@ back-button_shadow
   orig: 146, 146
   offset: 45, 17
   index: -1
-ball1
-  rotate: false
-  xy: 2, 856
-  size: 214, 214
-  orig: 214, 214
-  offset: 0, 0
-  index: -1
-ball2
-  rotate: false
-  xy: 258, 629
-  size: 214, 214
-  orig: 214, 214
-  offset: 0, 0
-  index: -1
-ball3
-  rotate: false
-  xy: 868, 10
-  size: 214, 214
-  orig: 214, 214
-  offset: 0, 0
-  index: -1
-ball4
-  rotate: false
-  xy: 924, 226
-  size: 214, 214
-  orig: 214, 214
-  offset: 0, 0
-  index: -1
-ball5
-  rotate: false
-  xy: 474, 629
-  size: 214, 214
-  orig: 214, 214
-  offset: 0, 0
-  index: -1
-ball6
-  rotate: false
-  xy: 218, 856
-  size: 214, 214
-  orig: 214, 214
-  offset: 0, 0
-  index: -1
 balls
   rotate: false
   xy: 1067, 449
@@ -196,6 +154,20 @@ balls_shadow
   xy: 919, 442
   size: 146, 116
   orig: 146, 146
+  offset: 0, 0
+  index: -1
+basket
+  rotate: false
+  xy: 2, 856
+  size: 214, 214
+  orig: 214, 214
+  offset: 0, 0
+  index: -1
+beach
+  rotate: false
+  xy: 258, 629
+  size: 214, 214
+  orig: 214, 214
   offset: 0, 0
   index: -1
 bonus
@@ -211,6 +183,13 @@ bonus_shadow
   size: 111, 107
   orig: 146, 146
   offset: 35, 13
+  index: -1
+bowling
+  rotate: false
+  xy: 868, 10
+  size: 214, 214
+  orig: 214, 214
+  offset: 0, 0
   index: -1
 chain-end
   rotate: false
@@ -235,7 +214,7 @@ circle-small
   index: -1
 circle
   rotate: false
-  xy: 434, 845
+  xy: 924, 226
   size: 214, 214
   orig: 214, 214
   offset: 0, 0
@@ -317,6 +296,13 @@ medal_shadow
   orig: 156, 214
   offset: 58, 7
   index: -1
+normal
+  rotate: false
+  xy: 474, 629
+  size: 214, 214
+  orig: 214, 214
+  offset: 0, 0
+  index: -1
 ok
   rotate: false
   xy: 1012, 1054
@@ -366,11 +352,25 @@ roperace-logo
   orig: 414, 177
   offset: 4, 9
   index: -1
+rubber
+  rotate: false
+  xy: 218, 856
+  size: 214, 214
+  orig: 214, 214
+  offset: 0, 0
+  index: -1
 star
   rotate: false
   xy: 868, 226
   size: 32, 32
   orig: 32, 32
+  offset: 0, 0
+  index: -1
+tennis
+  rotate: false
+  xy: 434, 845
+  size: 214, 214
+  orig: 214, 214
   offset: 0, 0
   index: -1
 touchpad-background
@@ -389,9 +389,9 @@ touchpad-knob
   index: -1
 viewfinder
   rotate: false
-  xy: 899, 510
-  size: 16, 16
-  orig: 16, 16
+  xy: 938, 1160
+  size: 23, 23
+  orig: 23, 23
   offset: 0, 0
   index: -1
 world1

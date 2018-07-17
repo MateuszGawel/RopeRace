@@ -211,10 +211,6 @@
             <filename>9_shadow.png</filename>
             <filename>back-button.png</filename>
             <filename>back-button_shadow.png</filename>
-            <filename>ball1.png</filename>
-            <filename>ball2.png</filename>
-            <filename>ball3.png</filename>
-            <filename>ball4.png</filename>
             <filename>balls.png</filename>
             <filename>balls_shadow.png</filename>
             <filename>bonus.png</filename>
@@ -250,8 +246,12 @@
             <filename>font_big.png</filename>
             <filename>font_medium.png</filename>
             <filename>chain.png</filename>
-            <filename>ball6.png</filename>
-            <filename>ball5.png</filename>
+            <filename>tennis.png</filename>
+            <filename>basket.png</filename>
+            <filename>beach.png</filename>
+            <filename>bowling.png</filename>
+            <filename>normal.png</filename>
+            <filename>rubber.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
