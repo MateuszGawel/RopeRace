@@ -299,7 +299,7 @@ public class LevelGenerator{
 		
 		//render background
 		shapeRenderer.setColor(1, 1, 1, 1);
-		shapeRenderer.rect(0, 0, getMapSize().x, getMapSize().y);
+		shapeRenderer.rect(0, 0, UnitConverter.toBox2dUnits(getMapSize().x), UnitConverter.toBox2dUnits(getMapSize().y));
 		shapeRenderer.setColor(0, 0.7f, 1, 1);
 		for(Body levelBody : levelBodies){
 			UserData ud = UserData.get(levelBody);
