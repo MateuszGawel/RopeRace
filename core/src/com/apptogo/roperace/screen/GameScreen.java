@@ -130,6 +130,7 @@ public class GameScreen extends BasicScreen {
 				.addFixture("player").circle(ball.size).density(ball.density).friction(ball.friction).restitution(ball.restitution)
 				.create());
 		player.getBody().setLinearDamping(ball.damping);
+		player.getBody().setAngularDamping(0.5f);
 		player.setStaticImage(BallData.valueOf(activeBallNumber).name().toLowerCase());
 		player.getCurrentAnimation().scaleFrames(ball.size/ballDefaultGraphicRadius);
 		player.setOrigin(ball.size/ballDefaultGraphicRadius/2, ball.size/ballDefaultGraphicRadius/2);

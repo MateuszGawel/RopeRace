@@ -20,8 +20,9 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 		super(screen);
 
 		Actor shootListener = new Actor();
-		shootListener.setSize(Main.SCREEN_WIDTH / 2, Main.SCREEN_HEIGHT);
-		shootListener.setPosition(-Main.SCREEN_WIDTH / 2, -Main.SCREEN_HEIGHT / 2);
+		shootListener.setSize(100, 100);
+		shootListener.setPosition(-Main.SCREEN_WIDTH /2, -Main.SCREEN_HEIGHT / 2);
+		shootListener.setDebug(true);
 		shootListener.addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -38,7 +39,6 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 		});
 
 		screen.getHudStage().addActor(shootListener);
-
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 			switch (touchState) {
 			case JUST_TOUCHED:
 				touchState = TouchState.KEEP_TOUCHED;
-				rope.shoot(touchpad.getAngle());
+				rope.shoot(viewfinder.getAngle());
 				break;
 			case KEEP_TOUCHED:
 				if (!Gdx.input.isKeyPressed(Keys.SPACE)) {
