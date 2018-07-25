@@ -1,5 +1,6 @@
 package com.apptogo.roperace.scene2d;
 
+import com.apptogo.roperace.enums.BallData;
 import com.apptogo.roperace.enums.ColorSet;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.save.SaveManager;
@@ -59,7 +60,7 @@ public class BallButton extends ShadowedButton {
 	public void unlock() {
 		this.circle.remove();
 		
-		this.circle = Image.get("ball" + number);
+		this.circle = Image.get(BallData.valueOf(number).name().toLowerCase());
 
 		this.addActor(circle);
 		this.setWidth(circle.getWidth());

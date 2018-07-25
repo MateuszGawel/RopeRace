@@ -108,7 +108,7 @@ public class Rope extends GameActor{
 		jointDef.localAnchorB.set(0,0);
 		joint = (RopeJoint)screen.getWorld().createJoint(jointDef);
 
-		joint.setMaxLength(10000);
+		joint.setMaxLength(15000);
 	}
 	
 	private void triggerAutoRopeCut() {

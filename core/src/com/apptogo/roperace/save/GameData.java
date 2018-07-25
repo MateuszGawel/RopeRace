@@ -3,6 +3,7 @@ package com.apptogo.roperace.save;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.apptogo.roperace.enums.BallData;
 import com.apptogo.roperace.enums.ColorSet;
 
 public class GameData {
@@ -11,8 +12,8 @@ public class GameData {
 		//first always unlocked
 		unlockedLevels.add(new LevelNode(1, 1, ColorSet.GRAY));
 		unlockedWorlds.add(1);
-		unlockedBalls.add(1);
-		activeBall = 1;
+		unlockedBalls.add(BallData.NORMAL.number);
+		activeBall = BallData.TENNIS.number;
 	}
 
 	protected static final String NAME = "GAME_DATA";

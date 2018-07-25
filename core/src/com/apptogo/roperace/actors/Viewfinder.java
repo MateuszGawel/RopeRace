@@ -1,10 +1,8 @@
 package com.apptogo.roperace.actors;
 
-import com.apptogo.roperace.custom.MyTouchpad;
 import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.screen.GameScreen;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
@@ -13,14 +11,12 @@ public class Viewfinder extends GameActor{
 	private static final float VIEWFINDER_RADIUS = 2;
 	
 	private GameActor player;
-	private MyTouchpad touchpad;
-	
+	private float angle;
 	private Vector2 viewfinderOffset = new Vector2(VIEWFINDER_RADIUS, 0);
 	
-	public Viewfinder(GameScreen screen, GameActor actor, MyTouchpad touchpad) {
+	public Viewfinder(GameScreen screen, GameActor actor) {
 		super("viewfinder");
 		this.player = actor;
-		this.touchpad = touchpad;
 		
 		setBody(BodyBuilder.get()
 				.type(BodyType.KinematicBody)
@@ -38,22 +34,19 @@ public class Viewfinder extends GameActor{
 
 	@Override
 	public void act(float delta) {
-		
-		
-		if (touchpad.getKnobX() != touchpad.getWidth() / 2 && touchpad.getKnobY() != touchpad.getHeight() / 2) {
-			viewfinderOffset.setAngle(touchpad.getAngle());
-		}
+		viewfinderOffset.setAngle(angle);
+		setRotation(angle);
 		getBody().setTransform(player.getBody().getPosition().add(viewfinderOffset), 0);
-		setRotation(touchpad.getAngle());
+		
 		super.act(delta);
 	}
 
-	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		// TODO Auto-generated method stub
-		super.draw(batch, parentAlpha);
+	public void setAngle(float angle) {
+		this.angle = angle;
 	}
-	
-	
+
+	public float getAngle() {
+		return angle;
+	}
 
 }

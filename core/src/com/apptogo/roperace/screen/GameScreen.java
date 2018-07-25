@@ -56,6 +56,8 @@ public class GameScreen extends BasicScreen {
 	private StartGameGroup startGameGroup;
 	private GravityPlugin gravityPlugin;
 	
+	private float ballDefaultGraphicRadius = 107;
+	
 	public GameScreen(int levelNo, int worldNo) {
 		super();
 		this.levelNo = levelNo;
@@ -128,9 +130,10 @@ public class GameScreen extends BasicScreen {
 				.addFixture("player").circle(ball.size).density(ball.density).friction(ball.friction).restitution(ball.restitution)
 				.create());
 		player.getBody().setLinearDamping(ball.damping);
-		player.setStaticImage("ball"+activeBallNumber);
-		player.getCurrentAnimation().scaleFrames(1/UnitConverter.PPM * 0.3f);
-
+		player.getBody().setAngularDamping(0.5f);
+		player.setStaticImage(BallData.valueOf(activeBallNumber).name().toLowerCase());
+		player.getCurrentAnimation().scaleFrames(ball.size/ballDefaultGraphicRadius);
+		player.setOrigin(ball.size/ballDefaultGraphicRadius/2, ball.size/ballDefaultGraphicRadius/2);
 		player.modifyCustomOffsets(0f, 0f);
 		frontStage.addActor(player);
 		
