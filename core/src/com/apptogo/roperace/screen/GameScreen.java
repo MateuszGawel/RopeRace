@@ -38,40 +38,43 @@ public class GameScreen extends BasicScreen {
 	protected World world;
 	protected ContactListener contactListener = new ContactListener();
 
+
 	protected GameActor player;
 	protected GameActor ground, ceiling;
 	protected BallData ball = BallData.NORMAL;
-	
+
 	protected int levelNo;
 	protected int worldNo;
 	protected LevelGenerator levelGenerator;
 	protected LevelData levelData;
-	
+
 	protected Stage hudStage;
 	protected Viewport hudViewport;
+	protected Stage steeringHudStage;
+	protected Viewport steeringHudViewport;
 	protected SteeringPlugin steeringPlugin;
 	protected CameraFollowingPlugin cameraFollowingPlugin;
 	protected HudLabel hudLabel;
 	protected Hoop hoop;
 	private StartGameGroup startGameGroup;
 	private GravityPlugin gravityPlugin;
-	
+
 	private float ballDefaultGraphicRadius = 107;
-	
+
 	public GameScreen(int levelNo, int worldNo) {
 		super();
 		this.levelNo = levelNo;
 		this.worldNo = worldNo;
 	}
-	
+
 	public GameScreen() {
 		super();
 	}
-	
+
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ---------------------------------------------- PREPARATION ----------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
-	
+
 	@Override
 	protected void prepare() {
 
@@ -81,6 +84,7 @@ public class GameScreen extends BasicScreen {
 		world.setContactListener(contactListener);
 
 		prepareFrontStage();
+		prepareSteeringHudStage();
 		prepareHudStage();
 		createLevel();
 		createPlayer();
@@ -104,7 +108,7 @@ public class GameScreen extends BasicScreen {
 		hudLabel = new HudLabel(levelData, player);
 		hudStage.addActor(hudLabel);
 	}
-	
+
 	protected void prepareFrontStage() {
 		this.frontViewport = new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT));
 		frontStage.setViewport(frontViewport);
@@ -114,15 +118,23 @@ public class GameScreen extends BasicScreen {
 		this.hudViewport = new FitViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		this.hudStage = new Stage(this.hudViewport);
 		((OrthographicCamera) hudStage.getCamera()).position.set(0f, 0f, 0f);
-		
+
 		inputMultiplexer.addProcessor(hudStage);
 	}
-	
+
+	protected void prepareSteeringHudStage() {
+		this.steeringHudViewport = new FillViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		this.steeringHudStage = new Stage(this.steeringHudViewport);
+		((OrthographicCamera) steeringHudStage.getCamera()).position.set(0f, 0f, 0f);
+
+		inputMultiplexer.addProcessor(steeringHudStage);
+	}
+
 	protected void createPlayer(){
-		
+
 		int activeBallNumber = SaveManager.getInstance().getActiveBall();
 		this.ball = BallData.valueOf(activeBallNumber);
-		
+
 		player = new GameActor("player");
 		player.setBody(BodyBuilder.get()
 				.type(BodyType.DynamicBody)
@@ -136,26 +148,26 @@ public class GameScreen extends BasicScreen {
 		player.setOrigin(ball.size/ballDefaultGraphicRadius/2, ball.size/ballDefaultGraphicRadius/2);
 		player.modifyCustomOffsets(0f, 0f);
 		frontStage.addActor(player);
-		
+
 		cameraFollowingPlugin = new CameraFollowingPlugin(levelGenerator.getMapSize());
 		steeringPlugin = new TouchSteeringPlugin(this);
 		gravityPlugin = new GravityPlugin();
-		
+
 		player.addPlugin(cameraFollowingPlugin);
 		player.addPlugin(steeringPlugin);
 		player.addPlugin(gravityPlugin);
-		
+
 	}
-	
-	protected void createLevel(){	
+
+	protected void createLevel(){
 		levelGenerator = new LevelGenerator(this);
 		levelGenerator.loadLevel(levelNo, worldNo);
 	}
-	
+
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** -------------------------------------------------- STEP -------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
-	
+
 	@Override
 	protected void step(float delta) {
 		// --- backstage render first --- //
@@ -167,10 +179,10 @@ public class GameScreen extends BasicScreen {
 		ContactListener.SNAPSHOT_BEGIN.clear();
 		ContactListener.SNAPSHOT_END.clear();
 		world.step(delta, 3, 3);
-		
+
 		// --- frontstage render last --- //
 	}
-	
+
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(currentColorSet.getMainColor().r, currentColorSet.getMainColor().g, currentColorSet.getMainColor().b, currentColorSet.getMainColor().a);
@@ -179,36 +191,44 @@ public class GameScreen extends BasicScreen {
 		this.backStage.act(delta);
 		this.frontStage.act(delta);
 		this.hudStage.act(delta);
-		
+		this.steeringHudStage.act(delta);
+
 		this.cameraFollowingPlugin.updateCamera();
-		
+
 		this.backViewport.apply();
 		this.backStage.draw();
-		
+
 		this.frontViewport.apply();
 		this.levelGenerator.render();
 		this.frontStage.draw();
-		
+
 		step(delta);
 		handleInput();
-		
+
 		this.hudViewport.apply();
 		this.hudStage.draw();
-		
+		this.steeringHudViewport.apply();
+		this.steeringHudStage.draw();
+
 		if(!gravityPlugin.isStarted() && startGameGroup.isFinished()){
 			gravityPlugin.setStarted(true);
 			hudLabel.setCounting(true);
 		}
+
+		if(hoop.isFinished()){
+			inputMultiplexer.removeProcessor(steeringHudStage);
+		}
 	}
-	
+
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------ DISPOSE ------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
-	
+
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
 		this.hudStage.getViewport().update(width, height);
+		this.steeringHudStage.getViewport().update(width, height);
 		cameraFollowingPlugin.postSetActor();
 	}
 
@@ -222,7 +242,7 @@ public class GameScreen extends BasicScreen {
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** -------------------------------------------- GETTERS / SETTERS --------------------------------------------**/
 	/** ---------------------------------------------------------------------------------------------------------- **/
-	
+
 	public World getWorld() {
 		return world;
 	}
@@ -237,6 +257,10 @@ public class GameScreen extends BasicScreen {
 
 	public Stage getHudStage() {
 		return hudStage;
+	}
+
+	public Stage getSteeringHudStage() {
+		return steeringHudStage;
 	}
 
 	public LevelData getLevelData() {
@@ -258,4 +282,9 @@ public class GameScreen extends BasicScreen {
 	public HudLabel getHudLabel() {
 		return hudLabel;
 	}
+
+	public GameActor getPlayer() {
+		return player;
+	}
+
 }

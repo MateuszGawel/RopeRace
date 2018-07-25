@@ -40,7 +40,7 @@ public class EndScreenGroup extends Group {
 	/** ------------------------------------------------ FIELDS -------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
 
-	private float margin = 100;
+	private float margin = Main.SCREEN_WIDTH / 15;
 	private boolean showed;
 	private boolean success;
 	private int levelNo;
@@ -481,7 +481,8 @@ public class EndScreenGroup extends Group {
 		batch.end();
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.WHITE);
-		shapeRenderer.rect(getX() + margin + getWidth() / 2, getY() + margin + getHeight() / 2, getWidth(), getHeight());
+		shapeRenderer.setProjectionMatrix(getStage().getCamera().combined);
+		shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
 		shapeRenderer.end();
 		batch.begin();
 		super.draw(batch, parentAlpha);

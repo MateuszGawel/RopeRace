@@ -19,6 +19,7 @@ import com.apptogo.roperace.screen.BasicScreen;
 import com.apptogo.roperace.screen.GameScreen;
 import com.apptogo.roperace.screen.MenuScreen;
 import com.apptogo.roperace.screen.WorldSelectionScreen;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
@@ -40,7 +41,7 @@ public class UnlockScreenGroup extends Group {
 	/** ------------------------------------------------ FIELDS -------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
 
-	private float margin = 150;
+	private float margin = Main.SCREEN_HEIGHT/8;
 	private MyShapeRenderer shapeRenderer;
 	private BasicScreen currentScreen;
 	
@@ -58,6 +59,8 @@ public class UnlockScreenGroup extends Group {
 		setSize(Main.SCREEN_WIDTH - 4 * margin, Main.SCREEN_HEIGHT - 2 * margin);
 		setPosition(-getWidth()/2, -1000);
 		setOrigin(getWidth() / 2, getHeight() / 2);
+		setBounds(getX(), getY(), getWidth(), getHeight());
+		setDebug(true);
 		shapeRenderer = new MyShapeRenderer();
 		currentScreen = Main.getInstance().getCurrentScreen();
 		this.label = label;
@@ -166,7 +169,8 @@ public class UnlockScreenGroup extends Group {
 		batch.end();
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.WHITE);
-		shapeRenderer.rect(getX() + 2*margin + getWidth() / 2, getY() + margin + getHeight() / 2, getWidth(), getHeight());
+        shapeRenderer.setProjectionMatrix(getStage().getCamera().combined);
+		shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
 		shapeRenderer.end();
 		batch.begin();
 		super.draw(batch, parentAlpha);

@@ -19,9 +19,10 @@ import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 
 public class Rope extends GameActor{
 
-	private static final float ROPE_SHORTENING_SPEED = 0.04f;
+	private float changeLenghtSpeed = 0.04f;
 	private static final float ROPE_SHOOT_SPEED = 40f;
 	private static final float ROPE_LENGTH = 0.3f;
+	private static final float ROPE_MAX_LENGTH = 15000;
 	
 	private GameScreen screen;
 	private GameActor player;
@@ -30,6 +31,7 @@ public class Rope extends GameActor{
 	private RopeJoint joint;
 	private boolean ropeAttached;
 	private CustomAction shorteningAction;
+	private CustomAction extendingAction;
 	private float ropeLength, startU2Length;
 	private TextureRegion ropeTextureRegion;
 	private Vector2 shootVector = new Vector2(ROPE_SHOOT_SPEED, 0);
@@ -44,7 +46,8 @@ public class Rope extends GameActor{
 		
 		ropeTextureRegion = new TextureRegion(ResourcesManager.getInstance().getAtlasRegion("chain"));
 		startU2Length = ropeTextureRegion.getU2() - ropeTextureRegion.getU();
-		
+		createRopeLenghtActions();
+
 		//rope bullet (rope end)
 		ropeBullet = BodyBuilder.get()
 				.type(BodyType.DynamicBody)
@@ -95,7 +98,7 @@ public class Rope extends GameActor{
        			ropeAttached = true;
 			
 			joint.setMaxLength(player.getBody().getPosition().dst(ropeBullet.getPosition()));
-			triggerAutoRopeShortening(joint);
+			shortenRope(changeLenghtSpeed);
 		}
 	}
 	
@@ -108,7 +111,7 @@ public class Rope extends GameActor{
 		jointDef.localAnchorB.set(0,0);
 		joint = (RopeJoint)screen.getWorld().createJoint(jointDef);
 
-		joint.setMaxLength(15000);
+		joint.setMaxLength(ROPE_MAX_LENGTH);
 	}
 	
 	private void triggerAutoRopeCut() {
@@ -123,18 +126,18 @@ public class Rope extends GameActor{
 		});
 	}
 	
-	private void triggerAutoRopeShortening(final RopeJoint joint){
+	public void createRopeLenghtActions(){
 		shorteningAction = new CustomAction(0.01f, -1) {
 			boolean first = true;
 			
 			@Override
 			public void perform() {
-				if(joint.getMaxLength() > 1){				
+				if (ropeAttached && joint.getMaxLength() > 1) {
 					float currentLength = joint.getAnchorA().dst(joint.getAnchorB());
-					
+
 					//if ball stucks, rope shouldn't short to avoid jitter jump.
-					if(first || currentLength <= joint.getMaxLength() + ROPE_SHORTENING_SPEED/2){
-						joint.setMaxLength(joint.getMaxLength() - ROPE_SHORTENING_SPEED);
+					if (first || currentLength <= joint.getMaxLength() + changeLenghtSpeed / 2) {
+						joint.setMaxLength(joint.getMaxLength() - changeLenghtSpeed);
 						first = false;
 					}
 				}
@@ -143,8 +146,56 @@ public class Rope extends GameActor{
 				}
 			}
 		};
+
+		extendingAction = new CustomAction(0.01f, -1) {
+			@Override
+			public void perform() {
+				if(ropeAttached) {
+					float currentLength = joint.getAnchorA().dst(joint.getAnchorB());
+
+					if (currentLength <= ROPE_MAX_LENGTH) {
+						joint.setMaxLength(joint.getMaxLength() + changeLenghtSpeed);
+					}
+				}
+				else {
+					unregister();
+				}
+			}
+		};
 		
-		CustomActionManager.getInstance().registerAction(shorteningAction);
+	}
+
+	public void extendRope(float speed){
+	    changeLenghtSpeed = speed;
+	    if(shorteningAction.isRegistered()) {
+            shorteningAction.unregister();
+            shorteningAction.resetAction();
+        }
+        if(!extendingAction.isRegistered()) {
+            CustomActionManager.getInstance().registerAction(extendingAction);
+        }
+	}
+
+	public void shortenRope(float speed){
+        changeLenghtSpeed = speed;
+	    if(extendingAction.isRegistered()) {
+            extendingAction.unregister();
+            extendingAction.resetAction();
+        }
+        if(!shorteningAction.isRegistered()) {
+            CustomActionManager.getInstance().registerAction(shorteningAction);
+        }
+	}
+
+	public void stopRope(){
+	    if(extendingAction.isRegistered()) {
+            extendingAction.unregister();
+            extendingAction.resetAction();
+        }
+        if(shorteningAction.isRegistered()) {
+            shorteningAction.unregister();
+            shorteningAction.resetAction();
+        }
 	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -180,5 +231,9 @@ public class Rope extends GameActor{
 
 	public int getShootCounter() {
 		return shootCounter;
+	}
+
+	public boolean isRopeAttached() {
+		return ropeAttached;
 	}
 }

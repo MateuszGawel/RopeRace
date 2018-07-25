@@ -19,14 +19,14 @@ public class InvisibleSteeringActor extends Actor{
 		
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		setPosition(-Main.SCREEN_WIDTH /2, -Main.SCREEN_HEIGHT / 2);
-		screen.getHudStage().addActor(this);
+		screen.getSteeringHudStage().addActor(this);
 		toBack();
 		
 		addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				center.set(x,y);
-				center.sub(UnitConverter.toGraphicsUnits(viewfinder.getViewfinderOffset()));
+				center.sub(UnitConverter.toGraphicsUnits(viewfinder.getViewfinderOffset().cpy().scl(0.3f)));
 				return true;
 			}
 			@Override

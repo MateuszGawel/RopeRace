@@ -49,7 +49,7 @@ public class BallSelectionScreen extends BasicScreen {
 	
 	private void prepareUnlockBallScreen() {
 		unlockBallScreenGroup = new UnlockScreenGroup("Unlock ball");
-		frontStage.addActor(unlockBallScreenGroup);
+		backStage.addActor(unlockBallScreenGroup);
 	}
 
 	protected void prepareFrontStage() {
