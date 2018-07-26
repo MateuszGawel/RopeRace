@@ -153,8 +153,8 @@ public class GameScreen extends BasicScreen {
 		steeringPlugin = new TouchSteeringPlugin(this);
 		gravityPlugin = new GravityPlugin();
 
-		player.addPlugin(cameraFollowingPlugin);
 		player.addPlugin(steeringPlugin);
+		player.addPlugin(cameraFollowingPlugin);
 		player.addPlugin(gravityPlugin);
 
 	}

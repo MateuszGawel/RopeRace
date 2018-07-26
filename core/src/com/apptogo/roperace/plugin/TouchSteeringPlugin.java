@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class TouchSteeringPlugin extends SteeringPlugin {
 
 	private Vector2 touchedPlace = new Vector2(0,0);
+	private static final int MAX_SPEEDUP_BY_SWING = 300;
 
 	protected enum TouchState {
 		NOT_TOUCHED, JUST_TOUCHED, KEEP_TOUCHED, JUST_UNTOUCHED
@@ -23,8 +24,8 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 		super(screen);
 
 		final Actor shootListener = new Actor();
-		shootListener.setSize(400, 400);
-		shootListener.setPosition(-Main.SCREEN_WIDTH /2 - 100, -Main.SCREEN_HEIGHT / 2 - 100);
+		shootListener.setSize(Main.SCREEN_WIDTH /2, Main.SCREEN_HEIGHT);
+		shootListener.setPosition(-Main.SCREEN_WIDTH /2 - 100, -Main.SCREEN_HEIGHT/2);
 		shootListener.setDebug(true);
 		shootListener.addListener(new ClickListener() {
 			@Override
@@ -44,8 +45,8 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 			@Override
 			public void touchDragged(InputEvent event, float x, float y, int pointer) {
 				if(rope.isRopeAttached()) {
-					float draggedX = x < shootListener.getWidth() ? x : shootListener.getWidth();
-					float draggedY = y < shootListener.getHeight() ? y : shootListener.getHeight();
+					float draggedX = x < MAX_SPEEDUP_BY_SWING ? x : MAX_SPEEDUP_BY_SWING;
+					float draggedY = y < MAX_SPEEDUP_BY_SWING ? y : MAX_SPEEDUP_BY_SWING;
 					screen.getPlayer().getBody().applyForceToCenter((draggedX - touchedPlace.x)/50, (draggedY - touchedPlace.y)/50, true);
 
 //					if(draggedY > touchedPlace.y){

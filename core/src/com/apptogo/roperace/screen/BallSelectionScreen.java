@@ -41,7 +41,6 @@ public class BallSelectionScreen extends BasicScreen {
 
 	@Override
 	protected void prepare() {
-		prepareBackStage();
 		prepareFrontStage();
 		prepareScrollPane();
 		prepareUnlockBallScreen();
@@ -49,24 +48,17 @@ public class BallSelectionScreen extends BasicScreen {
 	
 	private void prepareUnlockBallScreen() {
 		unlockBallScreenGroup = new UnlockScreenGroup("Unlock ball");
-		backStage.addActor(unlockBallScreenGroup);
+		frontStage.addActor(unlockBallScreenGroup);
 	}
 
-	protected void prepareFrontStage() {
-		frontViewport = new FillViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
-		frontStage.setViewport(frontViewport);
-	}
-	
-	protected void prepareBackStage(){
+	protected void prepareFrontStage(){
 		float small_padding = 20;
 		
 		ShadowedButton backButton = new ShadowedButton("back-button", currentColorSet, ButtonSize.SMALL);
 		backButton.addListener(Listener.click(game, new MenuScreen()));
 		backButton.setPosition(Main.SCREEN_WIDTH / 2 - backButton.getWidth() - small_padding, -Main.SCREEN_HEIGHT/2 + small_padding);
-		backStage.addActor(backButton);
+		frontStage.addActor(backButton);
 		
-		backViewport = new FitViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
-		backStage.setViewport(backViewport);
 		inputMultiplexer.addProcessor(backStage);
 	}
 
@@ -102,7 +94,7 @@ public class BallSelectionScreen extends BasicScreen {
 		scrollPane.setFadeScrollBars(false);
 		scrollPane.setSize(Main.SCREEN_WIDTH, dummyImage.getRegionHeight());
 		scrollPane.setPosition(-Main.SCREEN_WIDTH / 2, -dummyImage.getRegionWidth() / 2);
-		frontStage.addActor(scrollPane);
+		backStage.addActor(scrollPane);
 	}
 
 	public UnlockScreenGroup getBallScreenGroup() {

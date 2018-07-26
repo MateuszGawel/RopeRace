@@ -236,4 +236,8 @@ public class Rope extends GameActor{
 	public boolean isRopeAttached() {
 		return ropeAttached;
 	}
+
+	public Body getRopeBullet() {
+		return ropeBullet;
+	}
 }
