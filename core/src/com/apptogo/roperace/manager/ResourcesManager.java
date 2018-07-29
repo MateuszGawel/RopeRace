@@ -37,16 +37,16 @@ public class ResourcesManager {
 	private ResourcesManager() {
 		manager = new AssetManager();
 		preloadResources();
-		
+
 		//prepare loader for tiled maps
 		manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 	}
-	
-	private void preloadResources(){
+
+	private void preloadResources() {
 		manager.load("logo.png", Texture.class);
 		manager.finishLoading();
 	}
-	
+
 	/**
 	 * Loads all resources
 	 */
@@ -121,11 +121,11 @@ public class ResourcesManager {
 //		
 //		manager.load("diamond.png", Texture.class);
 //		manager.load("star.png", Texture.class);
-		
+
 		manager.finishLoading();
-		
+
 		loadSkin();
-	}		
+	}
 
 	/**
 	 * Loads skin from file
@@ -157,14 +157,14 @@ public class ResourcesManager {
 
 	/**
 	 * Search for texture png
-	 * 
+	 *
 	 * @param textureName
 	 * @return texture by name
 	 */
 	public Texture getTexture(String textureName) {
 		return manager.get(textureName + ".png");
 	}
-	
+
 	/**
 	 * @param soundName
 	 * @return sound by name
@@ -172,11 +172,11 @@ public class ResourcesManager {
 	public Sound getSound(String soundName) {
 		return manager.get(soundName + ".ogg");
 	}
-	
+
 	/**
 	 * Loads given level. e.g for 1 it loads levels/level1.tmx
-	 * then returns it 
-	 * 
+	 * then returns it
+	 *
 	 * @param levelNumber
 	 * @return TiledMap of level
 	 */
@@ -185,6 +185,10 @@ public class ResourcesManager {
 		manager.load(levelPath, TiledMap.class);
 		manager.finishLoading();
 		return manager.get(levelPath);
+	}
+
+	public TextureAtlas getAtlas() {
+		return manager.get("atlas.pack", TextureAtlas.class);
 	}
 
 	/**

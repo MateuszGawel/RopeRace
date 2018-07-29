@@ -252,6 +252,7 @@
             <filename>bowling.png</filename>
             <filename>normal.png</filename>
             <filename>rubber.png</filename>
+            <filename>particle.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

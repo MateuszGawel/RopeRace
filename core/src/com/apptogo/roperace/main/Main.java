@@ -1,9 +1,9 @@
 package com.apptogo.roperace.main;
 
 
-
 import com.apptogo.roperace.callback.GameCallback;
 import com.apptogo.roperace.manager.CustomActionManager;
+import com.apptogo.roperace.manager.ParticlesManager;
 import com.apptogo.roperace.manager.ResourcesManager;
 import com.apptogo.roperace.save.SaveManager;
 import com.apptogo.roperace.screen.BasicScreen;
@@ -63,6 +63,8 @@ public class Main extends Game {
 		CustomActionManager.create();
 		ResourcesManager.getInstance().loadResources();
 		SaveManager.create();
+		ParticlesManager.create();
+		ParticlesManager.getInstance().initParticles(ResourcesManager.getInstance().getAtlas());
 		this.setScreen(new SplashScreen(this));
 	}
 

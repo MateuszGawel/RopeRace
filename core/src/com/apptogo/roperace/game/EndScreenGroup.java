@@ -469,9 +469,16 @@ public class EndScreenGroup extends Group {
 	public void act(float delta) {
 		super.act(delta);
 		if ((hudLabel.isGameOver() || hoop.isFinished()) && !showed) {
-			init();
 			showed = true;
-			hudLabel.setCounting(false);
+			CustomActionManager.getInstance().registerAction(new CustomAction(0.5f) {
+				
+				@Override
+				public void perform() {
+					init();
+					hudLabel.setCounting(false);
+				}
+			});
+
 		}
 	}
 

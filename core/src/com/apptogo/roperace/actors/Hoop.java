@@ -1,11 +1,14 @@
 package com.apptogo.roperace.actors;
 
 import com.apptogo.roperace.game.ImmaterialGameActor;
+import com.apptogo.roperace.game.ParticleEffectActor;
+import com.apptogo.roperace.manager.ParticlesManager;
 import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.physics.ContactListener;
 import com.apptogo.roperace.screen.GameScreen;
 import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -17,9 +20,10 @@ public class Hoop extends Group{
 	private ImmaterialGameActor hoopTop;
 	private Body body;
 	private boolean finished;
+	private GameScreen screen;
 	
 	public Hoop(GameScreen screen, Vector2 position, Float rotation) {
-		
+		this.screen = screen;
 		hoopBottom = new ImmaterialGameActor("hoopBottom");
 		hoopBottom.setStaticImage("hoop-bottom");
 		screen.getFrontStage().addActor(hoopBottom);
@@ -103,12 +107,12 @@ public class Hoop extends Group{
 		
 		//if ball fly through the hoop
 		if(hoop1_touchedFirst && hoop1_justLeft && hoop2_collision){
-			finished = true;
+			finish();
 			hoop1_collision = false;
 			hoop2_collision = false;
 		}
 		else if(hoop2_touchedFirst && hoop2_justLeft && hoop1_collision){
-			finished = true;
+			finish();
 			hoop1_collision = false;
 			hoop2_collision = false;
 		}
@@ -123,6 +127,15 @@ public class Hoop extends Group{
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+	}
+	
+	public void finish(){
+		ParticleEffectActor hoopParticle = ParticlesManager.getInstance().getHoopParticle();
+		screen.getFrontStage().addActor(hoopParticle);
+		PooledEffect effect = hoopParticle.obtainAndStart(getX() + getWidth()/2, getY() + getHeight()/2, 0);
+		ParticlesManager.changeColor(screen.getCurrentColorSet().getMainColor(), effect);
+		
+		finished = true;
 	}
 
 	public boolean isFinished() {

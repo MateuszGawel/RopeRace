@@ -317,6 +317,13 @@ ok_shadow
   orig: 146, 146
   offset: 30, 13
   index: -1
+particle
+  rotate: false
+  xy: 938, 1160
+  size: 32, 31
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 play-button
   rotate: false
   xy: 1192, 573
@@ -389,7 +396,7 @@ touchpad-knob
   index: -1
 viewfinder
   rotate: false
-  xy: 938, 1160
+  xy: 166, 1201
   size: 23, 23
   orig: 23, 23
   offset: 0, 0

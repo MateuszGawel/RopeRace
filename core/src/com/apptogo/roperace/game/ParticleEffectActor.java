@@ -71,7 +71,7 @@ public class ParticleEffectActor extends Image {
 		if (effect != null)
 			effect.setPosition(x, y);
 	}
-
+	
 	public void start() {
 		if (!started)
 			effect.start();
