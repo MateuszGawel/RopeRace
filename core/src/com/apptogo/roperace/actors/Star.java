@@ -1,6 +1,5 @@
 package com.apptogo.roperace.actors;
 
-import com.apptogo.roperace.enums.ColorSet;
 import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.game.ParticleEffectActor;
 import com.apptogo.roperace.manager.ParticlesManager;
@@ -36,8 +35,6 @@ public class Star extends GameActor {
 		if (collide) {
 			ParticleEffectActor explosionParticle = ParticlesManager.getInstance().getStarParticle();
 			screen.getFrontStage().addActor(explosionParticle);
-			PooledEffect effect = explosionParticle.obtainAndStart(getX() + getWidth()/2, getY() + getHeight()/2, 0);
-			ParticlesManager.changeColor(ColorSet.GREEN.getMainColor(), effect);
 			
 			remove();
 			getBody().setTransform(new Vector2(0, 100), 0);

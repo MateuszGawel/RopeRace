@@ -128,10 +128,10 @@ public class BodyBuilder {
 		return box(size.x, size.y, 0, 0);
 	}
 	
-	public BodyBuilder box(float width, float height, float offsetX, float offsetY)
+	public BodyBuilder box(float width, float height, float centerX, float centerY)
 	{
 		PolygonShape polygon = new PolygonShape();
-		polygon.setAsBox(width/2f, height/2f, new Vector2(offsetX, offsetY), 0);
+		polygon.setAsBox(width/2f, height/2f, new Vector2(centerX, centerY), 0);
 		
 		fixtureDefs.peek().shape = polygon;
 		

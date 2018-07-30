@@ -40,7 +40,7 @@ public class Hoop extends Group{
 				.addFixture("hoop").box(0.2f, 0.5f, 1.1f, 0).sensor(false)
 				.create();
 		
-		body.setTransform(position, (float)Math.toRadians(rotation));
+		body.setTransform(position, (float)Math.toRadians(360-rotation));
 		hoopTop.setPosition(position.x, position.y);
 		hoopBottom.setPosition(position.x, position.y);
 
