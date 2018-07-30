@@ -6,18 +6,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.apptogo.roperace.actors.Star;
 import com.apptogo.roperace.actors.Hoop;
+import com.apptogo.roperace.actors.Star;
 import com.apptogo.roperace.custom.MyShapeRenderer;
 import com.apptogo.roperace.custom.MyShapeRenderer.ShapeType;
+import com.apptogo.roperace.enums.ColorSet;
 import com.apptogo.roperace.exception.LevelException;
 import com.apptogo.roperace.level.LevelData.LevelType;
+import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.manager.ResourcesManager;
 import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.physics.UserData;
 import com.apptogo.roperace.physics.UserData.SegmentType;
 import com.apptogo.roperace.screen.GameScreen;
 import com.apptogo.roperace.tools.UnitConverter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
@@ -159,11 +162,22 @@ public class LevelGenerator{
 					worldTransformedVertices[i] = UnitConverter.toBox2dUnits(transformedVertices[i]);
 				}
 				
-				Body body = BodyBuilder.get()
-						.type(BodyType.StaticBody)
-						.position(position)
-						.addFixture("level", "nonkilling").polygon(worldVertices)
-						.create();
+				Body body = null;
+				if("immaterial".equals(mapObject.getName())){
+					body = BodyBuilder.get()
+							.type(BodyType.StaticBody)
+							.position(position)
+							.addFixture("immaterial", "immaterial").polygon(worldVertices)
+							.sensor(true)
+							.create();
+				}
+				else{
+					body = BodyBuilder.get()
+							.type(BodyType.StaticBody)
+							.position(position)
+							.addFixture("level", "nonkilling").polygon(worldVertices)
+							.create();
+				}	
 				
 				levelBodies.add(body);
 				UserData.get(body).segmentType = SegmentType.CATCHABLE;
@@ -300,9 +314,9 @@ public class LevelGenerator{
 		//render background
 		shapeRenderer.setColor(1, 1, 1, 1);
 		shapeRenderer.rect(0, 0, UnitConverter.toBox2dUnits(getMapSize().x), UnitConverter.toBox2dUnits(getMapSize().y));
-		shapeRenderer.setColor(0, 0.7f, 1, 1);
 		for(Body levelBody : levelBodies){
 			UserData ud = UserData.get(levelBody);
+			shapeRenderer.setColor(decideColor(ud));
 			if(ud.segmentType == SegmentType.CATCHABLE && ud.position != null){
 				if(ud.size != null){				
 					shapeRenderer.rect(ud.position.x - ud.size.x/2, ud.position.y - ud.size.y/2, ud.size.x, ud.size.y);
@@ -324,6 +338,13 @@ public class LevelGenerator{
 	    }
 		
 		shapeRenderer.end();
+	}
+
+	private Color decideColor(UserData ud) {
+		if("immaterial".equals(ud.type)){
+			return ColorSet.LIGHT_GRAY.getMainColor();
+		}
+		return Main.getInstance().getCurrentScreen().getCurrentColorSet().getMainColor();
 	}
 	
 	
