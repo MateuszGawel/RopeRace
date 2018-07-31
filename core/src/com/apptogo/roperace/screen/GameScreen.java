@@ -52,6 +52,8 @@ public class GameScreen extends BasicScreen {
 	protected Viewport hudViewport;
 	protected Stage steeringHudStage;
 	protected Viewport steeringHudViewport;
+	protected Stage labelStage;
+	protected Viewport labelViewport;
 	protected SteeringPlugin steeringPlugin;
 	protected CameraFollowingPlugin cameraFollowingPlugin;
 	protected HudLabel hudLabel;
@@ -86,6 +88,7 @@ public class GameScreen extends BasicScreen {
 		prepareFrontStage();
 		prepareSteeringHudStage();
 		prepareHudStage();
+		prepareLabelStage();
 		createLevel();
 		createPlayer();
 		createLabel();
@@ -112,6 +115,11 @@ public class GameScreen extends BasicScreen {
 	protected void prepareFrontStage() {
 		this.frontViewport = new FillViewport(UnitConverter.toBox2dUnits(Main.SCREEN_WIDTH), UnitConverter.toBox2dUnits(Main.SCREEN_HEIGHT));
 		frontStage.setViewport(frontViewport);
+	}
+
+	protected void prepareLabelStage() {
+		this.labelViewport = new FillViewport(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		this.labelStage = new Stage(this.labelViewport);
 	}
 
 	protected void prepareHudStage() {
@@ -192,14 +200,20 @@ public class GameScreen extends BasicScreen {
 		this.frontStage.act(delta);
 		this.hudStage.act(delta);
 		this.steeringHudStage.act(delta);
+		this.labelStage.act(delta);
 
 		this.cameraFollowingPlugin.updateCamera();
 
 		this.backViewport.apply();
 		this.backStage.draw();
 
+
+
 		this.frontViewport.apply();
 		this.levelGenerator.render();
+
+		this.labelViewport.apply();
+		this.labelStage.draw();
 		this.frontStage.draw();
 
 		step(delta);
@@ -209,6 +223,7 @@ public class GameScreen extends BasicScreen {
 		this.hudStage.draw();
 		this.steeringHudViewport.apply();
 		this.steeringHudStage.draw();
+
 
 		if(!gravityPlugin.isStarted() && startGameGroup.isFinished()){
 			gravityPlugin.setStarted(true);
@@ -229,6 +244,7 @@ public class GameScreen extends BasicScreen {
 		super.resize(width, height);
 		this.hudStage.getViewport().update(width, height);
 		this.steeringHudStage.getViewport().update(width, height);
+		this.labelStage.getViewport().update(width, height);
 		cameraFollowingPlugin.postSetActor();
 	}
 
@@ -287,4 +303,7 @@ public class GameScreen extends BasicScreen {
 		return player;
 	}
 
+	public Stage getLabelStage() {
+		return labelStage;
+	}
 }

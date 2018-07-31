@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="315" height="36" tilewidth="32" tileheight="32">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="315" height="36" tilewidth="32" tileheight="32" infinite="0" nextobjectid="48">
  <properties>
   <property name="bronzeReq" value="5"/>
   <property name="goldReq" value="10"/>
@@ -7,113 +7,131 @@
   <property name="type" value="stars"/>
  </properties>
  <objectgroup name="terrain">
-  <object x="0" y="0" width="32" height="1120"/>
-  <object x="0" y="1120" width="16000" height="32"/>
-  <object x="32" y="0" width="15936" height="32"/>
-  <object name="star" x="2031" y="400" width="32" height="32">
+  <object id="1" x="0" y="0" width="32" height="1120"/>
+  <object id="2" x="0" y="1120" width="16000" height="32"/>
+  <object id="3" x="32" y="0" width="15936" height="32"/>
+  <object id="4" name="star" x="2031" y="400" width="32" height="32">
    <ellipse/>
   </object>
-  <object x="32" y="448" width="128" height="32"/>
-  <object x="128" y="32">
+  <object id="5" x="32" y="448" width="128" height="32"/>
+  <object id="6" x="128" y="32">
    <polygon points="0,0 128,192 352,192 480,0"/>
   </object>
-  <object x="608" y="32">
+  <object id="7" x="608" y="32">
    <polygon points="0,0 128,192 352,192 480,0"/>
   </object>
-  <object x="1088" y="32">
+  <object id="8" x="1088" y="32">
    <polygon points="0,0 128,192 352,192 480,0"/>
   </object>
-  <object x="1568" y="32">
+  <object id="9" x="1568" y="32">
    <polygon points="0,0 128,192 352,192 480,0"/>
   </object>
-  <object x="2048" y="32">
+  <object id="10" x="2048" y="32">
    <polygon points="0,0 128,192 352,192 480,0"/>
   </object>
-  <object x="2528" y="32">
+  <object id="11" x="2528" y="32">
    <polygon points="0,0 128,192 352,192 480,0"/>
   </object>
-  <object x="3008" y="32">
+  <object id="12" x="3008" y="32">
    <polygon points="0,0 128,192 352,192 480,0"/>
   </object>
-  <object x="3488" y="32">
+  <object id="13" x="3488" y="32">
    <polygon points="0,0 128,192 352,192 480,0"/>
   </object>
-  <object x="3968" y="32">
+  <object id="14" x="3968" y="32">
    <polygon points="0,0 128,192 352,192 480,0"/>
   </object>
-  <object x="4448" y="32">
+  <object id="15" x="4448" y="32">
    <polygon points="0,0 128,192 352,192 480,0"/>
   </object>
-  <object x="5440" y="32" width="1632" height="288"/>
-  <object x="5440" y="800" width="1632" height="320"/>
-  <object x="5440" y="800">
+  <object id="16" x="5440" y="32" width="1632" height="288"/>
+  <object id="17" x="5440" y="800" width="1632" height="320"/>
+  <object id="18" x="5440" y="800">
    <polygon points="0,0 0,-256 1632,0"/>
   </object>
-  <object x="5440" y="320">
+  <object id="19" x="5440" y="320">
    <polygon points="0,0 1632,256 1632,0"/>
   </object>
-  <object x="4928" y="32">
+  <object id="20" x="4928" y="32">
    <polygon points="0,0 512,288 512,0"/>
   </object>
-  <object x="5440" y="544">
+  <object id="21" x="5440" y="544">
    <polygon points="0,0 -512,224 -512,576 0,576"/>
   </object>
-  <object name="star" x="2988" y="402" width="32" height="32">
+  <object id="22" name="star" x="2988" y="402" width="32" height="32">
    <ellipse/>
   </object>
-  <object name="star" x="3955" y="404" width="32" height="32">
+  <object id="23" name="star" x="3955" y="404" width="32" height="32">
    <ellipse/>
   </object>
-  <object name="star" x="5699" y="540" width="32" height="32">
+  <object id="24" name="star" x="5699" y="540" width="32" height="32">
    <ellipse/>
   </object>
-  <object name="star" x="6294.67" y="642.667" width="32" height="32">
+  <object id="25" name="star" x="6294.67" y="642.667" width="32" height="32">
    <ellipse/>
   </object>
-  <object name="star" x="7044" y="760" width="32" height="32">
+  <object id="26" name="star" x="7044" y="760" width="32" height="32">
    <ellipse/>
   </object>
-  <object x="7424" y="448" width="190.667" height="190.667">
+  <object id="27" x="7424" y="448" width="190.667" height="190.667">
    <ellipse/>
   </object>
-  <object x="8000" y="448" width="190.667" height="190.667">
+  <object id="28" x="8000" y="448" width="190.667" height="190.667">
    <ellipse/>
   </object>
-  <object x="8576" y="448" width="190.667" height="190.667">
+  <object id="29" x="8576" y="448" width="190.667" height="190.667">
    <ellipse/>
   </object>
-  <object x="9152" y="448" width="190.667" height="190.667">
+  <object id="30" x="9152" y="448" width="190.667" height="190.667">
    <ellipse/>
   </object>
-  <object x="9792" y="864">
+  <object id="31" x="9792" y="864">
    <polygon points="0,-96 -384,-832 288,-832 288,0"/>
   </object>
-  <object x="9760" y="928">
+  <object id="32" x="9760" y="928">
    <polygon points="0,0 -224,192 320,192 320,96"/>
   </object>
-  <object name="star" x="7776" y="800" width="32" height="32">
+  <object id="33" name="star" x="7776" y="800" width="32" height="32">
    <ellipse/>
   </object>
-  <object name="star" x="8352" y="800" width="32" height="32">
+  <object id="34" name="star" x="8352" y="800" width="32" height="32">
    <ellipse/>
   </object>
-  <object name="star" x="8928" y="800" width="32" height="32">
+  <object id="35" name="star" x="8928" y="800" width="32" height="32">
    <ellipse/>
   </object>
-  <object name="star" x="9664" y="832" width="32" height="32">
+  <object id="36" name="star" x="9664" y="832" width="32" height="32">
    <ellipse/>
   </object>
-  <object x="32" y="768" width="4896" height="352"/>
-  <object name="start" x="96" y="384" width="64" height="64">
+  <object id="37" x="32" y="768" width="4896" height="352"/>
+  <object id="38" name="start" x="96" y="384" width="64" height="64">
    <ellipse/>
   </object>
-  <object name="end" x="0" y="1120" width="32" height="32"/>
-  <object name="end" x="9905.64" y="876.181" width="32" height="32" rotation="-70.0961"/>
-  <object name="immaterial" x="224" y="288">
+  <object id="39" name="end" x="0" y="1120" width="32" height="32"/>
+  <object id="40" name="end" x="9905.64" y="876.181" width="32" height="32" rotation="-70.0961"/>
+  <object id="41" name="immaterial" x="231.333" y="239.333">
    <polygon points="0,0 96,0 96,96 64,64 32,32"/>
   </object>
-  <object name="immaterial" x="256" y="320">
+  <object id="42" name="immaterial" x="263.333" y="271.333">
    <polygon points="0,0 32,32 -32,96 -64,64"/>
+  </object>
+  <object id="43" name="immaterial" type="label" x="336" y="234" width="320" height="63.3333">
+   <properties>
+    <property name="size" value="big"/>
+    <property name="text" value="SHOOT HERE"/>
+   </properties>
+  </object>
+  <object id="46" name="immaterial" type="label" x="801.333" y="405.667" width="320" height="63.3333">
+   <properties>
+    <property name="size" value="big"/>
+    <property name="text" value="LOL it works"/>
+   </properties>
+  </object>
+  <object id="47" name="immaterial" type="label" x="1974" y="325" width="154" height="63.3333">
+   <properties>
+    <property name="size" value="small"/>
+    <property name="text" value="small star = small text"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

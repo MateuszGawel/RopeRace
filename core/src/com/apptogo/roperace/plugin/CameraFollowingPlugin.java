@@ -2,6 +2,7 @@ package com.apptogo.roperace.plugin;
 
 import com.apptogo.roperace.actors.Rope;
 import com.apptogo.roperace.main.Main;
+import com.apptogo.roperace.screen.GameScreen;
 import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
@@ -68,7 +69,18 @@ public class CameraFollowingPlugin extends AbstractPlugin {
 		else{
 			camera.zoom = MathUtils.lerp(camera.zoom, 1 + speed/20, 0.03f);
 		}
+
+		updateLabelCamera();
 	}
+
+	private void updateLabelCamera() {
+		OrthographicCamera labelCamera = (OrthographicCamera)((GameScreen) Main.getInstance().getCurrentScreen()).getLabelStage().getCamera();
+		labelCamera.setToOrtho(false, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		labelCamera.position.x = UnitConverter.toGraphicsUnits(camera.position.x);
+		labelCamera.position.y = -Main.SCREEN_HEIGHT/2 + UnitConverter.toGraphicsUnits(camera.position.y);
+		labelCamera.zoom = camera.zoom;
+	}
+
 	@Override
 	public void setUpDependencies() {
 		// TODO Auto-generated method stub

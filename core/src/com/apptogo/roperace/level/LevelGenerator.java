@@ -18,6 +18,7 @@ import com.apptogo.roperace.manager.ResourcesManager;
 import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.physics.UserData;
 import com.apptogo.roperace.physics.UserData.SegmentType;
+import com.apptogo.roperace.scene2d.Label;
 import com.apptogo.roperace.screen.GameScreen;
 import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.graphics.Color;
@@ -85,7 +86,13 @@ public class LevelGenerator{
 		for(MapObject mapObject : map.getLayers().get("terrain").getObjects()){
 			if(mapObject instanceof RectangleMapObject){
 				Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-				
+
+
+				if("immaterial".equals(mapObject.getName()) && "label".equals((mapObject.getProperties().get("type", String.class)))){
+					handleLabelCreation(mapObject);
+					continue;
+				}
+
 				Vector2 size = new Vector2(UnitConverter.toBox2dUnits(rectangle.width), UnitConverter.toBox2dUnits(rectangle.height));
 				Vector2 position = new Vector2(UnitConverter.toBox2dUnits(rectangle.x + rectangle.width/2), UnitConverter.toBox2dUnits(rectangle.y + rectangle.height/2));
 				
@@ -205,6 +212,18 @@ public class LevelGenerator{
 		
 		if(startingPoint == null){
 			throw new LevelException("Starting point must be set on map: level" + levelNo);
+		}
+	}
+
+	private void handleLabelCreation(MapObject mapObject) {
+		if(mapObject instanceof RectangleMapObject) {
+			Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+
+			Label label = Label.get(mapObject.getProperties().get("text").toString(), mapObject.getProperties().get("size").toString());
+			label.position(rectangle.getX(), -Main.SCREEN_HEIGHT / 2 + rectangle.getY());
+			label.setSize(rectangle.width, rectangle.height);
+			label.setColor(ColorSet.LIGHT_GRAY.getMainColor());
+			screen.getLabelStage().addActor(label);
 		}
 	}
 
