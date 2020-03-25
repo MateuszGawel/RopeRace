@@ -13,7 +13,7 @@ public class GameData {
 		unlockedLevels.add(new LevelNode(1, 1, ColorSet.GRAY));
 		unlockedWorlds.add(1);
 		unlockedBalls.add(BallData.NORMAL.number);
-		activeBall = BallData.TENNIS.number;
+		activeBall = BallData.NORMAL.number;
 	}
 
 	protected static final String NAME = "GAME_DATA";

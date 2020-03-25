@@ -3,11 +3,12 @@ package com.apptogo.roperace.scene2d;
 import com.apptogo.roperace.manager.ResourcesManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public class ImageActor extends Image {
 
-    com.badlogic.gdx.graphics.g2d.Animation animation;
+    com.badlogic.gdx.graphics.g2d.Animation<TextureRegion> animation;
 
     private float width, height;
     protected float scaleBy = 1;
@@ -49,13 +50,12 @@ public class ImageActor extends Image {
                 getRotation());
     }
 
-    /** @return in box2d units */
+    /** @return customOffset in box2d units */
     public Vector2 getCustomOffset() {
         return customOffset;
     }
 
-    /** @param in
-     * box2d units */
+    /** @param customOffset in box2d units */
     public void setCustomOffset(Vector2 customOffset) {
         this.customOffset = customOffset;
     }

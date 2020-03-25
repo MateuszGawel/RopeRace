@@ -2,14 +2,8 @@ package com.apptogo.roperace.scene2d;
 
 import com.apptogo.roperace.enums.BallData;
 import com.apptogo.roperace.enums.ColorSet;
-import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.save.SaveManager;
-import com.apptogo.roperace.scene2d.ShadowedButton.ButtonSize;
-import com.apptogo.roperace.screen.BallSelectionScreen;
-import com.apptogo.roperace.screen.LevelSelectionScreen;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class BallButton extends ShadowedButton {
 

@@ -1,6 +1,5 @@
 package com.apptogo.roperace.screen;
 
-import com.apptogo.roperace.enums.ColorSet;
 import com.apptogo.roperace.game.UnlockScreenGroup;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.save.SaveManager;
@@ -18,8 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class BallSelectionScreen extends BasicScreen {
 

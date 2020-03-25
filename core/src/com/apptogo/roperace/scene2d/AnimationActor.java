@@ -47,13 +47,15 @@ public class AnimationActor extends Actor {
 	
 			//set status to finished. In looping it's true only in one frame
 			float frameIndex = animation.getKeyFrameIndex(stateTime);
-			if(animation.getKeyFrames().length == frameIndex+1)
+			animation.getKeyFrames();
+			int length = animation.getKeyFrames().length;
+			if(length == frameIndex+1)
 				finished = true;
 			else
 				finished = false;
 		}
 			
-		currentFrame = animation.getKeyFrame(stateTime);
+		currentFrame = (TextureRegion) animation.getKeyFrame(stateTime);
 		frameWidth = currentFrame.getRegionWidth();
 		frameHeight = currentFrame.getRegionHeight();
 
@@ -145,7 +147,7 @@ public class AnimationActor extends Actor {
 		this.deltaOffset = deltaOffset;
 	}
 
-	public com.badlogic.gdx.graphics.g2d.Animation getGdxAnimation() {
+	public com.badlogic.gdx.graphics.g2d.Animation<TextureRegion> getGdxAnimation() {
 		return animation;
 	}
 

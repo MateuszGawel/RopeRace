@@ -95,26 +95,30 @@ public class Animation extends AnimationActor {
 
     public Animation centerX()
     {
-        setPosition(scaleBy * -animation.getKeyFrame(0).getRegionWidth() / 2f, getY());
+        setPosition(scaleBy * -getFirstFrame().getRegionWidth() / 2f, getY());
         return this;
     }
 
     public Animation centerX(float offset)
     {
-        setPosition(scaleBy * -animation.getKeyFrame(0).getRegionWidth() / 2f + offset, getY());
+        setPosition(scaleBy * -getFirstFrame().getRegionWidth() / 2f + offset, getY());
         return this;
     }
 
     public Animation centerY()
     {
-        setPosition(getX(), scaleBy * -animation.getKeyFrame(0).getRegionHeight() / 2f);
+        setPosition(getX(), scaleBy * -getFirstFrame().getRegionHeight() / 2f);
         return this;
     }
 
     public Animation centerY(float offset)
     {
-        setPosition(getX(), scaleBy * -animation.getKeyFrame(0).getRegionHeight() / 2f + offset);
+        setPosition(getX(), scaleBy * -getFirstFrame().getRegionHeight() / 2f + offset);
         return this;
+    }
+
+    private TextureRegion getFirstFrame() {
+        return (TextureRegion)animation.getKeyFrame(0);
     }
 
     public Animation action(Action action)

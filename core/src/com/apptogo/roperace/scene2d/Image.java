@@ -15,7 +15,7 @@ public class Image extends com.badlogic.gdx.scenes.scene2d.ui.Image {
 		return new Image(ResourcesManager.getInstance().getAtlasRegion(regionName));
 	}
 	
-	public static Image getFrodmTexture(String textureName) {
+	public static Image getFromTexture(String textureName) {
 		return new Image(ResourcesManager.getInstance().getTexture(textureName));
 	}
 

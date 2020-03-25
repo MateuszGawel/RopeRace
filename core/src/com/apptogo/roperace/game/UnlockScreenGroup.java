@@ -1,39 +1,21 @@
 package com.apptogo.roperace.game;
 
-import java.util.Random;
-
-import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.custom.MyShapeRenderer;
 import com.apptogo.roperace.custom.MyShapeRenderer.ShapeType;
 import com.apptogo.roperace.enums.ColorSet;
-import com.apptogo.roperace.level.LevelData;
 import com.apptogo.roperace.main.Main;
-import com.apptogo.roperace.manager.CustomAction;
-import com.apptogo.roperace.manager.CustomActionManager;
-import com.apptogo.roperace.save.SaveManager;
-import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Label;
 import com.apptogo.roperace.scene2d.ShadowedButton;
 import com.apptogo.roperace.scene2d.ShadowedButton.ButtonSize;
 import com.apptogo.roperace.screen.BasicScreen;
-import com.apptogo.roperace.screen.GameScreen;
-import com.apptogo.roperace.screen.MenuScreen;
-import com.apptogo.roperace.screen.WorldSelectionScreen;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 
 public class UnlockScreenGroup extends Group {
 
@@ -52,8 +34,7 @@ public class UnlockScreenGroup extends Group {
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------- INIT --------------------------------------------------- **/
-	/** ---------------------------------------------------------------------------------------------------------- 
-	 * @param level **/
+	/** ---------------------------------------------------------------------------------------------------------- **/
 
 	public UnlockScreenGroup(String label) {
 		setSize(Main.SCREEN_WIDTH - 4 * margin, Main.SCREEN_HEIGHT - 2 * margin);
@@ -69,12 +50,13 @@ public class UnlockScreenGroup extends Group {
 	public void init(int number, int cost) {
 		this.cost = cost;
 		this.number = number;
-		
+
+		clearChildren();
 		MoveToAction action = new MoveToAction();
 		action.setPosition(-getWidth()/2, -Main.SCREEN_HEIGHT / 2 + margin);
 		action.setDuration(1f);
 		action.setInterpolation(Interpolation.elasticOut);
-		this.addAction(action);
+		addAction(action);
 
 		createTitle();
 		createButtons();

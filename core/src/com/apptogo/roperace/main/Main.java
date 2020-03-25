@@ -11,6 +11,7 @@ import com.apptogo.roperace.screen.SplashScreen;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 
 /**
@@ -57,7 +58,7 @@ public class Main extends Game {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
 		//set handle back button
-		Gdx.input.setCatchBackKey(true);
+		Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
 		ResourcesManager.create();
 		CustomActionManager.create();
