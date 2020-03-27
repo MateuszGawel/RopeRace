@@ -197,13 +197,13 @@ public class GameScreen extends BasicScreen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		this.backStage.act(delta);
-		this.frontStage.act(delta);
+
 		this.hudStage.act(delta);
 		this.steeringHudStage.act(delta);
 		this.labelStage.act(delta);
 
 		this.cameraFollowingPlugin.updateCamera();
-
+		this.frontStage.act(delta);
 		this.backViewport.apply();
 		this.backStage.draw();
 

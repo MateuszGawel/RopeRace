@@ -8,24 +8,29 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Viewfinder extends GameActor{
 
-	private static final float VIEWFINDER_RADIUS = 2;
-	
+	private static final float VIEWFINDER_INITIAL_RADIUS = 2;
+
+	private GameScreen screen;
 	private GameActor player;
 	private float angle;
-	private Vector2 viewfinderOffset = new Vector2(VIEWFINDER_RADIUS, 0);
-	
+	private Vector2 viewfinderOffset = new Vector2(VIEWFINDER_INITIAL_RADIUS, 0);
+	private float length;
+	private float x, y;
+
 	public Viewfinder(GameScreen screen, GameActor actor) {
 		super("viewfinder");
+		this.screen = screen;
 		this.player = actor;
-		
+
 		setBody(BodyBuilder.get()
 				.type(BodyType.KinematicBody)
-				.position(actor.getBody().getPosition().x, actor.getBody().getPosition().y)
 				.addFixture("viewfinder").circle(0.1f).sensor(true)
 				.create());
 		setStaticImage("viewfinder");
 		setFixedRotation(true);
 		screen.getFrontStage().addActor(this);
+
+		viewfinderOffset.set(player.getBody().getPosition().x + viewfinderOffset.x, 0);
 	}
 
 	public Vector2 getViewfinderOffset() {
@@ -34,19 +39,17 @@ public class Viewfinder extends GameActor{
 
 	@Override
 	public void act(float delta) {
-		viewfinderOffset.setAngle(angle);
-		setRotation(angle);
-		getBody().setTransform(player.getBody().getPosition().add(viewfinderOffset), 0);
-		
+		Vector2 positionToSet = new Vector2(screen.getFrontStage().getCamera().position.x + viewfinderOffset.x, screen.getFrontStage().getCamera().position.y + viewfinderOffset.y);
+		getBody().setTransform(positionToSet, 0);
 		super.act(delta);
 	}
 
-	public void setAngle(float angle) {
-		this.angle = angle;
-	}
 
 	public float getAngle() {
-		return angle;
+		return getBody().getPosition().cpy().sub(player.getBody().getPosition()).angle();
 	}
 
+	public void setViewfinderPosition(Vector2 calculatedPosition) {
+		viewfinderOffset.set(calculatedPosition);
+	}
 }
