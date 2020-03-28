@@ -21,48 +21,55 @@ public class InvisibleSteeringActor extends Actor{
 	private Vector2 finalPosition = new Vector2(0, 0);
 
 	private GameScreen screen;
+	private final Viewfinder viewfinder;
+
 
 	public InvisibleSteeringActor(GameScreen screen, final Viewfinder viewfinder) {
 		this.screen = screen;
+		this.viewfinder = viewfinder;
 		setName("invisibleSteeringActor");
 		
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 		setPosition(-Main.SCREEN_WIDTH /2, -Main.SCREEN_HEIGHT / 2);
 		screen.getSteeringHudStage().addActor(this);
 		toBack();
-		
+
 		addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				Vector3 unprojected = unproject(x, y);
-				initiallyTouchedPosition.set(unprojected.x, unprojected.y);
-				initialViewfinderPosition.set(viewfinder.getViewfinderOffset());
-				System.out.println("XXXXXXXXXXXXXXXX initial: " + initialViewfinderPosition);
+				initiallyTouchedPosition.set(x, y);
+				initialViewfinderPosition.set(viewfinder.getX(), viewfinder.getY());
 				return true;
 			}
 			@Override
 			public void touchDragged(InputEvent event, float x, float y, int pointer) {
-				Vector3 unprojected = unproject(x, y);
-				draggedPosition.set(unprojected.x, unprojected.y);
+				draggedPosition.set(x, y);
 				diffPosition.set(draggedPosition.x - initiallyTouchedPosition.x, draggedPosition.y - initiallyTouchedPosition.y);
 				finalPosition.set(diffPosition.x*SPEED_UP_FACTOR + initialViewfinderPosition.x, diffPosition.y*SPEED_UP_FACTOR + initialViewfinderPosition.y);
-				viewfinder.setViewfinderPosition(finalPosition);
-				System.out.println("dragged:" + draggedPosition + " diff: " + diffPosition + " final: " + finalPosition);
+				viewfinder.setPosition(clampX(finalPosition.x), clampY(finalPosition.y));
 			}
 		});
 	}
 
-	private Vector3 unproject(float x, float y) {
-		Vector3 worldCameraPosition = screen.getFrontStage().getCamera().position;
-		Vector2 playerPosition = screen.getPlayer().getBody().getPosition();
+	private boolean isBorderReached(float x, float y){
+		if(x <= -Main.SCREEN_WIDTH/2 ||
+		x >= Main.SCREEN_WIDTH/2 - viewfinder.getWidth() ||
+		y <= -Main.SCREEN_HEIGHT/2 ||
+		y >= Main.SCREEN_HEIGHT/2 - viewfinder.getHeight()){
+			return true;
+		}
+		return false;
+	}
 
-		float xDiff = playerPosition.x - worldCameraPosition.x;
-		float yDiff = playerPosition.y - worldCameraPosition.y;
+	private float clampX(float x){
+		if(x <= -Main.SCREEN_WIDTH/2) return -Main.SCREEN_WIDTH/2;
+		if(x >= Main.SCREEN_WIDTH/2 - viewfinder.getWidth()) return Main.SCREEN_WIDTH/2 - viewfinder.getWidth();
+		return x;
+	}
 
-		Vector3 unprojected = getStage().getCamera().unproject(new Vector3(x, -y, 0));
-		unprojected.set(UnitConverter.toBox2dUnits(unprojected.x), UnitConverter.toBox2dUnits(unprojected.y), 0);
-//		unprojected.add(worldCameraPosition.x, worldCameraPosition.y, 0);
-
-		return unprojected;
+	private float clampY(float y){
+		if(y <= -Main.SCREEN_HEIGHT/2) return -Main.SCREEN_HEIGHT/2;
+		if(y >= Main.SCREEN_HEIGHT/2 - viewfinder.getHeight()) return Main.SCREEN_HEIGHT/2- viewfinder.getHeight();
+		return y;
 	}
 }

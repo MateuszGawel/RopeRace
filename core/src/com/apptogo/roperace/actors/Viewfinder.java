@@ -1,55 +1,40 @@
 package com.apptogo.roperace.actors;
 
 import com.apptogo.roperace.game.GameActor;
-import com.apptogo.roperace.physics.BodyBuilder;
+import com.apptogo.roperace.game.ImmaterialGameActor;
+import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.screen.GameScreen;
+import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.math.Vector3;
 
-public class Viewfinder extends GameActor{
+public class Viewfinder extends ImmaterialGameActor {
 
 	private static final float VIEWFINDER_INITIAL_RADIUS = 2;
 
 	private GameScreen screen;
 	private GameActor player;
 	private float angle;
-	private Vector2 viewfinderOffset = new Vector2(VIEWFINDER_INITIAL_RADIUS, 0);
-	private float length;
-	private float x, y;
 
-	public Viewfinder(GameScreen screen, GameActor actor) {
+	public Viewfinder(GameScreen screen, GameActor player) {
 		super("viewfinder");
 		this.screen = screen;
-		this.player = actor;
+		this.player = player;
 
-		setBody(BodyBuilder.get()
-				.type(BodyType.KinematicBody)
-				.addFixture("viewfinder").circle(0.1f).sensor(true)
-				.create());
 		setStaticImage("viewfinder");
-		setFixedRotation(true);
-		screen.getFrontStage().addActor(this);
-
-		viewfinderOffset.set(player.getBody().getPosition().x + viewfinderOffset.x, 0);
+		getCurrentAnimation().scaleFrames(1);
+		screen.getSteeringHudStage().addActor(this);
+		setSize(getCurrentAnimation().getWidth(),getCurrentAnimation().getHeight());
 	}
-
-	public Vector2 getViewfinderOffset() {
-		return viewfinderOffset;
-	}
-
-	@Override
-	public void act(float delta) {
-		Vector2 positionToSet = new Vector2(screen.getFrontStage().getCamera().position.x + viewfinderOffset.x, screen.getFrontStage().getCamera().position.y + viewfinderOffset.y);
-		getBody().setTransform(positionToSet, 0);
-		super.act(delta);
-	}
-
 
 	public float getAngle() {
-		return getBody().getPosition().cpy().sub(player.getBody().getPosition()).angle();
-	}
-
-	public void setViewfinderPosition(Vector2 calculatedPosition) {
-		viewfinderOffset.set(calculatedPosition);
+		Vector3 unprojected = screen.getSteeringHudStage().getCamera().unproject(new Vector3(getX() + Main.SCREEN_WIDTH/2 + getWidth()/2, -getY() + Main.SCREEN_HEIGHT/2 - getHeight()/2, 0));
+		float camX = screen.getFrontStage().getCamera().position.x;
+		float camY = screen.getFrontStage().getCamera().position.y;
+		float unprojectedX = UnitConverter.toBox2dUnits(unprojected.x);
+		float unprojectedY = UnitConverter.toBox2dUnits(unprojected.y);
+		Vector2 viewfinderWorldPosition = new Vector2(camX + unprojectedX, camY + unprojectedY);
+		float angle = viewfinderWorldPosition.sub(player.getBody().getPosition()).angle();
+		return angle;
 	}
 }

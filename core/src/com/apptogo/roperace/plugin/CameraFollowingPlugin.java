@@ -59,13 +59,13 @@ public class CameraFollowingPlugin extends AbstractPlugin {
 		camera.position.x = MathUtils.clamp(camera.position.x, minX, maxX);
 		camera.position.y = MathUtils.clamp(camera.position.y, minY, maxY);
 
-//		float speed = actor.getBody().getLinearVelocity().len();
-//		if(camera.position.x <= minX + 1 || camera.position.x >= maxX - 1 || camera.position.y <= minY + 1 || camera.position.y >= maxY - 1){
-//			camera.zoom = MathUtils.lerp(camera.zoom, 1, 0.03f);
-//		}
-//		else{
-//			camera.zoom = MathUtils.lerp(camera.zoom, 1 + speed/30, 0.03f);
-//		}
+		float speed = actor.getBody().getLinearVelocity().len();
+		if(camera.position.x <= minX + 1 || camera.position.x >= maxX - 1 || camera.position.y <= minY + 1 || camera.position.y >= maxY - 1){
+			camera.zoom = MathUtils.lerp(camera.zoom, 1, 0.03f);
+		}
+		else{
+			camera.zoom = MathUtils.lerp(camera.zoom, 1 + speed/30, 0.03f);
+		}
 
 		updateLabelCamera();
 	}
