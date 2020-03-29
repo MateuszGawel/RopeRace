@@ -25,6 +25,7 @@ public class Viewfinder extends ImmaterialGameActor {
 		getCurrentAnimation().scaleFrames(1);
 		screen.getSteeringHudStage().addActor(this);
 		setSize(getCurrentAnimation().getWidth(),getCurrentAnimation().getHeight());
+		setPosition(0,0);
 	}
 
 	public float getAngle() {
