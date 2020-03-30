@@ -5,6 +5,7 @@ import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.screen.GameScreen;
 import com.apptogo.roperace.tools.UnitConverter;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -13,19 +14,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class InvisibleSteeringActor extends Actor{
 
-	private static final float SPEED_UP_FACTOR = 1f;
+	private static final float SPEED_UP_FACTOR = 2f;
 
 	private Vector2 initiallyTouchedPosition = new Vector2(0, 0);
 	private Vector2 initialViewfinderPosition = new Vector2(0, 0);
-	private Vector2 draggedPosition = new Vector2(0, 0);
 	private Vector2 diffPosition = new Vector2(0, 0);
 	private Vector2 finalPosition = new Vector2(0, 0);
 
-	private GameScreen screen;
 	private final Viewfinder viewfinder;
 
 	public InvisibleSteeringActor(GameScreen screen, final Viewfinder viewfinder) {
-		this.screen = screen;
 		this.viewfinder = viewfinder;
 		setName("invisibleSteeringActor");
 		
@@ -50,19 +48,25 @@ public class InvisibleSteeringActor extends Actor{
 
 			@Override
 			public void touchDragged(InputEvent event, float x, float y, int pointer) {
+				adjustTouchAreaPosition(x, y);
 
-				Vector2 outsidePosition = calculateOutsidePosition(new Vector2(x, y));
-				if(isBorderReached()){
-					setPosition(getX() + outsidePosition.x, getY() + outsidePosition.y);
-				}
-
-				draggedPosition.set(x, y);
-				diffPosition.set(draggedPosition.x - initiallyTouchedPosition.x, draggedPosition.y - initiallyTouchedPosition.y);
+				diffPosition.set(x - initiallyTouchedPosition.x, y - initiallyTouchedPosition.y);
 				finalPosition.set(diffPosition.x*SPEED_UP_FACTOR + initialViewfinderPosition.x, diffPosition.y*SPEED_UP_FACTOR + initialViewfinderPosition.y);
 				viewfinder.setPosition(MathUtils.clamp(finalPosition.x, -Main.SCREEN_WIDTH/2, Main.SCREEN_WIDTH/2 - viewfinder.getWidth()), MathUtils.clamp(finalPosition.y, -Main.SCREEN_HEIGHT/2, Main.SCREEN_HEIGHT/2 - viewfinder.getHeight()));
 			}
 		});
 	}
+
+	/**
+	 * Moves touch rectangle based on calculated offset. It prevents feeling of viewfinder sticking to the edges.
+	 */
+	private void adjustTouchAreaPosition(float x, float y) {
+		Vector2 outsidePosition = calculateOutsidePosition(new Vector2(x, y));
+		if(isBorderReached()){
+			setPosition(getX() + outsidePosition.x, getY() + outsidePosition.y);
+		}
+	}
+
 	private boolean isBorderReached(){
 		if(viewfinder.getX() <= -Main.SCREEN_WIDTH/2 ||
 				viewfinder.getX() >= Main.SCREEN_WIDTH/2 - viewfinder.getWidth() ||
@@ -73,28 +77,37 @@ public class InvisibleSteeringActor extends Actor{
 		return false;
 	}
 
+	/**
+	 * Calculates how many pixels touch position would be outside of the boundaries since last frame.
+	 * Boundaries are calculated based on viewfinder position and movement speed.
+	 */
 	private Vector2 calculateOutsidePosition(Vector2 touchPosition){
+		//how much pixels viewfinder needs to reach screen boundaries. 0,0 is middle of the screen
+		float distanceToleft = initialViewfinderPosition.x + Main.SCREEN_WIDTH/2;
+		float distanceToRight = Main.SCREEN_WIDTH - initialViewfinderPosition.x - Main.SCREEN_WIDTH/2;
+		float distanceToBottom = initialViewfinderPosition.y + Main.SCREEN_HEIGHT/2;
+		float distanceToTop = Main.SCREEN_HEIGHT - initialViewfinderPosition.y - Main.SCREEN_HEIGHT/2;
 
-		float left = initialViewfinderPosition.x + Main.SCREEN_WIDTH/2;
-		float right = Main.SCREEN_WIDTH - initialViewfinderPosition.x - Main.SCREEN_WIDTH/2;
-		float bottom = initialViewfinderPosition.y + Main.SCREEN_HEIGHT/2;
-		float top = Main.SCREEN_HEIGHT - initialViewfinderPosition.y - Main.SCREEN_HEIGHT/2;
+		//if viewfinder is faster, distances are reduced.
+		//We need that, because we will map viewfinder position to touch position. Touch has always same speed.
+		distanceToleft /= SPEED_UP_FACTOR;
+		distanceToRight /= SPEED_UP_FACTOR;
+		distanceToBottom /= SPEED_UP_FACTOR;
+		distanceToTop /= SPEED_UP_FACTOR;
 
-		float minX = initiallyTouchedPosition.x - left;
-		float maxX = initiallyTouchedPosition.x + right;
-		float minY = initiallyTouchedPosition.y - bottom;
-		float maxY = initiallyTouchedPosition.y + top;
+		//boundaries for touch area
+		float minX = initiallyTouchedPosition.x - distanceToleft;
+		float maxX = initiallyTouchedPosition.x + distanceToRight;
+		float minY = initiallyTouchedPosition.y - distanceToBottom;
+		float maxY = initiallyTouchedPosition.y + distanceToTop;
 
-		Vector2 clampedPosition = new Vector2(touchPosition);
 		Vector2 outsidePosition = new Vector2(0 ,0);
 
-		if(touchPosition.x < minX) clampedPosition.x = minX/SPEED_UP_FACTOR;
-		if(touchPosition.x > maxX) clampedPosition.x = maxX/SPEED_UP_FACTOR;
-		if(touchPosition.y < minY) clampedPosition.y = minY/SPEED_UP_FACTOR;
-		if(touchPosition.y > maxY) clampedPosition.y = maxY/SPEED_UP_FACTOR;
-
-		outsidePosition.x = touchPosition.x != clampedPosition.x ? touchPosition.x - clampedPosition.x : 0;
-		outsidePosition.y = touchPosition.y != clampedPosition.y ? touchPosition.y - clampedPosition.y : 0;
+		//if finger/mouse is outside of calculated boundaries calculate how much
+		if(touchPosition.x < minX) outsidePosition.x = touchPosition.x - minX;
+		if(touchPosition.x > maxX) outsidePosition.x = touchPosition.x - maxX;
+		if(touchPosition.y < minY) outsidePosition.y = touchPosition.y - minY;
+		if(touchPosition.y > maxY) outsidePosition.y = touchPosition.y - maxY;
 
 		return outsidePosition;
 	}
