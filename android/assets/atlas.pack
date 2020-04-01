@@ -1,199 +1,207 @@
 atlas.png
+size: 1250, 1250
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 1
   rotate: false
-  xy: 1191, 703
-  size: 50, 93
+  xy: 1087, 1101
+  size: 52, 95
   orig: 214, 214
-  offset: 76, 65
+  offset: 75, 64
   index: -1
 1_shadow
   rotate: false
-  xy: 1067, 573
-  size: 123, 128
+  xy: 1123, 548
+  size: 124, 130
   orig: 214, 214
-  offset: 91, 31
+  offset: 90, 30
   index: -1
 2
   rotate: false
-  xy: 825, 510
-  size: 72, 95
+  xy: 954, 917
+  size: 74, 97
   orig: 214, 214
-  offset: 74, 63
+  offset: 73, 62
   index: -1
 2_shadow
   rotate: false
-  xy: 674, 420
-  size: 140, 131
+  xy: 692, 889
+  size: 141, 133
   orig: 214, 214
-  offset: 74, 25
+  offset: 73, 24
   index: -1
 3
   rotate: false
-  xy: 940, 964
-  size: 65, 96
+  xy: 1181, 163
+  size: 67, 98
   orig: 214, 214
-  offset: 79, 62
+  offset: 78, 61
   index: -1
 3_shadow
   rotate: false
-  xy: 516, 420
-  size: 156, 128
+  xy: 723, 638
+  size: 157, 130
   orig: 214, 214
-  offset: 58, 28
+  offset: 57, 27
   index: -1
 4
   rotate: false
-  xy: 1125, 938
-  size: 76, 93
+  xy: 388, 1153
+  size: 78, 95
   orig: 214, 214
-  offset: 71, 62
+  offset: 70, 61
   index: -1
 4_shadow
   rotate: false
-  xy: 866, 839
-  size: 120, 123
+  xy: 847, 1019
+  size: 121, 125
   orig: 214, 214
-  offset: 94, 33
+  offset: 93, 32
   index: -1
 5
   rotate: false
-  xy: 1107, 1131
-  size: 65, 95
+  xy: 914, 1146
+  size: 67, 97
   orig: 214, 214
-  offset: 76, 60
+  offset: 75, 59
   index: -1
 5_shadow
   rotate: false
-  xy: 690, 607
-  size: 138, 130
+  xy: 882, 658
+  size: 139, 132
   orig: 214, 214
-  offset: 76, 25
+  offset: 75, 24
   index: -1
 6
   rotate: false
-  xy: 866, 964
-  size: 72, 95
+  xy: 1030, 903
+  size: 74, 97
   orig: 214, 214
-  offset: 73, 61
+  offset: 72, 60
   index: -1
 6_shadow
   rotate: false
-  xy: 166, 1072
-  size: 183, 127
+  xy: 202, 1059
+  size: 184, 129
   orig: 214, 214
-  offset: 31, 30
+  offset: 30, 29
   index: -1
 7
   rotate: false
-  xy: 1174, 1130
-  size: 64, 95
+  xy: 1106, 903
+  size: 66, 97
   orig: 214, 214
-  offset: 75, 60
+  offset: 74, 59
   index: -1
 7_shadow
   rotate: false
-  xy: 953, 560
-  size: 112, 123
+  xy: 970, 1016
+  size: 113, 125
   orig: 214, 214
-  offset: 102, 32
+  offset: 101, 31
   index: -1
 8
   rotate: false
-  xy: 1125, 1033
-  size: 70, 95
-  orig: 214, 214
-  offset: 74, 61
-  index: -1
-8_shadow
-  rotate: false
-  xy: 988, 829
-  size: 121, 123
-  orig: 214, 214
-  offset: 93, 29
-  index: -1
-9
-  rotate: false
-  xy: 938, 1062
-  size: 72, 96
+  xy: 1085, 1002
+  size: 72, 97
   orig: 214, 214
   offset: 73, 60
   index: -1
+8_shadow
+  rotate: false
+  xy: 674, 1095
+  size: 122, 125
+  orig: 214, 214
+  offset: 92, 28
+  index: -1
+9
+  rotate: false
+  xy: 598, 1085
+  size: 74, 98
+  orig: 214, 214
+  offset: 72, 59
+  index: -1
 9_shadow
   rotate: false
-  xy: 1067, 703
-  size: 122, 124
+  xy: 1121, 680
+  size: 123, 126
   orig: 214, 214
-  offset: 92, 29
+  offset: 91, 28
   index: -1
 back-button
   rotate: false
-  xy: 1012, 1131
-  size: 93, 59
+  xy: 1084, 163
+  size: 95, 61
   orig: 146, 146
-  offset: 26, 46
+  offset: 25, 45
   index: -1
 back-button_shadow
   rotate: false
-  xy: 816, 420
-  size: 101, 88
+  xy: 983, 1143
+  size: 102, 90
   orig: 146, 146
-  offset: 45, 17
+  offset: 44, 16
   index: -1
 balls
   rotate: false
-  xy: 1067, 449
-  size: 130, 122
+  xy: 871, 792
+  size: 132, 123
   orig: 146, 146
-  offset: 12, 24
+  offset: 11, 23
   index: -1
 balls_shadow
   rotate: false
-  xy: 919, 442
-  size: 146, 116
+  xy: 723, 770
+  size: 146, 117
   orig: 146, 146
   offset: 0, 0
   index: -1
 basket
   rotate: false
-  xy: 2, 856
+  xy: 259, 437
   size: 214, 214
   orig: 214, 214
   offset: 0, 0
   index: -1
 beach
   rotate: false
-  xy: 258, 629
+  xy: 868, 10
   size: 214, 214
   orig: 214, 214
   offset: 0, 0
   index: -1
 bonus
   rotate: false
-  xy: 816, 751
-  size: 98, 86
+  xy: 1119, 808
+  size: 100, 88
   orig: 146, 146
-  offset: 23, 34
+  offset: 22, 33
   index: -1
 bonus_shadow
   rotate: false
-  xy: 1111, 829
-  size: 111, 107
+  xy: 1005, 792
+  size: 112, 109
   orig: 146, 146
-  offset: 35, 13
+  offset: 34, 12
   index: -1
 bowling
   rotate: false
-  xy: 868, 10
+  xy: 260, 843
+  size: 214, 214
+  orig: 214, 214
+  offset: 0, 0
+  index: -1
+bubble
+  rotate: false
+  xy: 926, 226
   size: 214, 214
   orig: 214, 214
   offset: 0, 0
   index: -1
 chain-end
   rotate: false
-  xy: 670, 607
+  xy: 1005, 903
   size: 14, 12
   orig: 14, 12
   offset: 0, 0
@@ -207,21 +215,21 @@ chain
   index: -1
 circle-small
   rotate: false
-  xy: 790, 1061
+  xy: 417, 653
   size: 146, 146
   orig: 146, 146
   offset: 0, 0
   index: -1
 circle
   rotate: false
-  xy: 924, 226
+  xy: 475, 437
   size: 214, 214
   orig: 214, 214
   offset: 0, 0
   index: -1
 diamond
   rotate: false
-  xy: 916, 756
+  xy: 1142, 368
   size: 82, 61
   orig: 82, 61
   offset: 0, 0
@@ -229,51 +237,51 @@ diamond
 font_big
   rotate: false
   xy: 2, 10
-  size: 512, 424
+  size: 512, 425
   orig: 512, 512
-  offset: 0, 88
+  offset: 0, 87
   index: -1
 font_medium
   rotate: false
-  xy: 2, 436
-  size: 254, 418
+  xy: 2, 437
+  size: 255, 420
   orig: 256, 512
-  offset: 0, 90
+  offset: 0, 89
   index: -1
 font_small
   rotate: false
-  xy: 258, 436
-  size: 255, 191
+  xy: 2, 859
+  size: 256, 193
   orig: 256, 256
-  offset: 0, 61
+  offset: 0, 60
   index: -1
 hoop-bottom
   rotate: false
-  xy: 515, 550
+  xy: 692, 1024
   size: 153, 69
   orig: 153, 69
   offset: 0, 0
   index: -1
 hoop-top
   rotate: false
-  xy: 670, 553
-  size: 153, 52
+  xy: 202, 1190
+  size: 153, 53
   orig: 153, 69
   offset: 0, 0
   index: -1
 locker
   rotate: false
-  xy: 1140, 218
-  size: 94, 126
+  xy: 1023, 658
+  size: 96, 128
   orig: 214, 214
-  offset: 60, 49
+  offset: 59, 48
   index: -1
 locker_shadow
   rotate: false
-  xy: 434, 1061
-  size: 155, 186
+  xy: 259, 653
+  size: 156, 188
   orig: 214, 214
-  offset: 59, 11
+  offset: 58, 10
   index: -1
 logo
   rotate: false
@@ -284,162 +292,155 @@ logo
   index: -1
 medal
   rotate: false
-  xy: 1084, 2
+  xy: 565, 653
   size: 156, 214
   orig: 156, 214
   offset: 0, 0
   index: -1
 medal_shadow
   rotate: false
-  xy: 351, 1164
-  size: 76, 80
+  xy: 1159, 1003
+  size: 78, 82
   orig: 156, 214
-  offset: 58, 7
+  offset: 57, 6
   index: -1
 normal
   rotate: false
-  xy: 474, 629
+  xy: 691, 422
   size: 214, 214
   orig: 214, 214
   offset: 0, 0
   index: -1
 ok
   rotate: false
-  xy: 1012, 1054
-  size: 98, 75
+  xy: 1141, 1101
+  size: 100, 77
   orig: 146, 146
-  offset: 23, 35
+  offset: 22, 34
   index: -1
 ok_shadow
   rotate: false
-  xy: 1007, 954
-  size: 116, 98
+  xy: 835, 917
+  size: 117, 100
   orig: 146, 146
-  offset: 30, 13
+  offset: 29, 12
   index: -1
 particle
-  rotate: false
-  xy: 938, 1160
-  size: 32, 31
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-play-button
-  rotate: false
-  xy: 1192, 573
-  size: 54, 101
-  orig: 214, 214
-  offset: 90, 59
-  index: -1
-play-button_shadow
-  rotate: false
-  xy: 830, 607
-  size: 121, 142
-  orig: 214, 214
-  offset: 92, 17
-  index: -1
-restart
-  rotate: false
-  xy: 351, 1072
-  size: 81, 90
-  orig: 146, 146
-  offset: 33, 32
-  index: -1
-restart_shadow
-  rotate: false
-  xy: 1140, 346
-  size: 104, 101
-  orig: 146, 146
-  offset: 42, 13
-  index: -1
-roperace-logo
-  rotate: false
-  xy: 516, 264
-  size: 406, 154
-  orig: 414, 177
-  offset: 4, 9
-  index: -1
-rubber
-  rotate: false
-  xy: 218, 856
-  size: 214, 214
-  orig: 214, 214
-  offset: 0, 0
-  index: -1
-star
   rotate: false
   xy: 868, 226
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-tennis
+play-button
   rotate: false
-  xy: 434, 845
+  xy: 1174, 898
+  size: 56, 103
+  orig: 214, 214
+  offset: 89, 58
+  index: -1
+play-button_shadow
+  rotate: false
+  xy: 473, 1085
+  size: 123, 144
+  orig: 214, 214
+  offset: 91, 16
+  index: -1
+restart
+  rotate: false
+  xy: 388, 1059
+  size: 83, 92
+  orig: 146, 146
+  offset: 32, 31
+  index: -1
+restart_shadow
+  rotate: false
+  xy: 1142, 263
+  size: 105, 103
+  orig: 146, 146
+  offset: 41, 12
+  index: -1
+roperace-logo
+  rotate: false
+  xy: 516, 264
+  size: 408, 156
+  orig: 414, 177
+  offset: 3, 8
+  index: -1
+rubber
+  rotate: false
+  xy: 907, 442
   size: 214, 214
   orig: 214, 214
   offset: 0, 0
   index: -1
+star
+  rotate: false
+  xy: 417, 801
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 touchpad-background
   rotate: false
-  xy: 650, 845
+  xy: 476, 869
   size: 214, 214
   orig: 214, 214
   offset: 0, 0
   index: -1
 touchpad-knob
   rotate: false
-  xy: 1000, 756
+  xy: 598, 1185
   size: 59, 59
   orig: 59, 59
   offset: 0, 0
   index: -1
 viewfinder
   rotate: false
-  xy: 166, 1201
+  xy: 835, 889
   size: 23, 23
   orig: 23, 23
   offset: 0, 0
   index: -1
 world1
   rotate: false
-  xy: 2, 1072
-  size: 162, 158
+  xy: 1084, 2
+  size: 164, 159
   orig: 214, 214
-  offset: 16, 56
+  offset: 15, 55
   index: -1
 world1_shadow
   rotate: false
-  xy: 591, 1061
-  size: 197, 176
+  xy: 2, 1054
+  size: 198, 178
   orig: 214, 214
-  offset: 17, 2
+  offset: 16, 1
   index: -1
 world2
   rotate: false
-  xy: 2, 1072
-  size: 162, 158
+  xy: 1084, 2
+  size: 164, 159
   orig: 214, 214
-  offset: 16, 56
+  offset: 15, 55
   index: -1
 world2_shadow
   rotate: false
-  xy: 591, 1061
-  size: 197, 176
+  xy: 2, 1054
+  size: 198, 178
   orig: 214, 214
-  offset: 17, 2
+  offset: 16, 1
   index: -1
 worlds-button
   rotate: false
-  xy: 953, 685
-  size: 112, 69
+  xy: 798, 1146
+  size: 114, 71
   orig: 146, 146
-  offset: 18, 38
+  offset: 17, 37
   index: -1
 worlds-button_shadow
   rotate: false
-  xy: 690, 739
-  size: 124, 102
+  xy: 1123, 442
+  size: 125, 104
   orig: 146, 146
-  offset: 22, 3
+  offset: 21, 2
   index: -1

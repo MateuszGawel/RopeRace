@@ -202,8 +202,9 @@ public class GameScreen extends BasicScreen {
 		this.steeringHudStage.act(delta);
 		this.labelStage.act(delta);
 
-		this.cameraFollowingPlugin.updateCamera();
+
 		this.frontStage.act(delta);
+		this.cameraFollowingPlugin.updateCamera();
 		this.backViewport.apply();
 		this.backStage.draw();
 

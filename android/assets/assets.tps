@@ -4,9 +4,9 @@
         <key>fileFormatVersion</key>
         <int>3</int>
         <key>texturePackerVersion</key>
-        <string>3.9.1</string>
+        <string>4.0.2</string>
         <key>fileName</key>
-        <string>C:/Users/Beryl/Documents/GitHub/RopeRace/android/assets/assets.tps</string>
+        <string>C:/Users/Beryl/StudioProjects/RopeRace/android/assets/assets.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -175,14 +175,16 @@
             <double>1</double>
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
-            <key>innerPadding</key>
-            <uint>0</uint>
             <key>extrude</key>
             <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
+            <key>trimMargin</key>
+            <uint>1</uint>
             <key>trimMode</key>
             <enum type="SpriteSettings::TrimMode">Trim</enum>
+            <key>tracerTolerance</key>
+            <int>200</int>
             <key>heuristicMask</key>
             <false/>
             <key>pivotPoint</key>
@@ -246,13 +248,13 @@
             <filename>font_big.png</filename>
             <filename>font_medium.png</filename>
             <filename>chain.png</filename>
-            <filename>tennis.png</filename>
             <filename>basket.png</filename>
             <filename>beach.png</filename>
             <filename>bowling.png</filename>
             <filename>normal.png</filename>
             <filename>rubber.png</filename>
             <filename>particle.png</filename>
+            <filename>bubble.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

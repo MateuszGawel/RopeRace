@@ -6,12 +6,12 @@ import java.util.Map;
 
 public enum BallData {
 	
-	NORMAL(1, 0.5f, 1.5f, 0.5f, 0.5f, -0.02f),
-	TENNIS(2, 0.25f, 7f, 0.6f, 0.6f, -0.02f),
-	BASKET(3, 0.5f, 5f, 0.5f, 0.5f, -0.02f),
-	BOWLING(4, 0.5f, 5f, 0.5f, 0.5f, -0.02f),
-	RUBBER(5, 0.2f, 5f, 0.5f, 0.8f, -0.02f),
-	BEACH(6, 0.55f, 5f, 0.5f, 0.5f, -0.02f);
+	NORMAL(1, 0.5f, 1.7f, 0.1f, 0.5f, -0.02f),
+	BUBBLE(2, 0.4f, 50f, 0f, 0f, -0.02f),
+	BASKET(3, 0.5f, 2f, 0.05f, 0.8f, 0.03f),
+	BOWLING(4, 0.5f, 1f, 0.05f, 0.3f, -0.02f),
+	RUBBER(5, 0.2f, 6f, 0.1f, 0.9f, -0.02f),
+	BEACH(6, 0.55f, 4f, 0.1f, 0.7f, 0.002f);
 	
     private static Map<Integer, BallData> map = new HashMap<Integer, BallData>();
 
