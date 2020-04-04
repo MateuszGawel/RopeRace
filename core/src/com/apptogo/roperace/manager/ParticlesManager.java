@@ -9,7 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 public class ParticlesManager {
 
 	private static ParticlesManager INSTANCE;
-	private ParticleEffectActor starParticle, hoopParticle;
+	private ParticleEffectActor starParticle;
+	private ParticleEffectActor hoopParticle;
+
+	private ParticleEffectActor bubbleParticle;
 	private final static String PARTICLES_DIR = "particle/";
 
 	public static void create() {
@@ -28,6 +31,8 @@ public class ParticlesManager {
 	public void initParticles(TextureAtlas atlas) {
 		starParticle = new ParticleEffectActor(PARTICLES_DIR + "star.p", 1, 4, 1, UnitConverter.toBox2dUnits(1), atlas);
 		hoopParticle = new ParticleEffectActor(PARTICLES_DIR + "hoop.p", 1, 4, 1, UnitConverter.toBox2dUnits(1), atlas);
+		bubbleParticle = new ParticleEffectActor(PARTICLES_DIR + "hoop.p", 1, 4, 1, UnitConverter.toBox2dUnits(1), atlas);
+
 	}
 
 	public static void changeColor(Color color, PooledEffect effect) {
@@ -45,4 +50,6 @@ public class ParticlesManager {
 	public ParticleEffectActor getHoopParticle() {
 		return hoopParticle;
 	}
+
+	public ParticleEffectActor getBubbleParticle() { return bubbleParticle; }
 }

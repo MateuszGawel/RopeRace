@@ -114,7 +114,7 @@ public class HudLabel extends Group{
 
 			@Override
 			public void perform() {
-				double currentValue = Double.valueOf(label.getText().toString());
+				double currentValue = Double.parseDouble(label.getText().toString());
 				
 				if(counting){
 					label.setText(decimalFormat.format(currentValue + 0.1d));
@@ -225,11 +225,14 @@ public class HudLabel extends Group{
 			break;
 		
 		}
-		
 	}
 
 	public boolean isGameOver() {
 		return gameOver;
+	}
+
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
 	}
 
 	public void setCounting(boolean counting) {

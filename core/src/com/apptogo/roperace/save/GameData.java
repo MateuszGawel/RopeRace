@@ -18,7 +18,7 @@ public class GameData {
 
 	protected static final String NAME = "GAME_DATA";
 
-	private int points = 100;
+	private int points = 1000;
 	private int activeBall;
 	private List<LevelNode> unlockedLevels = new ArrayList<LevelNode>();
 	private List<Integer> unlockedWorlds = new ArrayList<Integer>();

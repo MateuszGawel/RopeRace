@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.apptogo.roperace.exception.SoundException;
 import com.apptogo.roperace.manager.ResourcesManager;
+import com.apptogo.roperace.physics.ContactListener;
+import com.apptogo.roperace.physics.UserData;
 import com.badlogic.gdx.audio.Sound;
 
 public class SoundPlugin extends AbstractPlugin {
@@ -20,7 +22,6 @@ public class SoundPlugin extends AbstractPlugin {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 
 	}
 

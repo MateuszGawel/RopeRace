@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class ResourcesManager {
 	private static ResourcesManager INSTANCE;
-
+	private static final String SOUND_PATH = "sound/";
 	public static void create() {
 		INSTANCE = new ResourcesManager();
 	}
@@ -56,7 +56,12 @@ public class ResourcesManager {
 		manager.load("atlas.pack", TextureAtlas.class);
 
 		//sounds
-		//e.g	manager.load("sound.ogg", Sound.class);
+		manager.load("basket.ogg", Sound.class);
+		manager.load("rubber.ogg", Sound.class);
+		manager.load("star.ogg", Sound.class);
+		manager.load("bubble.ogg", Sound.class);
+		manager.load("beach.ogg", Sound.class);
+		manager.load("bowling.ogg", Sound.class);
 
 		//textures
 //		manager.load("roperace-logo.png", Texture.class);

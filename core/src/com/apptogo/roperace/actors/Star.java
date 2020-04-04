@@ -4,6 +4,7 @@ import com.apptogo.roperace.game.GameActor;
 import com.apptogo.roperace.game.ParticleEffectActor;
 import com.apptogo.roperace.manager.ParticlesManager;
 import com.apptogo.roperace.physics.ContactListener;
+import com.apptogo.roperace.plugin.SoundPlugin;
 import com.apptogo.roperace.screen.GameScreen;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -39,7 +40,7 @@ public class Star extends GameActor {
 			remove();
 			getBody().setTransform(new Vector2(0, 100), 0);
 			screen.getHudLabel().onStarCollected();
-			
+			SoundPlugin.playSingleSound("star");
 		}
 	}
 

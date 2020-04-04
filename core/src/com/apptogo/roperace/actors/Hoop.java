@@ -141,7 +141,9 @@ public class Hoop extends Group{
 	public boolean isFinished() {
 		return finished;
 	}
-	
+	public void setFinished(boolean finished) {
+		this.finished = finished;
+	}
 	
 
 }

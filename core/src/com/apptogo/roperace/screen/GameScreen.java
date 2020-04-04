@@ -12,7 +12,9 @@ import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.physics.BodyBuilder;
 import com.apptogo.roperace.physics.ContactListener;
 import com.apptogo.roperace.plugin.CameraFollowingPlugin;
+import com.apptogo.roperace.plugin.GameEventsPlugin;
 import com.apptogo.roperace.plugin.GravityPlugin;
+import com.apptogo.roperace.plugin.SoundPlugin;
 import com.apptogo.roperace.plugin.SteeringPlugin;
 import com.apptogo.roperace.plugin.TouchSteeringPlugin;
 import com.apptogo.roperace.save.SaveManager;
@@ -60,6 +62,8 @@ public class GameScreen extends BasicScreen {
 	protected Hoop hoop;
 	private StartGameGroup startGameGroup;
 	private GravityPlugin gravityPlugin;
+	private SoundPlugin soundPlugin;
+	private GameEventsPlugin gameEventsPlugin;
 
 	private float ballDefaultGraphicRadius = 107;
 
@@ -143,7 +147,8 @@ public class GameScreen extends BasicScreen {
 		int activeBallNumber = SaveManager.getInstance().getActiveBall();
 		this.ball = BallData.valueOf(activeBallNumber);
 
-		player = new GameActor("player");
+		String ballName = BallData.valueOf(activeBallNumber).name().toLowerCase();
+		player = new GameActor(ballName);
 		player.setBody(BodyBuilder.get()
 				.type(BodyType.DynamicBody)
 				.position(levelGenerator.getStartingPoint())
@@ -151,7 +156,7 @@ public class GameScreen extends BasicScreen {
 				.create());
 		player.getBody().setLinearDamping(ball.damping);
 		player.getBody().setAngularDamping(0.5f);
-		player.setStaticImage(BallData.valueOf(activeBallNumber).name().toLowerCase());
+		player.setStaticImage(ballName);
 		player.getCurrentAnimation().scaleFrames(ball.size/ballDefaultGraphicRadius);
 		player.setOrigin(ball.size/ballDefaultGraphicRadius/2, ball.size/ballDefaultGraphicRadius/2);
 		player.modifyCustomOffsets(0f, 0f);
@@ -160,11 +165,14 @@ public class GameScreen extends BasicScreen {
 		cameraFollowingPlugin = new CameraFollowingPlugin(levelGenerator.getMapSize());
 		steeringPlugin = new TouchSteeringPlugin(this);
 		gravityPlugin = new GravityPlugin();
+		soundPlugin = new SoundPlugin("basket", "rubber", "bubble", "beach", "bowling");
+		gameEventsPlugin = new GameEventsPlugin(this);
 
 		player.addPlugin(steeringPlugin);
 		player.addPlugin(cameraFollowingPlugin);
 		player.addPlugin(gravityPlugin);
-
+		player.addPlugin(soundPlugin);
+		player.addPlugin(gameEventsPlugin);
 	}
 
 	protected void createLevel(){
