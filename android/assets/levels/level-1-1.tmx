@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="315" height="36" tilewidth="32" tileheight="32" infinite="0" nextobjectid="48">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="315" height="36" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="66">
  <properties>
   <property name="bronzeReq" value="5"/>
   <property name="goldReq" value="10"/>
   <property name="silverReq" value="8"/>
   <property name="type" value="stars"/>
  </properties>
- <objectgroup name="terrain">
+ <objectgroup id="1" name="terrain">
   <object id="1" x="0" y="0" width="32" height="1120"/>
   <object id="2" x="0" y="1120" width="16000" height="32"/>
   <object id="3" x="32" y="0" width="15936" height="32"/>
@@ -121,17 +121,49 @@
     <property name="text" value="SHOOT HERE"/>
    </properties>
   </object>
-  <object id="46" name="immaterial" type="label" x="801.333" y="405.667" width="320" height="63.3333">
+  <object id="44" name="immaterial" type="label" x="1376" y="288" width="320" height="63.3333">
    <properties>
     <property name="size" value="big"/>
     <property name="text" value="LOL it works"/>
    </properties>
   </object>
-  <object id="47" name="immaterial" type="label" x="1974" y="325" width="154" height="63.3333">
+  <object id="45" name="immaterial" type="label" x="1974" y="325" width="154" height="63.3333">
    <properties>
     <property name="size" value="small"/>
     <property name="text" value="small star = small text"/>
    </properties>
+  </object>
+  <object id="53" x="768" y="534.462">
+   <properties>
+    <property name="interpolated" value="true"/>
+    <property name="lineId" value="2"/>
+    <property name="type" value="top"/>
+   </properties>
+   <polyline points="0,0 81.6923,54.4615 272.308,-54.4615"/>
+  </object>
+  <object id="56" x="1040.31" y="480">
+   <properties>
+    <property name="interpolated" value="true"/>
+    <property name="lineId" value="3"/>
+    <property name="type" value="top"/>
+   </properties>
+   <polyline points="0,0 136.154,-81.6923 299.538,27.2308"/>
+  </object>
+  <object id="57" x="1339.85" y="507.231">
+   <properties>
+    <property name="interpolated" value="true"/>
+    <property name="lineId" value="4"/>
+    <property name="type" value="top"/>
+   </properties>
+   <polyline points="0,0 272.308,245.077 408.462,163.385"/>
+  </object>
+  <object id="58" x="256" y="480">
+   <properties>
+    <property name="interpolated" value="false"/>
+    <property name="lineId" value="1"/>
+    <property name="type" value="top"/>
+   </properties>
+   <polyline points="0,-32 64,32 192,-96"/>
   </object>
  </objectgroup>
 </map>

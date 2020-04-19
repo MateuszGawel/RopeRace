@@ -62,6 +62,7 @@ public class ResourcesManager {
 		manager.load("bubble.ogg", Sound.class);
 		manager.load("beach.ogg", Sound.class);
 		manager.load("bowling.ogg", Sound.class);
+		manager.load("normal.ogg", Sound.class);
 
 		//textures
 //		manager.load("roperace-logo.png", Texture.class);

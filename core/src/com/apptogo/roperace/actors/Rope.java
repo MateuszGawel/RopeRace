@@ -83,6 +83,7 @@ public class Rope extends GameActor{
 			joint = null;
 			ropeAttached = false;
 			ropeBullet.setTransform(new Vector2(-100, -100), 0);
+			ropeBullet.setType(BodyType.DynamicBody);
 			if(shorteningAction != null){
 				shorteningAction.unregister();
 			}
@@ -95,10 +96,10 @@ public class Rope extends GameActor{
 	
 	private void handleBulletCollision(){
 		if(joint != null && ContactListener.SNAPSHOT_BEGIN.collide(UserData.get(ropeBullet), "level")){
-       			ropeAttached = true;
-			
+			ropeAttached = true;
 			joint.setMaxLength(player.getBody().getPosition().dst(ropeBullet.getPosition()));
 			shortenRope(changeLenghtSpeed);
+			ropeBullet.setType(BodyType.StaticBody);
 		}
 	}
 	

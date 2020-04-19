@@ -26,6 +26,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
@@ -165,7 +166,7 @@ public class GameScreen extends BasicScreen {
 		cameraFollowingPlugin = new CameraFollowingPlugin(levelGenerator.getMapSize());
 		steeringPlugin = new TouchSteeringPlugin(this);
 		gravityPlugin = new GravityPlugin();
-		soundPlugin = new SoundPlugin("basket", "rubber", "bubble", "beach", "bowling");
+		soundPlugin = new SoundPlugin("basket", "rubber", "bubble", "beach", "bowling", "normal");
 		gameEventsPlugin = new GameEventsPlugin(this);
 
 		player.addPlugin(steeringPlugin);
@@ -189,7 +190,7 @@ public class GameScreen extends BasicScreen {
 		// --- backstage render first --- //
 		//debug renderer
 		if(!Main.isAndroid()){
-//			debugRenderer.render(world, frontStage.getCamera().combined);
+			debugRenderer.render(world, frontStage.getCamera().combined);
 		}
 		//simulate physics and handle body contacts
 		ContactListener.SNAPSHOT_BEGIN.clear();
@@ -315,4 +316,6 @@ public class GameScreen extends BasicScreen {
 	public Stage getLabelStage() {
 		return labelStage;
 	}
+
+	public BallData getBall() {  return ball;  }
 }

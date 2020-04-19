@@ -30,6 +30,7 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Bezier;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Polyline;
@@ -237,7 +238,7 @@ public class LevelGenerator{
 			Float[] verticesBottomBeforeRaycast = createPolyline(mapObjectBottom);
 			UserData.get(levelBodies.get(levelBodies.size()-1)).polyLineBottom = true;
 			
-			//create new array of vertices to make polyline with same amount of veritces as top one (raycasting)
+			//create new array of vertices to make polyline with same amount of vertices as top one (raycasting)
 			Float[] verticesBottom = new Float[verticesTop.length];
 			for(int i=0; i<verticesTop.length-1; i+=2){
 				calculateVertex(new Vector2(verticesTop[i], verticesTop[i+1]), verticesBottomBeforeRaycast);
@@ -269,11 +270,20 @@ public class LevelGenerator{
 		if(mapObject == null){
 			return null;
 		}
+		Object interpolatedProperty = mapObject.getProperties().get("interpolated");
+		boolean interpolated = (interpolatedProperty != null) ? Boolean.parseBoolean(interpolatedProperty.toString()) : false;
+
 		Polyline polyline = ((PolylineMapObject) mapObject).getPolyline();
 		Vector2 position = new Vector2(UnitConverter.toBox2dUnits(polyline.getX()), UnitConverter.toBox2dUnits(polyline.getY()));
 		
 		float[] vertices = polyline.getVertices();
 		float[] transformedVertices = polyline.getTransformedVertices();
+
+		if(interpolated){
+			vertices = interpolate(vertices);
+			transformedVertices = interpolate(transformedVertices);
+		}
+
 		float[] worldVertices = new float[vertices.length];
 		Float[] worldTransformedVertices = new Float[transformedVertices.length];
 
@@ -289,13 +299,35 @@ public class LevelGenerator{
 		UserData.get(body).position = position;
 		return sortVertices(worldTransformedVertices);
 	}
-	
+
+	private float[] interpolate(float[] vertices) {
+		Vector2 helper = new Vector2(0, 0);
+		Vector2 out = new Vector2(0, 0);
+		int interpolatedPoints = 20;
+		float step = 1/(float)interpolatedPoints;
+
+		float[] interpolatedVertices = new float[interpolatedPoints*2+2]; //+2 to include last point
+
+		float i = 0;
+		int j = 0;
+
+		while(j <= interpolatedPoints*2) {
+			//interpolated between 3 points for steps between 0..1. Polyline must have 3 points to work
+			Vector2 interpolatedVector = Bezier.quadratic(out, i, new Vector2(vertices[0], vertices[1]), new Vector2(vertices[2], vertices[3]), new Vector2(vertices[4], vertices[5]), helper);
+			interpolatedVertices[j] = interpolatedVector.x;
+			interpolatedVertices[j+1] = interpolatedVector.y;
+			i += step;
+			j += 2;
+		}
+		return interpolatedVertices;
+	}
+
 	private Vector2 tempIntersectionVertex;
 	private void calculateVertex(Vector2 startPoint, final Float[] verticesBottom){
 		Vector2 endPoint = new Vector2(startPoint.x, startPoint.y - getMapSize().y);
 		
 		//raycast from top vertex to bottom line and return intersection point to temp field
-		screen.getWorld().rayCast(new RayCastCallback() {	
+		screen.getWorld().rayCast(new RayCastCallback() {
 			@Override
 			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
 				if(verticesBottom == null){
@@ -352,7 +384,7 @@ public class LevelGenerator{
 		//render polylines
 	    Iterator<Map.Entry<Float[],Float[]>> it = polylineVertices.entrySet().iterator();
 	    while (it.hasNext()) {
-	    	Map.Entry<Float[],Float[]> pair = (Map.Entry<Float[],Float[]>)it.next();
+	    	Map.Entry<Float[],Float[]> pair = it.next();
 	        shapeRenderer.polyline(pair.getKey(),  pair.getValue());
 	    }
 		
