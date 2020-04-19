@@ -5,6 +5,8 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import java.util.Arrays;
+
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener
 {
 	
@@ -57,6 +59,10 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 	{
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
+
+		if(checkFixturesTypes(fa, fb, "level", "player")){
+			SNAPSHOT_BEGIN.setPlayerContactImpulse(impulse.getNormalImpulses()[0]);
+		}
 	}
 	
 	private boolean checkFixturesTypes(Fixture fixtureA, Fixture fixtureB, String typeA, String typeB)

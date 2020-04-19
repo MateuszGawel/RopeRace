@@ -27,7 +27,10 @@ public class GameEventsPlugin extends AbstractPlugin {
 		}
 
 		if(ContactListener.SNAPSHOT_BEGIN.collide(UserData.get(actor.getBody()), "level")) {
-			soundPlugin.playSound(actor.getName());
+			float playerContactImpulse = ContactListener.SNAPSHOT_BEGIN.getPlayerContactImpulse();
+			if(playerContactImpulse > 2) {
+				soundPlugin.playSound(actor.getName());
+			}
 		}
 
 

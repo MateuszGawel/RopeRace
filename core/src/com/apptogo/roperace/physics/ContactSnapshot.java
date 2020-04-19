@@ -6,7 +6,8 @@ import java.util.Map.Entry;
 
 public class ContactSnapshot {	
 	private Map<UserData, UserData> snapshot = new HashMap<UserData, UserData>();
-	
+	private float playerContactImpulse;
+
 	/**
 	 * Add collision to snapshot. Order doesn't matter.
 	 * 
@@ -123,18 +124,27 @@ public class ContactSnapshot {
 		}
 		return null;
 	}
-	
+
+	public void setPlayerContactImpulse(float playerContactImpulse) {
+		this.playerContactImpulse = playerContactImpulse;
+	}
+
+	public float getPlayerContactImpulse() {
+		return playerContactImpulse;
+	}
+
 	/**
 	 * clears all collisions. Should be run in every loop.
 	 */
 	public void clear(){
 		snapshot.clear();
+		playerContactImpulse = 0;
 	}
 
 	@Override
 	public String toString() {
 		return "ContactSnapshot [snapshot=" + snapshot + "]";
 	}
-	
-	
+
+
 }
