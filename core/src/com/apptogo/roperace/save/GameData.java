@@ -11,6 +11,7 @@ public class GameData {
 	public GameData() {
 		//first always unlocked
 		unlockedLevels.add(new LevelNode(1, 1, ColorSet.GRAY));
+//		unlockedLevels.add(new LevelNode(2, 1, ColorSet.GRAY));
 		unlockedWorlds.add(1);
 		unlockedBalls.add(BallData.NORMAL.number);
 		activeBall = BallData.NORMAL.number;

@@ -1,17 +1,22 @@
 package com.apptogo.roperace.plugin;
 
+import com.apptogo.roperace.actors.Rope;
+import com.apptogo.roperace.enums.BallData;
+import com.apptogo.roperace.exception.PluginException;
 import com.apptogo.roperace.game.ParticleEffectActor;
 import com.apptogo.roperace.manager.ParticlesManager;
 import com.apptogo.roperace.physics.ContactListener;
 import com.apptogo.roperace.physics.UserData;
+import com.apptogo.roperace.save.SaveManager;
 import com.apptogo.roperace.screen.GameScreen;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
-import com.badlogic.gdx.math.Vector2;
 
 import static com.apptogo.roperace.enums.BallData.BUBBLE;
 
 public class GameEventsPlugin extends AbstractPlugin {
 
+	private BallData ball;
+	private Rope rope;
 	private GameScreen screen;
 	private SoundPlugin soundPlugin;
 
@@ -33,6 +38,12 @@ public class GameEventsPlugin extends AbstractPlugin {
 			}
 		}
 
+		if(rope.isRopeAttached()){
+			actor.getBody().getFixtureList().get(0).setFriction(0);
+		}
+		else{
+			actor.getBody().getFixtureList().get(0).setFriction(ball.friction);
+		}
 
 	}
 
@@ -51,6 +62,15 @@ public class GameEventsPlugin extends AbstractPlugin {
 	@Override
 	public void setUpDependencies() {
 		soundPlugin = actor.getPlugin(SoundPlugin.class);
+
+		try{
+			rope = actor.getPlugin(TouchSteeringPlugin.class).getRope();
+		}
+		catch(PluginException e){
+			rope = actor.getPlugin(KeyboardSteeringPlugin.class).getRope();
+		}
+		int activeBallNumber = SaveManager.getInstance().getActiveBall();
+		ball = BallData.valueOf(activeBallNumber);
 	}
 
 	@Override
