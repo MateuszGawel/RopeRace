@@ -9,8 +9,8 @@ public class GravityPlugin extends AbstractPlugin {
 	
 	@Override
 	public void run() {
-		if(started)
-			actor.getBody().applyForceToCenter(gravity, true);
+//		if(started)
+//			actor.getBody().applyForceToCenter(gravity, true);
 	}
 
 	@Override

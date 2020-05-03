@@ -87,7 +87,7 @@ public class GameScreen extends BasicScreen {
 
 		debugRenderer = new Box2DDebugRenderer();
 
-		world = new World(new Vector2(0, 0), true);
+		world = new World(new Vector2(0, -15), true);
 		world.setContactListener(contactListener);
 
 		prepareFrontStage();

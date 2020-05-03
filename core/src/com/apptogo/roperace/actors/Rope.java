@@ -54,7 +54,7 @@ public class Rope extends GameActor{
 				.position(-100, -100)
 				.addFixture("ropeBullet").circle(0.01f).density(1000000000f).friction(1).restitution(0)
 				.create();
-		
+		ropeBullet.setGravityScale(0);
 		screen.getFrontStage().addActor(this);
 		toBack();
 	}
