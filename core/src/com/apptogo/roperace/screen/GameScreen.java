@@ -89,7 +89,6 @@ public class GameScreen extends BasicScreen {
 
 		world = new World(new Vector2(0, -15), true);
 		world.setContactListener(contactListener);
-
 		prepareFrontStage();
 		prepareSteeringHudStage();
 		prepareHudStage();

@@ -1,6 +1,7 @@
 package com.apptogo.roperace.level;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -55,6 +56,7 @@ public class LevelGenerator{
 	private Map<Integer, MapObject> polylinesBottom = new HashMap<Integer, MapObject>();
 	private Map<Float[], Float[]> polylineVertices = new HashMap<Float[], Float[]>();
 	private int starCounter;
+	private int currentLineId;
 	
 	public LevelGenerator(GameScreen screen) {
 		this.camera = (OrthographicCamera)screen.getFrontStage().getCamera();
@@ -232,11 +234,16 @@ public class LevelGenerator{
 		
 		//iterate through all top polylines
 		for (MapObject mapObject : polylinesTop.values()) {
+			System.out.println("-------------------------------");
+			currentLineId = Integer.parseInt(mapObject.getProperties().get("lineId").toString());
+			System.out.println("LINE: " + currentLineId);
 			Float[] verticesTop = createPolyline(mapObject);
 			//find proper bottom polyline
-			MapObject mapObjectBottom = polylinesBottom.get(Integer.valueOf(mapObject.getProperties().get("lineId").toString()));
+			MapObject mapObjectBottom = polylinesBottom.get(currentLineId);
 			Float[] verticesBottomBeforeRaycast = createPolyline(mapObjectBottom);
-			UserData.get(levelBodies.get(levelBodies.size()-1)).polyLineBottom = true;
+			UserData lastPolylineUserData = UserData.get(levelBodies.get(levelBodies.size() - 1));
+			lastPolylineUserData.polyLineBottom = true;
+			lastPolylineUserData.lineId = currentLineId;
 			
 			//create new array of vertices to make polyline with same amount of vertices as top one (raycasting)
 			Float[] verticesBottom = new Float[verticesTop.length];
@@ -249,6 +256,10 @@ public class LevelGenerator{
 			}
 			
 			//we have two lines with the same amount of vertices
+			System.out.println("___________");
+			System.out.println("TOP: " + Arrays.toString(verticesTop));
+			System.out.println("BEFORE RAY: " + Arrays.toString(verticesBottomBeforeRaycast));
+			System.out.println("BOTTOM: " + Arrays.toString(verticesBottom));
 			polylineVertices.put(verticesTop, verticesBottom);
 		}
 	}
@@ -314,24 +325,32 @@ public class LevelGenerator{
 		while(j <= interpolatedPoints*2) {
 			//interpolated between 3 points for steps between 0..1. Polyline must have 3 points to work
 			Vector2 interpolatedVector = Bezier.quadratic(out, i, new Vector2(vertices[0], vertices[1]), new Vector2(vertices[2], vertices[3]), new Vector2(vertices[4], vertices[5]), helper);
-			interpolatedVertices[j] = interpolatedVector.x;
-			interpolatedVertices[j+1] = interpolatedVector.y;
+			interpolatedVertices[j] = (float) (Math.round(interpolatedVector.x * 100.0) / 100.0);
+			interpolatedVertices[j+1] = (float) (Math.round(interpolatedVector.y * 100.0) / 100.0);
 			i += step;
 			j += 2;
 		}
+
 		return interpolatedVertices;
 	}
 
 	private Vector2 tempIntersectionVertex;
 	private void calculateVertex(Vector2 startPoint, final Float[] verticesBottom){
-		Vector2 endPoint = new Vector2(startPoint.x, startPoint.y - getMapSize().y);
-		
+		Vector2 endPoint = new Vector2(startPoint.x, -getMapSize().y);
+		System.out.println("START POINT: " + startPoint);
+		System.out.println("END POINT: " + endPoint);
+		System.out.println("VERTICES: " + Arrays.toString(verticesBottom));
 		//raycast from top vertex to bottom line and return intersection point to temp field
 		screen.getWorld().rayCast(new RayCastCallback() {
 			@Override
 			public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
+
+				UserData userData = UserData.get(fixture.getBody());
 				if(verticesBottom == null){
 					tempIntersectionVertex = new Vector2(point.x, 0.5f);
+				}
+				else if(currentLineId != userData.lineId){
+					return -1; //it's not the line we are looking for
 				}
 				else if(point.x < verticesBottom[0]){
 					tempIntersectionVertex = new Vector2(verticesBottom[0], verticesBottom[1]);
@@ -339,7 +358,7 @@ public class LevelGenerator{
 				else if(point.x > verticesBottom[verticesBottom.length-2]){
 					tempIntersectionVertex = new Vector2(verticesBottom[verticesBottom.length-2], verticesBottom[verticesBottom.length-1]);
 				} 
-				else if (!UserData.get(fixture.getBody()).polyLineBottom) {
+				else if (!userData.polyLineBottom) {
 					//it went on the bottom
 					if (point.y <= 0.5) {
 						tempIntersectionVertex = new Vector2(verticesBottom[0], verticesBottom[1]);
