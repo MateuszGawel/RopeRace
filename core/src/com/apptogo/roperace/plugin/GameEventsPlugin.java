@@ -38,12 +38,12 @@ public class GameEventsPlugin extends AbstractPlugin {
 			}
 		}
 
-		if(rope.isRopeAttached()){
-			actor.getBody().getFixtureList().get(0).setFriction(0);
-		}
-		else{
-			actor.getBody().getFixtureList().get(0).setFriction(ball.friction);
-		}
+//		if(rope.isRopeAttached()){
+//			actor.getBody().getFixtureList().get(0).setFriction(0);
+//		}
+//		else{
+//			actor.getBody().getFixtureList().get(0).setFriction(ball.friction);
+//		}
 
 	}
 

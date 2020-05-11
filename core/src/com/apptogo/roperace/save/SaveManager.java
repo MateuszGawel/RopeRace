@@ -1,6 +1,7 @@
 package com.apptogo.roperace.save;
 
 import com.apptogo.roperace.enums.ColorSet;
+import com.apptogo.roperace.enums.Powerup;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Json;
@@ -8,6 +9,8 @@ import com.googlecode.gwt.crypto.bouncycastle.DataLengthException;
 import com.googlecode.gwt.crypto.bouncycastle.InvalidCipherTextException;
 import com.googlecode.gwt.crypto.client.TripleDesCipher;
 import com.googlecode.gwt.crypto.client.TripleDesKeyGenerator;
+
+import java.util.Map;
 
 public class SaveManager {
 
@@ -148,6 +151,15 @@ public class SaveManager {
 	
 	public boolean isBallActive(int number) {
 		return gameData.getActiveBall() == number;
+	}
+
+	public Map<Powerup, Integer> buyPowerup(Powerup powerup) {
+		gameData.buyPowerup(powerup);
+		return gameData.getBoughtPowerups();
+	}
+
+	public Map<Powerup, Integer> getBoughtPowerups() {
+		return gameData.getBoughtPowerups();
 	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/

@@ -1,10 +1,13 @@
 package com.apptogo.roperace.save;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.apptogo.roperace.enums.BallData;
 import com.apptogo.roperace.enums.ColorSet;
+import com.apptogo.roperace.enums.Powerup;
 
 public class GameData {
 
@@ -26,6 +29,7 @@ public class GameData {
 	private List<LevelNode> unlockedLevels = new ArrayList<LevelNode>();
 	private List<Integer> unlockedWorlds = new ArrayList<Integer>();
 	private List<Integer> unlockedBalls = new ArrayList<Integer>();
+	private Map<Powerup, Integer> boughtPowerups = new HashMap<>();
 
 	protected int getPoints() {
 		return points;
@@ -55,4 +59,12 @@ public class GameData {
 		this.activeBall = activeBall;
 	}
 
+	public Map<Powerup, Integer> getBoughtPowerups() {
+		return boughtPowerups;
+	}
+
+	public void buyPowerup(Powerup powerup){
+		Integer count = boughtPowerups.get(powerup);
+		boughtPowerups.put(powerup, count != null ? ++count : 1);
+	}
 }

@@ -5,6 +5,7 @@ import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.manager.CustomAction;
 import com.apptogo.roperace.manager.CustomActionManager;
 import com.apptogo.roperace.save.SaveManager;
+import com.apptogo.roperace.scene2d.Image;
 import com.apptogo.roperace.scene2d.Label;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -34,6 +35,7 @@ public abstract class BasicScreen implements Screen {
 	protected CustomAction transferPointsAction;
 
 	private Label scoreLabel;
+	private Image diamondIcon;
 	
 	public BasicScreen() {
 		this.game = Main.getInstance();
@@ -58,21 +60,33 @@ public abstract class BasicScreen implements Screen {
 		//prepare CustomActionManager
 		backStage.addActor(CustomActionManager.getInstance());
 		
-		createLabel();
+		createScoreLabel();
+		createDiamondIcon();
 	}
 
-	private void createLabel() {
-		scoreLabel = Label.get(String.valueOf(SaveManager.getInstance().getPoints()), "big");
-		scoreLabel.position(Main.SCREEN_WIDTH/2-scoreLabel.getWidth()-10, Main.SCREEN_HEIGHT/2 - 70);
+	private void createScoreLabel() {
+		String initialPoints = String.valueOf(SaveManager.getInstance().getPoints());
+
+		scoreLabel = Label.get(initialPoints, "big");
+		scoreLabel.position(Main.SCREEN_WIDTH/2 - initialPoints.length()*37 - 10, Main.SCREEN_HEIGHT/2 - scoreLabel.getHeight());
 		scoreLabel.setColor(ColorSet.PURPLE.getMainColor());
 		frontStage.addActor(scoreLabel);
-
 	}
 	
 	protected void setScoreValue(int value) {
 		if (!scoreLabel.isVisible())
 			scoreLabel.setVisible(true);
 		scoreLabel.setText(String.valueOf(value));
+		scoreLabel.position(Main.SCREEN_WIDTH/2 - String.valueOf(value).length()*37 - 10, Main.SCREEN_HEIGHT/2 - scoreLabel.getHeight());
+
+		diamondIcon.setPosition(Main.SCREEN_WIDTH/2 - scoreLabel.getText().length()*37 - 20 - diamondIcon.getWidth(), Main.SCREEN_HEIGHT/2 - diamondIcon.getHeight() - 15);
+	}
+
+	private void createDiamondIcon(){
+		diamondIcon = Image.get("diamond");
+		diamondIcon.setSize(diamondIcon.getWidth()*0.7f, diamondIcon.getHeight()*0.7f);
+		diamondIcon.setPosition(Main.SCREEN_WIDTH/2 - scoreLabel.getText().length()*37 - 20 - diamondIcon.getWidth(), Main.SCREEN_HEIGHT/2 - diamondIcon.getHeight() - 15);
+		frontStage.addActor(diamondIcon);
 	}
 	
 	public int getScoreValue() {
@@ -132,7 +146,7 @@ public abstract class BasicScreen implements Screen {
 			CustomActionManager.getInstance().registerAction(transferPointsAction);
 		}
 	}
-	public void unlockAction(int worldNumber, int cost) {
+	public void unlockAction(int number, int cost) {
 		//to implement in child class
 	}
 	

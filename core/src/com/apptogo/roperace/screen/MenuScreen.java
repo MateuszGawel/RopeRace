@@ -49,6 +49,11 @@ public class MenuScreen extends BasicScreen {
 		ballsButton.setPosition(Main.SCREEN_WIDTH/2-2*ballsButton.getWidth()-padding - 20, -Main.SCREEN_HEIGHT/2+padding);
 		frontStage.addActor(ballsButton);
 
+		ShadowedButton powerupButtons = new ShadowedButton("star-button", currentColorSet, ButtonSize.SMALL);
+		powerupButtons.addListener(Listener.click(game, new PowerupSelectionScreen()));
+		powerupButtons.setPosition(Main.SCREEN_WIDTH/2-3*powerupButtons.getWidth()-padding - 40, -Main.SCREEN_HEIGHT/2+padding);
+		frontStage.addActor(powerupButtons);
+
 		LevelNode levelNode = SaveManager.getInstance().getLatestAvailableLevel();
 		ShadowedButton playButton = new ShadowedButton("play-button", currentColorSet, ButtonSize.BIG);
 		playButton.addListener(Listener.click(game, new GameScreen(levelNode.getLevelNo(), levelNode.getWorldNo())));

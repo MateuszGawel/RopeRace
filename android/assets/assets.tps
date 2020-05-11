@@ -255,6 +255,12 @@
             <filename>rubber.png</filename>
             <filename>particle.png</filename>
             <filename>bubble.png</filename>
+            <filename>jump.png</filename>
+            <filename>jump_shadow.png</filename>
+            <filename>star-button.png</filename>
+            <filename>star-button_shadow.png</filename>
+            <filename>jump-big-button.png</filename>
+            <filename>jump-big-button_shadow.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
