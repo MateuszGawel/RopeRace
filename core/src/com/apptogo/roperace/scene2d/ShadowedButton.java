@@ -48,6 +48,11 @@ public class ShadowedButton extends Group {
 		shadow.setColor(colorSet.getSecondaryColor());
 		shadow.toFront();
 	}
+
+	public void changeColor(ColorSet colorSet){
+		shadow.setColor(colorSet.getSecondaryColor());
+		circle.setColor(colorSet.getMainColor());
+	}
 	
 	protected void addCircleBackground(ColorSet colorSet, ButtonSize buttonSize){
 		if(buttonSize == ButtonSize.BIG){

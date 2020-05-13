@@ -30,6 +30,7 @@ public class GameData {
 	private List<Integer> unlockedWorlds = new ArrayList<Integer>();
 	private List<Integer> unlockedBalls = new ArrayList<Integer>();
 	private Map<Powerup, Integer> boughtPowerups = new HashMap<>();
+	private Powerup activePowerup;
 
 	protected int getPoints() {
 		return points;
@@ -66,5 +67,13 @@ public class GameData {
 	public void buyPowerup(Powerup powerup){
 		Integer count = boughtPowerups.get(powerup);
 		boughtPowerups.put(powerup, count != null ? ++count : 1);
+	}
+
+	public Powerup getActivePowerup() {
+		return activePowerup;
+	}
+
+	public void setActivePowerup(Powerup activePowerup) {
+		this.activePowerup = activePowerup;
 	}
 }

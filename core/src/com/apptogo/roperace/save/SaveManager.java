@@ -161,6 +161,14 @@ public class SaveManager {
 	public Map<Powerup, Integer> getBoughtPowerups() {
 		return gameData.getBoughtPowerups();
 	}
+
+	public Powerup getActivePowerup() {
+		return gameData.getActivePowerup();
+	}
+
+	public void setActivePowerup(Powerup activePowerup) {
+		gameData.setActivePowerup(activePowerup);
+	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------ HELPERS ------------------------------------------------- **/

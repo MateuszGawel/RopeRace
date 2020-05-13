@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum Powerup {
-
 	JUMP(1,"jump-big-button", 100, "JUMP", "Jump in air? No problem!\nYou can jump in direction of flight.\nNo rope attached, no surface touched."),
 	SLIPPY(2,"slippy-big-button", 1, "SLIPPY", "Oops, everything is so slippery.\nFriction disappears for 10s,\nyou can slip through tight corridors faster.");
 

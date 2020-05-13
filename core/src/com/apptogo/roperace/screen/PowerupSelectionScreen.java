@@ -14,14 +14,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PowerupSelectionScreen extends BasicScreen {
 	private static final float SMALL_PADDING = 20;
 	private static final float BIG_PADDING = 100;
 	private Map<Powerup, Integer> boughtPowerups;
-	private Map<Powerup, PowerupButton> powerupButtons = new HashMap<>();
+	private List<PowerupButton> powerupButtons = new ArrayList<>();
 	private UnlockScreenGroup unlockPowerupScreenGroup;
 
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -58,7 +60,7 @@ public class PowerupSelectionScreen extends BasicScreen {
 	}
 	
 	private void refreshPowerupButton(Powerup powerup){
-		PowerupButton currentButton = powerupButtons.get(powerup);
+		PowerupButton currentButton = getByPowerup(powerup);
 		PowerupButton newButton = preparePowerupButton(powerup);
 		newButton.setPosition(currentButton.getX(), currentButton.getY());
 		currentButton.remove();
@@ -68,7 +70,7 @@ public class PowerupSelectionScreen extends BasicScreen {
 		Map<Powerup, Integer> boughtPowerups = SaveManager.getInstance().getBoughtPowerups();
 		final Integer powerupCount = boughtPowerups.get(powerup);
 
-		final PowerupButton powerupButton = new PowerupButton(powerup.regionName, currentColorSet, ButtonSize.BIG);
+		final PowerupButton powerupButton = new PowerupButton(powerup.regionName, currentColorSet, ButtonSize.BIG, powerup);
 		powerupButton.setPosition(-Main.SCREEN_WIDTH/2 - powerupButton.getWidth() + powerup.number * BIG_PADDING + powerup.number * powerupButton.getWidth(), Main.SCREEN_HEIGHT/2 - powerupButton.getHeight() - BIG_PADDING);
 
 		powerupButton.addListener(new ClickListener() {
@@ -86,12 +88,23 @@ public class PowerupSelectionScreen extends BasicScreen {
 		});
 
 		powerupButton.initChargesGraphic();
+		powerupButton.initOkButton();
+		powerupButton.addOkListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				for(PowerupButton powerupButton : powerupButtons){
+					powerupButton.toggleOk(false);
+				}
+				powerupButton.toggleOk(true);
+			}
+		});
+
 		if(powerupCount != null){
 			powerupButton.setActiveCharges(powerupCount);
 		}
 
 		frontStage.addActor(powerupButton);
-		powerupButtons.put(powerup, powerupButton);
+		powerupButtons.add(powerupButton);
 
 		return powerupButton;
 	}
@@ -104,6 +117,16 @@ public class PowerupSelectionScreen extends BasicScreen {
 		refreshPowerupButton(powerup);
 		System.out.println("mam " + powerup + " sztuk " + boughtPowerups.get(powerup));
 	}
+
+	private PowerupButton getByPowerup(Powerup powerup){
+		for(PowerupButton powerupButton : powerupButtons){
+			if(powerupButton.getPowerup() == powerup){
+				return powerupButton;
+			}
+		}
+		return null;
+	}
+
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** -------------------------------------------------- STEP -------------------------------------------------- **/
@@ -135,8 +158,7 @@ public class PowerupSelectionScreen extends BasicScreen {
 
 		handleInput();
 	}
-	
-	
+
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------ DISPOSE ------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
