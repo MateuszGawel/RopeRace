@@ -2,7 +2,6 @@ package com.apptogo.roperace.scene2d;
 
 import com.apptogo.roperace.enums.ColorSet;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class ShadowedButton extends Group {
@@ -26,7 +25,7 @@ public class ShadowedButton extends Group {
 		
 		this.shadow = Image.get(content + "_shadow");
 		AtlasRegion shadowRegion = ((AtlasRegion)this.shadow.getRegion());
-		this.shadow.setColor(colorSet.getShadowColor());
+		this.shadow.setColor(colorSet.getSecondaryColor());
 		this.shadow.position(shadowRegion.offsetX, shadowRegion.offsetY);
 		this.addActor(shadow);
 		
@@ -43,12 +42,10 @@ public class ShadowedButton extends Group {
 		addCircleBackground(colorSet, buttonSize);
 		setSize(this.circle.getWidth(), this.circle.getHeight());
 	}
-	
-
 
 	public void applyColorToContent(ColorSet colorSet){
 		content.setColor(colorSet.getMainColor());
-		shadow.setColor(colorSet.getShadowColor());
+		shadow.setColor(colorSet.getSecondaryColor());
 		shadow.toFront();
 	}
 	

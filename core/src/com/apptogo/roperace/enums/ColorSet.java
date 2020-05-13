@@ -15,18 +15,18 @@ public enum ColorSet {
 	BRONZE(new Color(0.69f, 0.48f, 0.2f, 1), new Color(0.54f, 0.37f, 0.15f, 1), 1);
 
 	private final Color mainColor;
-	private final Color shadowColor;
+	private final Color secondaryColor;
 	private int medalNumber;
 	
-	ColorSet(Color mainColor, Color shadowColor) {
+	ColorSet(Color mainColor, Color secondaryColor) {
 		this.mainColor = mainColor;
-		this.shadowColor = shadowColor;
+		this.secondaryColor = secondaryColor;
 		this.medalNumber = 0;
 	}
 	
-	ColorSet(Color mainColor, Color shadowColor, int medalNumber) {
+	ColorSet(Color mainColor, Color secondaryColor, int medalNumber) {
 		this.mainColor = mainColor;
-		this.shadowColor = shadowColor;
+		this.secondaryColor = secondaryColor;
 		this.medalNumber = medalNumber;
 	}
 
@@ -34,8 +34,8 @@ public enum ColorSet {
 		return mainColor;
 	}
 
-	public Color getShadowColor() {
-		return shadowColor;
+	public Color getSecondaryColor() {
+		return secondaryColor;
 	}
 
 	public int getMedalNumber() {

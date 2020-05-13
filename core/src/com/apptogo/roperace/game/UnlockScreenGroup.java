@@ -32,7 +32,10 @@ public class UnlockScreenGroup extends Group {
 	private int cost;
 	private int number;
 	private String label;
-	
+
+	private boolean buyPossible = true;
+	private String buyNotPossibleMessage = "";
+
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------- INIT --------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -88,7 +91,13 @@ public class UnlockScreenGroup extends Group {
 	}
 
 	private void createErrorMsg(){
-		if(currentScreen.getScoreValue() < cost){
+		if(!buyPossible){
+			Label msgLabel = Label.get(buyNotPossibleMessage, "small");
+			msgLabel.position(getWidth() / 2 - msgLabel.getWidth()/2, getHeight()/2 - msgLabel.getHeight() - 50);
+			msgLabel.setColor(currentScreen.getCurrentColorSet().getMainColor());
+			this.addActor(msgLabel);
+		}
+		else if(currentScreen.getScoreValue() < cost){
 			String msgText = "Not enough diamonds";
 			Label msgLabel = Label.get(msgText, "small");
 			msgLabel.position(getWidth() / 2 - msgLabel.getWidth()/2, getHeight()/2 - msgLabel.getHeight() - 50);
@@ -100,7 +109,7 @@ public class UnlockScreenGroup extends Group {
 	private void createSubTitle(String subtitle) {
 		Label subtitleLabel = Label.get(subtitle, "big");
 		subtitleLabel.position(getWidth()/2 - subtitleLabel.getWidth() / 2, getHeight() - subtitleLabel.getHeight() - 100);
-		subtitleLabel.setColor(currentScreen.getCurrentColorSet().getShadowColor());
+		subtitleLabel.setColor(currentScreen.getCurrentColorSet().getSecondaryColor());
 		this.addActor(subtitleLabel);
 	}
 
@@ -108,7 +117,7 @@ public class UnlockScreenGroup extends Group {
 		Label descriptionLabel = Label.get(description, "small");
 		descriptionLabel.setAlignment(Align.center);
 		descriptionLabel.position(getWidth()/2 - descriptionLabel.getWidth() / 2, getHeight() - descriptionLabel.getHeight() - 160);
-		descriptionLabel.setColor(currentScreen.getCurrentColorSet().getShadowColor());
+		descriptionLabel.setColor(currentScreen.getCurrentColorSet().getSecondaryColor());
 		this.addActor(descriptionLabel);
 	}
 
@@ -140,7 +149,7 @@ public class UnlockScreenGroup extends Group {
 		});
 		this.addActor(back);
 
-		if (currentScreen.getScoreValue() >= cost) {
+		if (buyPossible && currentScreen.getScoreValue() >= cost) {
 			ShadowedButton ok = new ShadowedButton("ok", currentColorset, ButtonSize.SMALL);
 			ok.setPosition(getWidth() / 2 - ok.getWidth() * 1.5f, margin / 3);
 			ok.addListener(new ClickListener() {
@@ -197,5 +206,12 @@ public class UnlockScreenGroup extends Group {
 	/** -------------------------------------------- GETTERS/SETTERS---------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
 
-	
+	public void setBuyImpossible(String message) {
+		this.buyPossible = false;
+		this.buyNotPossibleMessage = message;
+	}
+
+	public void setBuyPossible() {
+		this.buyPossible = true;
+	}
 }

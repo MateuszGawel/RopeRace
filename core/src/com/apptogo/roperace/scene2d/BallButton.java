@@ -21,7 +21,7 @@ public class BallButton extends ShadowedButton {
 		
 		this.shadow = Image.get("locker_shadow");
 		AtlasRegion shadowRegion = ((AtlasRegion) this.shadow.getRegion());
-		this.shadow.setColor(colorSet.getShadowColor());
+		this.shadow.setColor(colorSet.getSecondaryColor());
 		this.shadow.position(shadowRegion.offsetX, shadowRegion.offsetY);
 		this.addActor(shadow);
 

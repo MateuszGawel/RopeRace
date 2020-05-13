@@ -5,6 +5,7 @@ import com.apptogo.roperace.game.UnlockScreenGroup;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.save.SaveManager;
 import com.apptogo.roperace.scene2d.Listener;
+import com.apptogo.roperace.scene2d.PowerupButton;
 import com.apptogo.roperace.scene2d.ShadowedButton;
 import com.apptogo.roperace.scene2d.ShadowedButton.ButtonSize;
 import com.badlogic.gdx.Gdx;
@@ -20,7 +21,7 @@ public class PowerupSelectionScreen extends BasicScreen {
 	private static final float SMALL_PADDING = 20;
 	private static final float BIG_PADDING = 100;
 	private Map<Powerup, Integer> boughtPowerups;
-	private Map<Powerup, ShadowedButton> powerupButtons = new HashMap<>();
+	private Map<Powerup, PowerupButton> powerupButtons = new HashMap<>();
 	private UnlockScreenGroup unlockPowerupScreenGroup;
 
 	/** ---------------------------------------------------------------------------------------------------------- **/
@@ -57,23 +58,37 @@ public class PowerupSelectionScreen extends BasicScreen {
 	}
 	
 	private void refreshPowerupButton(Powerup powerup){
-		ShadowedButton currentButton = powerupButtons.get(powerup);
-		ShadowedButton newButton = preparePowerupButton(powerup);
+		PowerupButton currentButton = powerupButtons.get(powerup);
+		PowerupButton newButton = preparePowerupButton(powerup);
 		newButton.setPosition(currentButton.getX(), currentButton.getY());
 		currentButton.remove();
 	}
 
-	private ShadowedButton preparePowerupButton(final Powerup powerup){
-		final ShadowedButton powerupButton = new ShadowedButton(powerup.regionName, currentColorSet, ButtonSize.BIG);
+	private PowerupButton preparePowerupButton(final Powerup powerup){
+		Map<Powerup, Integer> boughtPowerups = SaveManager.getInstance().getBoughtPowerups();
+		final Integer powerupCount = boughtPowerups.get(powerup);
+
+		final PowerupButton powerupButton = new PowerupButton(powerup.regionName, currentColorSet, ButtonSize.BIG);
 		powerupButton.setPosition(-Main.SCREEN_WIDTH/2 - powerupButton.getWidth() + powerup.number * BIG_PADDING + powerup.number * powerupButton.getWidth(), Main.SCREEN_HEIGHT/2 - powerupButton.getHeight() - BIG_PADDING);
 
 		powerupButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				if(powerupCount != null && powerupCount >= 3){
+					unlockPowerupScreenGroup.setBuyImpossible("You already have 3 charges");
+				}
+				else{
+					unlockPowerupScreenGroup.setBuyPossible();
+				}
 				unlockPowerupScreenGroup.toFront();
 				unlockPowerupScreenGroup.init(powerup.number, powerup.cost, powerup.displayName, powerup.description);
 			}
 		});
+
+		powerupButton.initChargesGraphic();
+		if(powerupCount != null){
+			powerupButton.setActiveCharges(powerupCount);
+		}
 
 		frontStage.addActor(powerupButton);
 		powerupButtons.put(powerup, powerupButton);
@@ -84,7 +99,6 @@ public class PowerupSelectionScreen extends BasicScreen {
 	@Override
 	public void unlockAction(int number, final int cost){
 		Powerup powerup = Powerup.valueOf(number);
-		SaveManager.getInstance().unlockWorld(number);
 		transferPoints(cost);
 		boughtPowerups = SaveManager.getInstance().buyPowerup(powerup);
 		refreshPowerupButton(powerup);
