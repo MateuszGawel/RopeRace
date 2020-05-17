@@ -10,8 +10,6 @@ import com.googlecode.gwt.crypto.bouncycastle.InvalidCipherTextException;
 import com.googlecode.gwt.crypto.client.TripleDesCipher;
 import com.googlecode.gwt.crypto.client.TripleDesKeyGenerator;
 
-import java.util.Map;
-
 public class SaveManager {
 
 	private static final boolean DEBUG_ALWAYS_CLEAR = true;
@@ -153,13 +151,18 @@ public class SaveManager {
 		return gameData.getActiveBall() == number;
 	}
 
-	public Map<Powerup, Integer> buyPowerup(Powerup powerup) {
+	public void buyPowerup(Powerup powerup) {
 		gameData.buyPowerup(powerup);
-		return gameData.getBoughtPowerups();
 	}
 
-	public Map<Powerup, Integer> getBoughtPowerups() {
-		return gameData.getBoughtPowerups();
+	public int getPowerupCount(Powerup powerup){
+		Integer count = gameData.getBoughtPowerups().get(powerup);
+		return count != null ? count : 0;
+	}
+
+	public int getActivePowerupCount(){
+		Integer count = gameData.getBoughtPowerups().get(gameData.getActivePowerup());
+		return count != null ? count : 0;
 	}
 
 	public Powerup getActivePowerup() {

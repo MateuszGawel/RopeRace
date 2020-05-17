@@ -15,14 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PowerupSelectionScreen extends BasicScreen {
 	private static final float SMALL_PADDING = 20;
 	private static final float BIG_PADDING = 100;
-	private Map<Powerup, Integer> boughtPowerups;
 	private List<PowerupButton> powerupButtons = new ArrayList<>();
 	private UnlockScreenGroup unlockPowerupScreenGroup;
 
@@ -32,7 +29,6 @@ public class PowerupSelectionScreen extends BasicScreen {
 	
 	@Override
 	protected void prepare() {
-		boughtPowerups = SaveManager.getInstance().getBoughtPowerups();
 		prepareBackStage();
 		prepareFrontStage();
 		prepareUnlockPowerupScreen();
@@ -67,16 +63,15 @@ public class PowerupSelectionScreen extends BasicScreen {
 	}
 
 	private PowerupButton preparePowerupButton(final Powerup powerup){
-		Map<Powerup, Integer> boughtPowerups = SaveManager.getInstance().getBoughtPowerups();
-		final Integer powerupCount = boughtPowerups.get(powerup);
+		final int powerupCount = SaveManager.getInstance().getPowerupCount(powerup);
 
-		final PowerupButton powerupButton = new PowerupButton(powerup.regionName, currentColorSet, ButtonSize.BIG, powerup);
+		final PowerupButton powerupButton = new PowerupButton(currentColorSet, ButtonSize.BIG, powerup);
 		powerupButton.setPosition(-Main.SCREEN_WIDTH/2 - powerupButton.getWidth() + powerup.number * BIG_PADDING + powerup.number * powerupButton.getWidth(), Main.SCREEN_HEIGHT/2 - powerupButton.getHeight() - BIG_PADDING);
 
 		powerupButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if(powerupCount != null && powerupCount >= 3){
+				if(powerupCount >= 3){
 					unlockPowerupScreenGroup.setBuyImpossible("You already have 3 charges");
 				}
 				else{
@@ -99,9 +94,7 @@ public class PowerupSelectionScreen extends BasicScreen {
 			}
 		});
 
-		if(powerupCount != null){
-			powerupButton.setActiveCharges(powerupCount);
-		}
+		powerupButton.setActiveCharges(powerupCount);
 
 		frontStage.addActor(powerupButton);
 		powerupButtons.add(powerupButton);
@@ -113,9 +106,8 @@ public class PowerupSelectionScreen extends BasicScreen {
 	public void unlockAction(int number, final int cost){
 		Powerup powerup = Powerup.valueOf(number);
 		transferPoints(cost);
-		boughtPowerups = SaveManager.getInstance().buyPowerup(powerup);
+		SaveManager.getInstance().buyPowerup(powerup);
 		refreshPowerupButton(powerup);
-		System.out.println("mam " + powerup + " sztuk " + boughtPowerups.get(powerup));
 	}
 
 	private PowerupButton getByPowerup(Powerup powerup){

@@ -14,6 +14,7 @@ import com.apptogo.roperace.physics.ContactListener;
 import com.apptogo.roperace.plugin.CameraFollowingPlugin;
 import com.apptogo.roperace.plugin.GameEventsPlugin;
 import com.apptogo.roperace.plugin.GravityPlugin;
+import com.apptogo.roperace.plugin.PowerupPlugin;
 import com.apptogo.roperace.plugin.SoundPlugin;
 import com.apptogo.roperace.plugin.SteeringPlugin;
 import com.apptogo.roperace.plugin.TouchSteeringPlugin;
@@ -26,7 +27,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
@@ -65,8 +65,10 @@ public class GameScreen extends BasicScreen {
 	private GravityPlugin gravityPlugin;
 	private SoundPlugin soundPlugin;
 	private GameEventsPlugin gameEventsPlugin;
+	private PowerupPlugin powerupPlugin;
 
 	private float ballDefaultGraphicRadius = 107;
+
 
 	public GameScreen(int levelNo, int worldNo) {
 		super();
@@ -90,8 +92,8 @@ public class GameScreen extends BasicScreen {
 		world = new World(new Vector2(0, -15), true);
 		world.setContactListener(contactListener);
 		prepareFrontStage();
-		prepareSteeringHudStage();
 		prepareHudStage();
+		prepareSteeringHudStage();
 		prepareLabelStage();
 		createLevel();
 		createPlayer();
@@ -167,12 +169,14 @@ public class GameScreen extends BasicScreen {
 		gravityPlugin = new GravityPlugin();
 		soundPlugin = new SoundPlugin("basket", "rubber", "bubble", "beach", "bowling", "normal");
 		gameEventsPlugin = new GameEventsPlugin(this);
+		powerupPlugin = new PowerupPlugin();
 
 		player.addPlugin(steeringPlugin);
 		player.addPlugin(cameraFollowingPlugin);
 		player.addPlugin(gravityPlugin);
 		player.addPlugin(soundPlugin);
 		player.addPlugin(gameEventsPlugin);
+		player.addPlugin(powerupPlugin);
 	}
 
 	protected void createLevel(){

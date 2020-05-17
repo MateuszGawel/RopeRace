@@ -4,10 +4,7 @@ import com.apptogo.roperace.enums.ColorSet;
 import com.apptogo.roperace.enums.Powerup;
 import com.apptogo.roperace.main.Main;
 import com.apptogo.roperace.save.SaveManager;
-import com.badlogic.gdx.graphics.Colors;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
@@ -18,9 +15,10 @@ public class PowerupButton extends ShadowedButton {
     private final Powerup powerup;
     private List<Image> charges = new ArrayList<>();
     private ShadowedButton ok;
+    private int activeCharges;
 
-    public PowerupButton(String regionName, ColorSet currentColorSet, ButtonSize big, Powerup powerup) {
-        super(regionName, currentColorSet, big);
+    public PowerupButton(ColorSet currentColorSet, ButtonSize big, Powerup powerup) {
+        super(powerup.regionName, currentColorSet, big);
         this.powerup = powerup;
     }
 
@@ -65,10 +63,20 @@ public class PowerupButton extends ShadowedButton {
         if(count > 3){
             return;
         }
+        activeCharges = count;
+        for(int i = 0; i<3; i++){
+            Image charge = charges.get(i);
+            charge.setColor(ColorSet.LIGHT_GRAY.getSecondaryColor());
+        }
         for(int i = 0; i<count; i++){
             Image charge = charges.get(i);
             charge.setColor(colorSet.getMainColor());
         }
+    }
+
+    public void reduceCharge(){
+        activeCharges--;
+        setActiveCharges(activeCharges);
     }
 
     private void rotateBy(int i, Image powerupCharge) {
