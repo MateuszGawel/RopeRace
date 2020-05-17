@@ -1,25 +1,27 @@
 package com.apptogo.roperace.save;
 
+import com.apptogo.roperace.enums.BallData;
+import com.apptogo.roperace.enums.ColorSet;
+import com.apptogo.roperace.enums.Powerup;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.apptogo.roperace.enums.BallData;
-import com.apptogo.roperace.enums.ColorSet;
-import com.apptogo.roperace.enums.Powerup;
 
 public class GameData {
 
 	public GameData() {
 		//first always unlocked
 		unlockedLevels.add(new LevelNode(1, 1, ColorSet.GRAY));
-		unlockedLevels.add(new LevelNode(2, 1, ColorSet.GRAY));
-		unlockedLevels.add(new LevelNode(3, 1, ColorSet.GRAY));
+//		unlockedLevels.add(new LevelNode(2, 1, ColorSet.GRAY));
+//		unlockedLevels.add(new LevelNode(3, 1, ColorSet.GRAY));
 //        unlockedLevels.add(new LevelNode(4, 1, ColorSet.GRAY));
 		unlockedWorlds.add(1);
-		unlockedBalls.add(BallData.NORMAL.number);
-		activeBall = BallData.NORMAL.number;
+		unlockedBalls.add(BallData.RUBBER.number);
+		activeBall = BallData.RUBBER.number;
+        boughtPowerups.put(Powerup.JUMP, 3);
+        activePowerup = Powerup.JUMP;
 	}
 
 	protected static final String NAME = "GAME_DATA";

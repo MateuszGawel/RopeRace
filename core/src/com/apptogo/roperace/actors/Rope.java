@@ -133,17 +133,21 @@ public class Rope extends GameActor{
 			
 			@Override
 			public void perform() {
+//				System.out.println("SHORTEN1");
 				if (ropeAttached && joint.getMaxLength() > 1) {
 					float currentLength = joint.getAnchorA().dst(joint.getAnchorB());
 					float playerBulletDst = player.getBody().getPosition().dst(ropeBullet.getPosition());
-
+//					System.out.println("SHORTEN2");
 					//if ball stucks, rope shouldn't short to avoid jitter jump.
 					if (first || currentLength <= joint.getMaxLength() + changeLenghtSpeed / 2) {
+//						System.out.println("SHORTEN3");
 						if(currentLength < joint.getMaxLength()){
 							joint.setMaxLength(currentLength - changeLenghtSpeed);
+//							System.out.println("SHORTEN4");
 						}
 						else {
 							joint.setMaxLength(joint.getMaxLength() - changeLenghtSpeed);
+//							System.out.println("SHORTEN5");
 						}
 						first = false;
 					}

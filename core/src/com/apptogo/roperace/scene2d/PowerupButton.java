@@ -74,6 +74,10 @@ public class PowerupButton extends ShadowedButton {
         }
     }
 
+    public boolean hasActiveCharges() {
+        return activeCharges > 0;
+    }
+
     public void reduceCharge(){
         activeCharges--;
         setActiveCharges(activeCharges);

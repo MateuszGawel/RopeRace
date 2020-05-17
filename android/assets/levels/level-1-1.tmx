@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="250" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="94">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="250" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="95">
  <properties>
   <property name="bronzeReq" value="5"/>
   <property name="goldReq" value="10"/>
@@ -198,7 +198,7 @@
     <property name="lineId" value="1"/>
     <property name="type" value="top"/>
    </properties>
-   <polyline points="-91.3333,-64 -11.3333,-2.66667 68.6667,-64"/>
+   <polyline points="-91.3333,-64 -12.5833,-2.91667 68.6667,-64"/>
   </object>
   <object id="92" x="7323.33" y="302">
    <properties>
@@ -206,9 +206,9 @@
     <property name="lineId" value="1"/>
     <property name="type" value="bottom"/>
    </properties>
-   <polyline points="-91.3333,-64 -12.6667,-4.66663 68.6667,-64"/>
+   <polyline points="-92.0833,-76.5 -12.6667,-4.66663 69.4167,-75.75"/>
   </object>
-  <object id="93" name="start" x="48.5" y="351.5" width="64" height="64">
+  <object id="94" name="start" x="4946" y="206" width="64" height="64">
    <ellipse/>
   </object>
  </objectgroup>

@@ -1,12 +1,5 @@
 package com.apptogo.roperace.level;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import com.apptogo.roperace.actors.Hoop;
 import com.apptogo.roperace.actors.Star;
 import com.apptogo.roperace.custom.MyShapeRenderer;
@@ -41,6 +34,13 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class LevelGenerator{
 
@@ -234,9 +234,7 @@ public class LevelGenerator{
 		
 		//iterate through all top polylines
 		for (MapObject mapObject : polylinesTop.values()) {
-			System.out.println("-------------------------------");
 			currentLineId = Integer.parseInt(mapObject.getProperties().get("lineId").toString());
-			System.out.println("LINE: " + currentLineId);
 			Float[] verticesTop = createPolyline(mapObject);
 			//find proper bottom polyline
 			MapObject mapObjectBottom = polylinesBottom.get(currentLineId);
@@ -256,10 +254,6 @@ public class LevelGenerator{
 			}
 			
 			//we have two lines with the same amount of vertices
-			System.out.println("___________");
-			System.out.println("TOP: " + Arrays.toString(verticesTop));
-			System.out.println("BEFORE RAY: " + Arrays.toString(verticesBottomBeforeRaycast));
-			System.out.println("BOTTOM: " + Arrays.toString(verticesBottom));
 			polylineVertices.put(verticesTop, verticesBottom);
 		}
 	}
