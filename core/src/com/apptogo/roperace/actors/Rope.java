@@ -58,6 +58,7 @@ public class Rope extends GameActor{
 				.position(-100, -100)
 				.addFixture("ropeBullet").circle(0.11f).density(1)
 				.create();
+		ropeBullet.setActive(false);
 		rotor = BodyBuilder.get()
 				.type(BodyType.DynamicBody)
 				.position(player.getBody().getPosition())
@@ -82,7 +83,8 @@ public class Rope extends GameActor{
 	public void shoot(float angle) {
 		destroyCurrentJoint();
 		shootVector.setAngle(angle);
-		
+
+		ropeBullet.setActive(true);
 		ropeBullet.setTransform(player.getBody().getPosition(), (float) Math.toRadians(angle));
 		ropeBullet.setLinearVelocity(shootVector);
 
@@ -102,6 +104,7 @@ public class Rope extends GameActor{
 		}
 		ropeAttached = false;
 		ropeBullet.setTransform(new Vector2(-100, -100), 0);
+		ropeBullet.setActive(false);
 		if(shorteningAction != null){
 			shorteningAction.unregister();
 		}
@@ -275,7 +278,7 @@ public class Rope extends GameActor{
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		if(ropePrismaticJoint != null){
+		if(ropePrismaticJoint != null || ropeBullet.isActive()){
 			ropeLength = new Vector2(getX(), getY()).dst(ropeBullet.getPosition()) + penetration;
 			float u2Backup = ropeTextureRegion.getU2();
 			ropeTextureRegion.setU2(ropeTextureRegion.getU() + startU2Length * ((UnitConverter.PPM * ropeLength) / ropeTextureRegion.getRegionWidth()));
