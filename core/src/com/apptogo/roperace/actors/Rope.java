@@ -14,8 +14,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
-import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 
 public class Rope extends GameActor{
 
@@ -28,7 +30,9 @@ public class Rope extends GameActor{
 	private GameActor player;
 	
 	private Body ropeBullet;
-	private RopeJoint joint;
+	private final Body rotor;
+	private PrismaticJoint ropePrismaticJoint;
+	private RevoluteJoint bulletRevoluteJoint;
 	private boolean ropeAttached;
 	private CustomAction shorteningAction;
 	private CustomAction extendingAction;
@@ -52,9 +56,21 @@ public class Rope extends GameActor{
 		ropeBullet = BodyBuilder.get()
 				.type(BodyType.DynamicBody)
 				.position(-100, -100)
-				.addFixture("ropeBullet").circle(0.01f).density(1000000000f).friction(1).restitution(0)
+				.addFixture("ropeBullet").circle(0.11f).density(1)
 				.create();
-		ropeBullet.setGravityScale(0);
+		rotor = BodyBuilder.get()
+				.type(BodyType.DynamicBody)
+				.position(player.getBody().getPosition())
+				.addFixture("rotor").circle(0.11f).density(1).sensor(true)
+				.create();
+		RevoluteJointDef rotorJointDef = new RevoluteJointDef();
+		rotorJointDef.bodyA = player.getBody();
+		rotorJointDef.bodyB = rotor;
+		rotorJointDef.localAnchorB.set(rotor.getLocalCenter());
+		rotorJointDef.localAnchorA.set(player.getBody().getLocalCenter());
+		rotorJointDef.collideConnected = false;
+		screen.getWorld().createJoint(rotorJointDef);
+
 		screen.getFrontStage().addActor(this);
 		toBack();
 	}
@@ -65,54 +81,77 @@ public class Rope extends GameActor{
 
 	public void shoot(float angle) {
 		destroyCurrentJoint();
-		
 		shootVector.setAngle(angle);
 		
-		ropeBullet.setTransform(player.getBody().getPosition(), 0);	
+		ropeBullet.setTransform(player.getBody().getPosition(), (float) Math.toRadians(angle));
 		ropeBullet.setLinearVelocity(shootVector);
-		
-		createJoint();
+
+//		createJoint();
 		triggerAutoRopeCut();
 		
 		shootCounter++;
 	}
-
 	public void destroyCurrentJoint(){
-		if(joint != null){
-			screen.getWorld().destroyJoint(joint);
-			joint = null;
-			ropeAttached = false;
-			ropeBullet.setTransform(new Vector2(-100, -100), 0);
-			ropeBullet.setType(BodyType.DynamicBody);
-			if(shorteningAction != null){
-				shorteningAction.unregister();
-			}
+		if(ropePrismaticJoint != null) {
+			screen.getWorld().destroyJoint(ropePrismaticJoint);
+			ropePrismaticJoint = null;
 		}
+		if(bulletRevoluteJoint != null) {
+			screen.getWorld().destroyJoint(bulletRevoluteJoint);
+			bulletRevoluteJoint = null;
+		}
+		ropeAttached = false;
+		ropeBullet.setTransform(new Vector2(-100, -100), 0);
+		if(shorteningAction != null){
+			shorteningAction.unregister();
+		}
+		screen.getWorld().setGravity(new Vector2(0,-15));
 	}
-	
+
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ------------------------------------------------ HELPERS ------------------------------------------------- **/
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	
 	private void handleBulletCollision(){
-		if(joint != null && ContactListener.SNAPSHOT_BEGIN.collide(UserData.get(ropeBullet), "level")){
+		if( ContactListener.SNAPSHOT_BEGIN.collide(UserData.get(ropeBullet), "level")){
 			ropeAttached = true;
-			joint.setMaxLength(player.getBody().getPosition().dst(ropeBullet.getPosition()));
-			shortenRope(changeLenghtSpeed);
-			ropeBullet.setType(BodyType.StaticBody);
+			Body ropeBulletCollidedBody = ContactListener.SNAPSHOT_BEGIN.getRopeBulletCollidedBody();
+			RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
+			revoluteJointDef.bodyA = ropeBulletCollidedBody;
+			revoluteJointDef.bodyB = ropeBullet;
+			revoluteJointDef.localAnchorB.set(ropeBullet.getLocalCenter());
+			revoluteJointDef.localAnchorA.set(ContactListener.SNAPSHOT_BEGIN.getRopeBulletCollisionPoint().sub(ropeBulletCollidedBody.getPosition()));
+			revoluteJointDef.collideConnected = false;
+			bulletRevoluteJoint = (RevoluteJoint) screen.getWorld().createJoint(revoluteJointDef);
+//			shortenRope(changeLenghtSpeed);
+
+			rotor.setTransform(rotor.getPosition().x, rotor.getPosition().y, 0);
+			PrismaticJointDef jointDef = new PrismaticJointDef();
+			jointDef.collideConnected = false;
+			jointDef.bodyB = ropeBullet;
+			jointDef.bodyA = rotor;
+			Vector2 normal = ropeBullet.getPosition().cpy().sub(rotor.getPosition()).nor();
+			jointDef.localAxisA.set(normal);
+			jointDef.motorSpeed = -40f;
+			jointDef.maxMotorForce = 30;
+            jointDef.enableMotor = true;
+			jointDef.upperTranslation = 0;
+			jointDef.lowerTranslation = 1;
+			jointDef.enableLimit = true;
+			ropePrismaticJoint = (PrismaticJoint)screen.getWorld().createJoint(jointDef);
 		}
 	}
 	
 	private void createJoint() {
-		
-		RopeJointDef jointDef = new RopeJointDef();
-		jointDef.bodyA = player.getBody();
-		jointDef.bodyB = ropeBullet;
-		jointDef.localAnchorA.set(0,0);
-		jointDef.localAnchorB.set(0,0);
-		joint = (RopeJoint)screen.getWorld().createJoint(jointDef);
 
-		joint.setMaxLength(ROPE_MAX_LENGTH);
+//		RopeJointDef jointDef = new RopeJointDef();
+//		jointDef.bodyA = player.getBody();
+//		jointDef.bodyB = ropeBullet;
+//		jointDef.localAnchorA.set(0,0);
+//		jointDef.localAnchorB.set(0,0);
+//		joint = (RopeJoint)screen.getWorld().createJoint(jointDef);
+//
+//		joint.setMaxLength(ROPE_MAX_LENGTH);
 	}
 	
 	private void triggerAutoRopeCut() {
@@ -120,7 +159,7 @@ public class Rope extends GameActor{
 			
 			@Override
 			public void perform() {
-				if(joint != null && !ropeAttached){
+				if(!ropeAttached){
 					destroyCurrentJoint();
 				}
 			}
@@ -134,27 +173,27 @@ public class Rope extends GameActor{
 			@Override
 			public void perform() {
 //				System.out.println("SHORTEN1");
-				if (ropeAttached && joint.getMaxLength() > 1) {
-					float currentLength = joint.getAnchorA().dst(joint.getAnchorB());
-					float playerBulletDst = player.getBody().getPosition().dst(ropeBullet.getPosition());
-//					System.out.println("SHORTEN2");
-					//if ball stucks, rope shouldn't short to avoid jitter jump.
-					if (first || currentLength <= joint.getMaxLength() + changeLenghtSpeed / 2) {
-//						System.out.println("SHORTEN3");
-						if(currentLength < joint.getMaxLength()){
-							joint.setMaxLength(currentLength - changeLenghtSpeed);
-//							System.out.println("SHORTEN4");
-						}
-						else {
-							joint.setMaxLength(joint.getMaxLength() - changeLenghtSpeed);
-//							System.out.println("SHORTEN5");
-						}
-						first = false;
-					}
-				}
-				else{
-					unregister();
-				}
+//				if (ropeAttached && joint.getMaxLength() > 1) {
+//					float currentLength = joint.getAnchorA().dst(joint.getAnchorB());
+//					float playerBulletDst = player.getBody().getPosition().dst(ropeBullet.getPosition());
+////					System.out.println("SHORTEN2");
+//					//if ball stucks, rope shouldn't short to avoid jitter jump.
+//					if (first || currentLength <= joint.getMaxLength() + changeLenghtSpeed / 2) {
+////						System.out.println("SHORTEN3");
+//						if(currentLength < joint.getMaxLength()){
+//							joint.setMaxLength(currentLength - changeLenghtSpeed);
+////							System.out.println("SHORTEN4");
+//						}
+//						else {
+//							joint.setMaxLength(joint.getMaxLength() - changeLenghtSpeed);
+////							System.out.println("SHORTEN5");
+//						}
+//						first = false;
+//					}
+//				}
+//				else{
+//					unregister();
+//				}
 			}
 		};
 
@@ -162,11 +201,11 @@ public class Rope extends GameActor{
 			@Override
 			public void perform() {
 				if(ropeAttached) {
-					float currentLength = joint.getAnchorA().dst(joint.getAnchorB());
+					float currentLength = ropePrismaticJoint.getAnchorA().dst(ropePrismaticJoint.getAnchorB());
 
-					if (currentLength <= ROPE_MAX_LENGTH) {
-						joint.setMaxLength(joint.getMaxLength() + changeLenghtSpeed);
-					}
+//					if (currentLength <= ROPE_MAX_LENGTH) {
+//						joint.setMaxLength(joint.getMaxLength() + changeLenghtSpeed);
+//					}
 				}
 				else {
 					unregister();
@@ -208,6 +247,18 @@ public class Rope extends GameActor{
             shorteningAction.resetAction();
         }
 	}
+
+	/** don't allow too fast joint. It can happen when gravity helps, so if gravity forks in favor, slow down motor by redcuing max force */
+	private void tunePrismaticJoint() {
+		if(ropePrismaticJoint != null){
+			if(ropePrismaticJoint.getJointSpeed() < -3 && ropePrismaticJoint.getMaxMotorForce() > 0){
+				ropePrismaticJoint.setMaxMotorForce(ropePrismaticJoint.getMaxMotorForce()-10);
+			}
+			else if(ropePrismaticJoint.getMaxMotorForce() < 30){
+				ropePrismaticJoint.setMaxMotorForce(ropePrismaticJoint.getMaxMotorForce()+10);
+			}
+		}
+	}
 	
 	/** ---------------------------------------------------------------------------------------------------------- **/
 	/** ----------------------------------------------- ACT/DRAW ------------------------------------------------- **/
@@ -219,11 +270,12 @@ public class Rope extends GameActor{
 		handleBulletCollision();
 		
 		setPosition(player.getBody().getPosition().x, player.getBody().getPosition().y);
+		tunePrismaticJoint();
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		if(joint != null){
+		if(ropePrismaticJoint != null){
 			ropeLength = new Vector2(getX(), getY()).dst(ropeBullet.getPosition()) + penetration;
 			float u2Backup = ropeTextureRegion.getU2();
 			ropeTextureRegion.setU2(ropeTextureRegion.getU() + startU2Length * ((UnitConverter.PPM * ropeLength) / ropeTextureRegion.getRegionWidth()));

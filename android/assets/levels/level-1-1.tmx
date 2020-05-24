@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="250" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="95">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="250" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="97">
  <properties>
   <property name="bronzeReq" value="5"/>
   <property name="goldReq" value="10"/>
@@ -208,7 +208,7 @@
    </properties>
    <polyline points="-92.0833,-76.5 -12.6667,-4.66663 69.4167,-75.75"/>
   </object>
-  <object id="94" name="start" x="4946" y="206" width="64" height="64">
+  <object id="95" name="start" x="64" y="352" width="64" height="64">
    <ellipse/>
   </object>
  </objectgroup>

@@ -18,8 +18,8 @@ public class GameData {
 //		unlockedLevels.add(new LevelNode(3, 1, ColorSet.GRAY));
 //        unlockedLevels.add(new LevelNode(4, 1, ColorSet.GRAY));
 		unlockedWorlds.add(1);
-		unlockedBalls.add(BallData.RUBBER.number);
-		activeBall = BallData.RUBBER.number;
+		unlockedBalls.add(BallData.NORMAL.number);
+		activeBall = BallData.NORMAL.number;
         boughtPowerups.put(Powerup.JUMP, 3);
         activePowerup = Powerup.JUMP;
 	}

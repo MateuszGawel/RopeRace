@@ -5,8 +5,6 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-import java.util.Arrays;
-
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener
 {
 	
@@ -21,9 +19,16 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		
 		UserData dataA = UserData.get(fa);
 		UserData dataB = UserData.get(fb);
-		
+
 		if(!dataA.ignoreCollision && !dataB.ignoreCollision) {
 			SNAPSHOT_BEGIN.addContact(dataA, dataB);
+		}
+
+		if(dataA.key.equals("ropeBullet") && dataB.key.equals("level")){
+			SNAPSHOT_BEGIN.setRopeBulletCollisionData(fb.getBody(), contact.getWorldManifold().getPoints()[0]);
+		}
+		else if(dataA.key.equals("level") && dataB.key.equals("ropeBullet")){
+			SNAPSHOT_BEGIN.setRopeBulletCollisionData(fa.getBody(), contact.getWorldManifold().getPoints()[0]);
 		}
 	}
 

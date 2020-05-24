@@ -95,6 +95,7 @@ public class TouchSteeringPlugin extends SteeringPlugin {
 				rope.destroyCurrentJoint();
 				break;
 			case NOT_TOUCHED:
+
 				if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 					touchState = TouchState.JUST_TOUCHED;
 				}

@@ -44,11 +44,11 @@ public class GameEventsPlugin extends AbstractPlugin {
 
 			//workaround for easy hits when rope attached to remove glittering
 			if(rope.isRopeAttached() && currentPlayerContactImpulse < 2.0) {
-				System.out.println(" friction 0 bo " + currentPlayerContactImpulse);
+//				System.out.println(" friction 0 bo " + currentPlayerContactImpulse);
 				setBallNotBouncing();
 			}
 			else{
-				System.out.println(" friction " + ball.friction + " bo " + currentPlayerContactImpulse);
+//				System.out.println(" friction " + ball.friction + " bo " + currentPlayerContactImpulse);
 				setBallBouncing();
 			}
 		}

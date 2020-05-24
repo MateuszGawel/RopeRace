@@ -9,9 +9,9 @@ public enum BallData {
 	NORMAL(1, 0.5f, 1.7f, 0.05f, 0.5f, -0.02f),
 	BUBBLE(2, 0.4f, 10f, 0f, 0f, -0.02f),
 	BASKET(3, 0.5f, 2f, 0.05f, 0.8f, 0.03f),
-	BOWLING(4, 0.5f, 1f, 0.05f, 0.3f, -0.02f),
+	BOWLING(4, 0.5f, 2f, 0.05f, 0.3f, -0.02f),
 	RUBBER(5, 0.2f, 6f, 0.1f, 0.8f, -0.02f),
-	BEACH(6, 0.55f, 3.5f, 0.1f, 0.8f, 0.002f);
+	BEACH(6, 0.55f, 0.9f, 0.1f, 0.8f, 0.002f);
 	
     private static Map<Integer, BallData> map = new HashMap<Integer, BallData>();
 

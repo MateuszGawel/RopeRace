@@ -1,5 +1,8 @@
 package com.apptogo.roperace.physics;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -7,6 +10,8 @@ import java.util.Map.Entry;
 public class ContactSnapshot {	
 	private Map<UserData, UserData> snapshot = new HashMap<UserData, UserData>();
 	private float playerContactImpulse;
+	private Body ropeBulletCollidedBody;
+	private Vector2 ropeBulletCollisionPoint;
 
 	/**
 	 * Add collision to snapshot. Order doesn't matter.
@@ -133,6 +138,19 @@ public class ContactSnapshot {
 		return playerContactImpulse;
 	}
 
+	public Body getRopeBulletCollidedBody() {
+		return ropeBulletCollidedBody;
+	}
+
+	public Vector2 getRopeBulletCollisionPoint() {
+		return ropeBulletCollisionPoint;
+	}
+
+	public void setRopeBulletCollisionData(Body ropeBulletCollidedBody, Vector2 ropeBulletCollisionPoint) {
+		this.ropeBulletCollidedBody = ropeBulletCollidedBody;
+		this.ropeBulletCollisionPoint = ropeBulletCollisionPoint;
+	}
+
 	/**
 	 * clears all collisions. Should be run in every loop.
 	 */
@@ -145,6 +163,7 @@ public class ContactSnapshot {
 	public String toString() {
 		return "ContactSnapshot [snapshot=" + snapshot + "]";
 	}
+
 
 
 }
